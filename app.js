@@ -3,7 +3,7 @@
   const $$ = (s) => [...document.querySelectorAll(s)];
   const {intents, collections, handcrafted, rareOfferings, birdOfferings, proceduralBanks, loreRules} = window.ROOK_CODEX_DATA;
   function defaultState(){
-    return {seen:0,correct:0,discovered:{},mode:"mixed",sound:false,birds:true,rareFound:0,dailyOpened:{},unlockedLore:{},history:[]};
+    return {seen:0,correct:0,discovered:{},mode:"mixed",sound:false,birds:true,rareFound:0,dailyOpened:{},dailyCache:{},unlockedLore:{},history:[]};
   }
 
   let state;
@@ -11,6 +11,7 @@
   catch { state = defaultState(); }
   state.discovered ||= {};
   state.dailyOpened ||= {};
+  state.dailyCache ||= {};
   state.unlockedLore ||= {};
   state.history ||= [];
   state.birds = state.birds !== false;
@@ -70,8 +71,8 @@
   }
 
   function randomNormalOffering(){
-    if(state.birds && Math.random() < 0.14) return {...pick(birdOfferings), bird:true};
     if(Math.random() < 0.01) return {...pick(rareOfferings), rare:true};
+    if(state.birds && Math.random() < 0.14) return {...pick(birdOfferings), bird:true};
     if(state.mode === "handcrafted") return {...pick(handcrafted)};
     if(state.mode === "procedural") return generateProcedural();
     return Math.random() < 0.52 ? {...pick(handcrafted)} : generateProcedural();
@@ -126,7 +127,8 @@
 
   function openDaily(){
     const key=localDateKey();
-    setOffering(dailyOffering(key),{daily:true});
+    if(!state.dailyCache[key]){ state.dailyCache[key]=dailyOffering(key); save(); }
+    setOffering(state.dailyCache[key],{daily:true});
   }
 
   function updateDailyBanner(){
