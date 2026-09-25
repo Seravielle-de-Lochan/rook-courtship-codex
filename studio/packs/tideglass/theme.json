@@ -1,0 +1,145 @@
+{
+  "format": "codex-visual-pack",
+  "version": 1,
+  "id": "builtin:tideglass",
+  "name": "Tideglass",
+  "author": "Seravielle de Lochan",
+  "description": "Silver chains and sea-glass over night water. Your SpriteCook Tideglass kit.",
+  "style": "hd",
+  "radius": 26,
+  "colors": {
+    "bg": "#030a0d",
+    "bg2": "#0d3a3d",
+    "surface": "#0c2227",
+    "surface2": "#0a1b20",
+    "border": "#405b5e",
+    "text": "#e4eee8",
+    "muted": "#a9bebb",
+    "accent": "#8fdacb",
+    "accent2": "#d6c4cf",
+    "rare": "#e8d7a7",
+    "danger": "#e5c8d4"
+  },
+  "font": {
+    "display": "pack",
+    "body": "pack"
+  },
+  "fonts": {
+    "display": "cormorant-garamond.ttf",
+    "body": "cormorant-garamond.ttf"
+  },
+  "motion": {
+    "particles": "sprite",
+    "density": 0.45
+  },
+  "layout": {
+    "header": "centered",
+    "stage": "ring",
+    "choiceBlurbs": false,
+    "backgroundFit": "tile"
+  },
+  "images": {
+    "background": "water-garden.png",
+    "canopy": "chain_banner_decoration.png",
+    "pendantLeft": "teardrop_pendant_1.png",
+    "pendantRight": "teardrop_pendant_2.png",
+    "divider": "long_divider_1.png",
+    "panel": {
+      "file": "large_frame_empty.png",
+      "slice": 86,
+      "width": 24
+    },
+    "statsPanel": {
+      "file": "wide_frame_empty.png",
+      "slice": 75,
+      "width": 24
+    },
+    "choice": {
+      "file": "pill_button_normal_3.png",
+      "slice": [
+        20,
+        70,
+        20,
+        100
+      ],
+      "width": [
+        13,
+        46,
+        13,
+        66
+      ]
+    },
+    "choice-affection": {
+      "file": "pill_button_normal_1.png",
+      "slice": [
+        20,
+        70,
+        20,
+        100
+      ],
+      "width": [
+        13,
+        46,
+        13,
+        66
+      ]
+    },
+    "choice-seduction": {
+      "file": "pill_button_normal_2.png",
+      "slice": [
+        20,
+        70,
+        20,
+        100
+      ],
+      "width": [
+        13,
+        46,
+        13,
+        66
+      ]
+    },
+    "choice-thought": {
+      "file": "pill_button_normal_3.png",
+      "slice": [
+        20,
+        70,
+        20,
+        100
+      ],
+      "width": [
+        13,
+        46,
+        13,
+        66
+      ]
+    },
+    "choice-dontask": {
+      "file": "pill_button_normal_4.png",
+      "slice": [
+        20,
+        70,
+        20,
+        100
+      ],
+      "width": [
+        13,
+        46,
+        13,
+        66
+      ]
+    },
+    "particle": "small_star_icon.png",
+    "rareBadge": "star_icon.png",
+    "loreSeal": "round_medallion_1.png",
+    "loreLock": "lock_icon_button.png",
+    "navPlay": "star_icon_button.png",
+    "navCodex": "book_icon_button.png",
+    "navLore": "list_icon_button.png",
+    "navSpecial": "lock_icon_button.png",
+    "navStudio": "gear_icon_button.png"
+  },
+  "art": {
+    "moonbloom": "flower_ornament.png"
+  }
+}

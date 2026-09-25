@@ -62,6 +62,12 @@ If the zip contains a **SpriteCook UI-kit manifest** (or any JSON listing compon
 - `font.*`: `system`, `serif`, `rounded`, `mono`, or `pack` (uses the file named in `fonts.*`).
 - `motion.particles`: `motes`, `sparkles`, `petals`, `bubbles`, `embers`, `snow`, `sprite` (uses the `particle` image), or `none`.
 - `slice`: the 9-slice border, in source pixels. Give one number, or `[top, right, bottom, left]`.
+- `width` (optional, next to `slice`): how thick that border is drawn on screen, in CSS pixels. Use it when art has large ornamental ends, like a pill button with an icon baked into its left end: `{ "file": "pill.png", "slice": [20, 70, 20, 100], "width": [13, 46, 13, 66] }`.
+- `layout` (optional):
+  - `"header": "centered"` centres the title and hides the crest. It works well with a `canopy`.
+  - `"stage": "ring"` shows the offering inside a thin glowing ring instead of a box.
+  - `"choiceBlurbs": false` shows only the answer labels, one per row.
+  - `"backgroundFit": "tile"` fits the background to the page width and repeats it downwards, instead of cropping it to cover the screen.
 - Text colours are automatically nudged, if needed, so they stay readable against the card colour.
 
 ### Image slots
@@ -75,6 +81,11 @@ If the zip contains a **SpriteCook UI-kit manifest** (or any JSON listing compon
 | `choice` | Answer tiles | 256×144 | ✓ |
 | `stage` | Backdrop behind the offering | 16:9 | |
 | `crest` | Logo next to the title | 192×192 | |
+| `canopy` | Decoration hanging from the top of the screen | wide, e.g. 945×304 | |
+| `pendant-left`, `pendant-right` | Swaying ornaments at the top corners | tall, e.g. 100×400 | |
+| `divider` | Flourish under the title and the offering name | wide and thin | |
+| `stats-panel` | Frame around the stats row | 16:9 | ✓ |
+| `choice-<intent id>` | Answer button art for one specific answer | wide pill | ✓ |
 | `particle` | Floating ambient sprite | 32×32 | |
 | `rare-badge` | Rare-find star | 64×64 | |
 | `lore-seal`, `lore-lock` | Lore unlocked / locked icons | 96×96 | |
@@ -87,6 +98,18 @@ If the zip contains a **SpriteCook UI-kit manifest** (or any JSON listing compon
 Any slot without an image falls back to the look's colours, so partial packs work.
 
 Transparent PNG or WebP is best. JPEG, GIF, AVIF and SVG also work. Zips can be up to 80 MB unpacked and 600 files.
+
+### SpriteCook UI-kit exports
+
+A SpriteCook UI-kit export can be zipped and imported as it is. Its components are listed by `name` in its manifest, and each PNG is `<name>.png`. Names are matched to slots:
+- `*_icon_button` pieces become navigation icons (star → Play, book → Codex, list → Lore, lock → the special tab, gear → Studio);
+- `pill_button_normal_1…n` become the answer buttons, in order;
+- `large_frame_empty` becomes the card frame and `wide_frame_empty` the stats frame;
+- `chain_banner_decoration` becomes the canopy, and `teardrop_pendant_1`/`_2` the pendants;
+- `long_divider_1` becomes the divider;
+- hover, disabled and other alternative states are left unused.
+
+SpriteCook exports list every 9-slice border as zero, so set real borders in `theme.json` for frames that stretch. The built-in **Tideglass** look (`packs/tideglass/theme.json`) is a complete worked example.
 
 ### Making one with SpriteCook
 

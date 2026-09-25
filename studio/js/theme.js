@@ -28,6 +28,16 @@ export const STATIC_SLOTS = [
     prompt: 'wax seal or glowing sigil icon meaning a secret has been unlocked', aliases: ['seal', 'lore-unlocked', 'unlocked'] },
   { key: 'loreLock', label: 'Lore locked icon', tier: 'complete', aspect: '1:1', w: 96, h: 96, mode: 'ui', bg: 'transparent',
     prompt: 'closed ornate lock or sealed envelope icon meaning a secret is still hidden', aliases: ['lock', 'lore-locked', 'locked'] },
+  { key: 'canopy', label: 'Header decoration (canopy)', tier: 'complete', aspect: '16:9', w: 512, h: 170, mode: 'ui', bg: 'transparent',
+    prompt: 'wide ornamental header garland that hangs from the top edge of the screen, symmetrical, delicate, transparent background, no text', aliases: ['banner', 'garland', 'header-decoration', 'chain-banner', 'chain-banner-decoration', 'header'] },
+  { key: 'pendantLeft', label: 'Hanging pendant (left)', tier: 'complete', aspect: '9:16', w: 64, h: 256, mode: 'ui', bg: 'transparent',
+    prompt: 'single tall hanging pendant ornament on a short chain, vertical, transparent background', aliases: ['pendant-left', 'teardrop-pendant-1', 'hanging-left'] },
+  { key: 'pendantRight', label: 'Hanging pendant (right)', tier: 'complete', aspect: '9:16', w: 64, h: 256, mode: 'ui', bg: 'transparent',
+    prompt: 'a second, slightly different tall hanging pendant ornament on a short chain, vertical, transparent background', aliases: ['pendant-right', 'teardrop-pendant-2', 'hanging-right'] },
+  { key: 'divider', label: 'Ornamental divider', tier: 'complete', aspect: '16:9', w: 512, h: 32, mode: 'ui', bg: 'transparent',
+    prompt: 'long thin horizontal ornamental divider line with a small central flourish, transparent background', aliases: ['long-divider', 'long-divider-1', 'rule', 'separator'] },
+  { key: 'statsPanel', label: 'Stats frame (9-slice)', tier: 'complete', nine: true, slice: 40, aspect: '16:9', w: 384, h: 216, mode: 'ui', bg: 'transparent',
+    prompt: 'wide empty horizontal UI frame for a row of statistics, decorative corners, uniform edges for 9-slice, plain centre, no text', aliases: ['wide-frame', 'wide-frame-empty', 'stats-frame', 'wide-panel'] },
   { key: 'navPlay', label: 'Nav icon: Play', tier: 'complete', aspect: '1:1', w: 64, h: 64, mode: 'ui', bg: 'transparent', prompt: 'simple UI icon of a small wrapped gift', aliases: ['icon-play', 'nav-play'] },
   { key: 'navCodex', label: 'Nav icon: Codex', tier: 'complete', aspect: '1:1', w: 64, h: 64, mode: 'ui', bg: 'transparent', prompt: 'simple UI icon of an open field journal', aliases: ['icon-codex', 'nav-codex', 'book'] },
   { key: 'navLore', label: 'Nav icon: Lore', tier: 'complete', aspect: '1:1', w: 64, h: 64, mode: 'ui', bg: 'transparent', prompt: 'simple UI icon of a rolled scroll with a tiny seal', aliases: ['icon-lore', 'nav-lore', 'scroll'] },
@@ -38,6 +48,7 @@ export const STATIC_SLOTS = [
 /** Slots that depend on the active content pack (one icon per intent etc.). */
 export function dynamicSlots(pack) {
   const out = [];
+  for (const it of pack.intents) out.push({ key: `choice-${it.id}`, label: `Answer tile: ${it.label} (9-slice)`, tier: 'complete', nine: true, slice: 24, aspect: '16:9', w: 256, h: 72, mode: 'ui', bg: 'transparent', prompt: `blank wide pill-shaped answer button with a small symbol for "${it.label}" at its left end, uniform edges for 9-slice, no text` });
   for (const it of pack.intents) out.push({ key: `intent-${it.id}`, label: `Answer icon: ${it.label}`, tier: 'essential', aspect: '1:1', w: 64, h: 64, mode: 'ui', bg: 'transparent', prompt: `small symbolic UI icon representing "${it.label}"${it.blurb ? ` (${it.blurb})` : ''}, no text` });
   for (const c of pack.collections) out.push({ key: `collection-${slug(c.name)}`, glyph: c.objects?.[0]?.glyph, label: `Collection icon: ${c.name}`, tier: 'complete', aspect: '1:1', w: 96, h: 96, mode: 'ui', bg: 'transparent', prompt: `collection badge icon for "${c.name}"${c.blurb ? ` — ${c.blurb}` : ''}, no text` });
   for (const c of pack.companions) out.push({ key: `companion-${slug(c.name)}`, label: `Companion portrait: ${c.name}`, tier: 'complete', aspect: '1:1', w: 128, h: 128, mode: 'assets', bg: 'transparent', prompt: `bust portrait of ${c.name}${c.blurb ? `, who ${c.blurb.replace(/\.$/, '').toLowerCase()}` : ''}, expressive, centred` });
@@ -59,7 +70,7 @@ export const FONT_STACKS = {
 };
 
 export const PRESETS = [
-  { id: 'preset:tideglass', name: 'Tideglass', description: 'The original sea-glass night palette.', style: 'hd', radius: 22,
+  { id: 'preset:tideglass', name: 'Sea-glass Night', description: 'The original sea-glass colours, without artwork.', style: 'hd', radius: 22,
     colors: { bg: '#0b1016', bg2: '#12303a', surface: '#15202a', surface2: '#0f171f', border: '#243541', text: '#edf4f2', muted: '#9fb1b0', accent: '#7fcfbd', accent2: '#d7b7c7', rare: '#d8c08a', danger: '#e5c8d4' },
     font: { display: 'system', body: 'system' }, motion: { particles: 'motes', density: 1 } },
   { id: 'preset:moth-lantern', name: 'Moth Lantern', description: 'Plum dusk, amber lamplight, drifting moths.', style: 'hd', radius: 18,
@@ -192,6 +203,12 @@ export function normalizeTheme(t = {}, base = PRESETS[0]) {
       particles: ['motes', 'sparkles', 'petals', 'bubbles', 'embers', 'snow', 'sprite', 'none'].includes(t.motion?.particles) ? t.motion.particles : base.motion.particles,
       density: Number.isFinite(+t.motion?.density) ? Math.max(0, Math.min(2, +t.motion.density)) : base.motion.density,
     },
+    layout: {
+      header: t.layout?.header === 'centered' ? 'centered' : 'default',
+      stage: t.layout?.stage === 'ring' ? 'ring' : 'box',
+      choiceBlurbs: t.layout?.choiceBlurbs !== false,
+      backgroundFit: t.layout?.backgroundFit === 'tile' ? 'tile' : 'cover',
+    },
     images: t.images && typeof t.images === 'object' ? t.images : {},
     art: t.art && typeof t.art === 'object' ? t.art : {},
     spritecook: t.spritecook || null,
@@ -219,8 +236,25 @@ export function guessSlot(nameOrPath, slots) {
   const off = slots.find((s) => s.key === `offering-${art}`);
   if (off) return off.key;
   for (const s of slots) if ((s.aliases || []).includes(k)) return s.key;
-  // loose: file name contains an alias word ("ui_panel_frame_01" -> panel)
   const words = k.split('-');
+  // SpriteCook-style icon buttons: "book_icon_button" is a nav icon, not a button.
+  if (words.includes('icon')) {
+    const nav = { star: 'navPlay', book: 'navCodex', list: 'navLore', scroll: 'navLore', lock: 'navSpecial', folder: 'navSpecial', gear: 'navStudio', cog: 'navStudio', brush: 'navStudio' };
+    for (const [w, slot] of Object.entries(nav)) if (words.includes(w) && words.includes('button')) return slot;
+    if (words.includes('star')) return 'rareBadge';
+    return null;
+  }
+  // Numbered pill/answer buttons map onto the answers in order: pill_button_normal_2 -> 2nd answer.
+  const choiceSlots = slots.filter((s) => s.key.startsWith('choice-'));
+  const n = Number(words.at(-1));
+  if (choiceSlots.length && words.some((w) => ['pill', 'choice', 'answer', 'option'].includes(w)) && words.includes('normal') && n >= 1 && n <= choiceSlots.length) return choiceSlots[n - 1].key;
+  if (words.some((w) => ['disabled', 'hover'].includes(w))) return null;
+  if ((words.includes('bottom') && words.includes('panel')) || (words.includes('round') && words.includes('button'))) return null;
+  if (words.includes('frame') && words.includes('wide')) return 'statsPanel';
+  if (words.includes('frame') && words.some((w) => ['active', 'content'].includes(w))) return null;
+  if (words.includes('medallion') || words.includes('emblem')) return 'crest';
+  if (words.includes('divider')) return words.includes('thin') ? null : 'divider';
+  // loose: file name contains an alias word ("ui_panel_frame_01" -> panel)
   if (words.some((w) => ['pressed', 'selected', 'hover', 'active'].includes(w)) && words.some((w) => w.startsWith('btn') || w === 'button')) return 'buttonActive';
   for (const s of STATIC_SLOTS) if ([kebab(s.key), ...(s.aliases || [])].some((a) => !a.includes('-') && words.includes(a))) return s.key;
   return null;
@@ -233,11 +267,13 @@ function manifestComponents(json) {
     if (!o || typeof o !== 'object') return;
     if (Array.isArray(o)) { o.forEach(visit); return; }
     const file = ['file', 'path', 'filename', 'image', 'sprite', 'src', 'asset'].map((k) => o[k]).find((v) => typeof v === 'string' && IMAGE_RE.test(v));
-    if (file) {
-      const nm = [o.group, o.name || o.label || o.id, o.state && o.state !== 'normal' && o.state !== 'default' ? o.state : ''].filter(Boolean).join('-');
+    const named = !file && typeof o.name === 'string' && (o.nine_slice || o.component_type || o.asset_id);
+    if (file || named) {
+      // SpriteCook UI-kit exports name components; the PNG is "<name>.png".
+      const nm = file ? [o.group, o.name || o.label || o.id, o.state && o.state !== 'normal' && o.state !== 'default' ? o.state : ''].filter(Boolean).join('-') : o.name;
       const b = o.nine_slice || o.nineSlice || o.slice || o.borders || o.border || o;
       const nums = ['top', 'right', 'bottom', 'left'].map((k) => Number(b?.[k]));
-      found.push({ file, name: nm || file, slice: nums.every((n) => Number.isFinite(n)) && nums.some((n) => n > 0) ? nums : null });
+      found.push({ file: file || `${o.name}.png`, name: nm || file, slice: nums.every((n) => Number.isFinite(n)) && nums.some((n) => n > 0) ? nums : null });
     }
     Object.values(o).forEach(visit);
   };
@@ -287,7 +323,7 @@ export async function importVisualZip(file, contentPack) {
   for (const [id, f0] of Object.entries(theme.art)) { const f = fileByLoose(f0); if (f) mapping[`offering-${id}`] = f; }
   for (const json of otherJson) {
     for (const comp of manifestComponents(json)) {
-      const f = fileByLoose(comp.file);
+      const f = fileByLoose(comp.file) || fileByLoose(comp.file.replace(/\.png$/i, '.webp'));
       const slot = f && guessSlot(comp.name, slots);
       if (slot && !mapping[slot]) { mapping[slot] = f; if (comp.slice) slices[slot] = comp.slice; }
     }
@@ -347,7 +383,12 @@ export async function applyVisual(record, root = document.documentElement) {
   liveUrls = [];
   for (const f of liveFonts) document.fonts.delete(f);
   liveFonts = [];
-  const url = (f) => { const b = files[f]; if (!b) return null; const u = URL.createObjectURL(b); liveUrls.push(u); return u; };
+  const url = (f) => {
+    if (!f) return null;
+    const b = files[f];
+    if (b) { const u = URL.createObjectURL(b); liveUrls.push(u); return u; }
+    return record.baseUrl ? new URL(f, new URL(record.baseUrl, location.href)).href : null; // built-in packs served as files
+  };
 
   const st = root.style;
   // wipe previous image vars
@@ -363,12 +404,16 @@ export async function applyVisual(record, root = document.documentElement) {
   st.setProperty('--accent2-rgb', hexToRgb(theme.colors.accent2).join(','));
   st.setProperty('--radius', `${theme.radius}px`);
   root.dataset.style = theme.style;
+  root.dataset.header = theme.layout.header;
+  root.dataset.stage = theme.layout.stage;
+  root.dataset.blurbs = theme.layout.choiceBlurbs ? 'on' : 'off';
+  root.dataset.bgfit = theme.layout.backgroundFit;
   root.dataset.scheme = lum(hexToRgb(theme.colors.bg)) > 0.4 ? 'light' : 'dark';
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme.colors.bg);
 
   for (const role of ['display', 'body']) {
     let family = FONT_STACKS[theme.font[role]] || FONT_STACKS.system;
-    if (theme.font[role] === 'pack' && theme.fonts[role] && files[theme.fonts[role]]) {
+    if (theme.font[role] === 'pack' && theme.fonts[role] && (files[theme.fonts[role]] || record.baseUrl)) {
       try {
         const ff = new FontFace(`PackFont-${role}`, `url(${url(theme.fonts[role])})`, { display: 'swap' });
         await ff.load();
@@ -389,14 +434,14 @@ export async function applyVisual(record, root = document.documentElement) {
     const k = kebab(slot);
     st.setProperty(`--img-${k}`, `url("${u}")`);
     root.setAttribute(`data-has-${k}`, '');
-    const def = STATIC_SLOTS.find((s) => s.key === slot);
+    const def = STATIC_SLOTS.find((s) => s.key === slot) || (slot.startsWith('choice-') ? { nine: true, slice: 24 } : null);
     if (def?.nine) {
-      const sl = (typeof v === 'object' && v?.slice) || def.slice;
-      const [t, r, b, l] = Array.isArray(sl) ? sl : [sl, sl, sl, sl];
+      const quad = (x) => (Array.isArray(x) ? [x[0], x[1] ?? x[0], x[2] ?? x[0], x[3] ?? x[1] ?? x[0]] : [x, x, x, x]).map(Number);
+      const [t, r, b, l] = quad((typeof v === 'object' && v?.slice) || def.slice);
       st.setProperty(`--slice-${k}`, `${t} ${r} ${b} ${l}`);
-      // Rendered border width: scale the source slice to something sensible on screen.
-      const px = (n) => `${Math.max(6, Math.min(28, Math.round(n * 0.5)))}px`;
-      st.setProperty(`--slice-${k}-w`, `${px(t)} ${px(r)} ${px(b)} ${px(l)}`);
+      // Rendered border width: from the pack if given, else the source slice scaled to something sensible on screen.
+      const w = typeof v === 'object' && v?.width != null ? quad(v.width) : [t, r, b, l].map((n) => Math.max(6, Math.min(28, Math.round(n * 0.5))));
+      st.setProperty(`--slice-${k}-w`, w.map((n) => `${Math.max(0, Math.min(120, n))}px`).join(' '));
     }
   }
   const art = {};

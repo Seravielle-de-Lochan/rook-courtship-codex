@@ -28,7 +28,7 @@ function spawn(initial = false) {
     case 'petals': return { ...base, r: 4 + Math.random() * 4, vx: 6 + Math.random() * 10, vy: 14 + Math.random() * 14, rot: Math.random() * TAU, vr: (Math.random() - 0.5) * 1.6, col: cfg.accent2, s };
     case 'snow': return { ...base, r: 1 + Math.random() * 2.5, vx: (Math.random() - 0.5) * 6, vy: 10 + Math.random() * 16, col: '#ffffff', s };
     case 'sparkles': return { ...base, r: 1.5 + Math.random() * 2.5, vx: (Math.random() - 0.5) * 4, vy: (Math.random() - 0.5) * 4, col, s };
-    case 'sprite': return { ...base, r: 8 + Math.random() * 10, vx: (Math.random() - 0.5) * 10, vy: -(4 + Math.random() * 10), rot: Math.random() * TAU, vr: (Math.random() - 0.5) * 0.6, s };
+    case 'sprite': return { ...base, r: 3 + Math.random() * 5, vx: (Math.random() - 0.5) * 10, vy: -(4 + Math.random() * 10), rot: Math.random() * TAU, vr: (Math.random() - 0.5) * 0.6, s };
     default: return { ...base, r: 0.8 + Math.random() * 2, vx: (Math.random() - 0.5) * 5, vy: -(2 + Math.random() * 6), col, s: 'motes' };
   }
 }

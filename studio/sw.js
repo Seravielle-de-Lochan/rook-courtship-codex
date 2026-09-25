@@ -1,11 +1,33 @@
 // Codex Studio service worker: precache the app shell, serve it cache-first,
 // and let the page decide when to activate an update.
-const VERSION = 'codex-studio-v1';
+const VERSION = 'codex-studio-v2';
 const SHELL = [
   './', './index.html', './css/studio.css', './manifest.webmanifest',
   './js/main.js', './js/engine.js', './js/db.js', './js/theme.js', './js/fx.js', './js/forge.js', './js/zip.js',
-  './packs/rook-courtship.json', './packs/moth-lantern.json', './PACK_FORMAT.md',
+  './packs/rook-courtship.json', './packs/tideglass/theme.json', './packs/moth-lantern.json', './PACK_FORMAT.md',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/apple-touch-icon.png',
+  // the built-in Tideglass look uses the classic edition's SpriteCook kit
+  '../assets/tideglass/book_icon_button.png',
+  '../assets/tideglass/chain_banner_decoration.png',
+  '../assets/tideglass/cormorant-garamond.ttf',
+  '../assets/tideglass/flower_ornament.png',
+  '../assets/tideglass/gear_icon_button.png',
+  '../assets/tideglass/large_frame_empty.png',
+  '../assets/tideglass/list_icon_button.png',
+  '../assets/tideglass/lock_icon_button.png',
+  '../assets/tideglass/long_divider_1.png',
+  '../assets/tideglass/pill_button_normal_1.png',
+  '../assets/tideglass/pill_button_normal_2.png',
+  '../assets/tideglass/pill_button_normal_3.png',
+  '../assets/tideglass/pill_button_normal_4.png',
+  '../assets/tideglass/round_medallion_1.png',
+  '../assets/tideglass/small_star_icon.png',
+  '../assets/tideglass/star_icon.png',
+  '../assets/tideglass/star_icon_button.png',
+  '../assets/tideglass/teardrop_pendant_1.png',
+  '../assets/tideglass/teardrop_pendant_2.png',
+  '../assets/tideglass/water-garden.png',
+  '../assets/tideglass/wide_frame_empty.png',
 ];
 
 self.addEventListener('install', (e) => {

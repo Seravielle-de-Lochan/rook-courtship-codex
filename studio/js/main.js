@@ -23,6 +23,11 @@ function h(tag, attrs = {}, ...kids) {
   return el;
 }
 
+// Built-in art packs are plain files on the site (the Tideglass kit lives in ../assets).
+const BUILTIN_LOOKS = [
+  { id: 'builtin:tideglass', url: 'packs/tideglass/theme.json', baseUrl: '../assets/tideglass/' },
+];
+
 const BUILTIN_STORIES = [
   { id: 'rook-courtship', url: 'packs/rook-courtship.json' },
   { id: 'moth-lantern', url: 'packs/moth-lantern.json' },
@@ -78,25 +83,35 @@ async function setStory(id, { silent = false } = {}) {
   if (!silent) toast(`Now playing: ${pack.title}`);
 }
 
+const builtinCache = new Map();
+async function builtinLook(def) {
+  if (!builtinCache.has(def.id)) {
+    builtinCache.set(def.id, fetchJson(def.url).then((json) => ({ id: def.id, kind: 'visual', builtin: true, art: true, baseUrl: def.baseUrl, theme: normalizeTheme({ ...json, id: def.id }), files: {} })).catch((e) => { builtinCache.delete(def.id); throw e; }));
+  }
+  return builtinCache.get(def.id);
+}
+
 async function listLooks() {
   const installed = await packs.list('visual').catch(() => []);
-  return [...PRESETS.map(presetRecord), ...installed.sort((a, b) => a.installedAt - b.installedAt)];
+  const builtins = (await Promise.all(BUILTIN_LOOKS.map((d) => builtinLook(d).catch(() => null)))).filter(Boolean);
+  return [...builtins, ...PRESETS.map(presetRecord), ...installed.sort((a, b) => a.installedAt - b.installedAt)];
 }
 
 async function setLook(id, { silent = false } = {}) {
   const preset = presetById(id);
-  let rec = preset ? presetRecord(preset) : await packs.get('visual', id).catch(() => null);
+  const builtin = BUILTIN_LOOKS.find((d) => d.id === id);
+  let rec = preset ? presetRecord(preset) : builtin ? await builtinLook(builtin).catch(() => null) : await packs.get('visual', id).catch(() => null);
   if (!rec) rec = presetRecord(PRESETS[0]);
   rec.theme = normalizeTheme(rec.theme, presetById(rec.theme.basePreset) || PRESETS[0]);
   visual = rec;
   settings.visual = rec.id; settingsStore.save(settings);
-  await applyLook(rec.theme, rec.files);
+  await applyLook(rec.theme, rec.files, rec.baseUrl);
   draft = null;
   if (!silent) toast(`Wearing: ${rec.theme.name}`);
 }
 
-async function applyLook(theme, files) {
-  applied = await applyVisual({ theme, files });
+async function applyLook(theme, files, baseUrl = visual?.baseUrl) {
+  applied = await applyVisual({ theme, files, baseUrl });
   const particles = theme.motion.particles === 'sprite' && !applied.images.particle ? 'motes' : theme.motion.particles;
   configureFx({ style: particles, density: theme.motion.density, motion: settings.motion, sprite: applied.images.particle || null, accent: theme.colors.accent, accent2: theme.colors.accent2, rare: theme.colors.rare });
   savePaint();
@@ -138,6 +153,17 @@ function renderChrome() {
 }
 
 function renderArt() {
+  for (const [id, slot] of [['#decorCanopy', 'canopy'], ['#decorPendantL', 'pendantLeft'], ['#decorPendantR', 'pendantRight']]) {
+    const img = $(id);
+    const src = applied.images[slot];
+    img.hidden = !src;
+    if (src) img.src = src; else img.removeAttribute('src');
+  }
+  $('#app').classList.toggle('has-canopy', !!applied.images.canopy);
+  const nb = $('#newBtn');
+  if (!nb.dataset.svg) nb.dataset.svg = nb.innerHTML;
+  if (applied.images.navPlay) nb.replaceChildren(h('img', { src: applied.images.navPlay, alt: '' }));
+  else nb.innerHTML = nb.dataset.svg; // our own static markup
   const crest = $('#crest');
   crest.replaceChildren(applied.images.crest ? h('img', { src: applied.images.crest, alt: '' }) : h('span', { text: '✦' }));
   for (const el of $$('.nav-ico[data-slot]')) {
@@ -215,7 +241,8 @@ function renderChoices() {
   const wrap = $('#choices');
   wrap.replaceChildren(...pack.intents.map((it) => {
     const icon = applied.images[`intent-${it.id}`];
-    return h('button', { class: 'choice', type: 'button', 'data-intent': it.id, onclick: () => choose(it.id) },
+    const art = applied.images[`choice-${it.id}`];
+    return h('button', { class: `choice${art ? ' has-art' : ''}`, type: 'button', 'data-intent': it.id, style: art ? `--choice-art:url("${art}");--choice-slice:var(--slice-choice-${it.id});--choice-w:var(--slice-choice-${it.id}-w)` : null, onclick: () => choose(it.id) },
       icon ? h('img', { class: 'choice-ico', src: icon, alt: '' }) : null,
       h('span', { class: 'choice-txt' }, h('strong', { text: it.label }), it.blurb ? h('span', { text: it.blurb }) : null));
   }));
@@ -403,18 +430,21 @@ function renderAll() { renderStats(); renderCodex(); renderLore(); renderSpecial
 
 function lookCard(rec, active) {
   const t = rec.theme;
-  const bgUrl = rec.files && (rec.files[typeof t.images.background === 'string' ? t.images.background : t.images.background?.file]);
+  const bgName = typeof t.images.background === 'string' ? t.images.background : t.images.background?.file;
+  const bgUrl = rec.files && rec.files[bgName];
+  const bgHref = !bgUrl && rec.baseUrl && bgName ? new URL(bgName, new URL(rec.baseUrl, location.href)).href : null;
   const preview = h('div', { class: 'look-preview', style: `background:${bgUrl ? '' : `linear-gradient(160deg, ${t.colors.bg2}, ${t.colors.bg})`}` },
     h('div', { class: 'mini-card', style: `background:${t.colors.surface};border-color:${t.colors.border}` }),
     ...['accent', 'accent2', 'rare', 'text'].map((k) => h('i', { style: `background:${t.colors[k]}` })));
   if (bgUrl) { const u = URL.createObjectURL(bgUrl); preview.style.backgroundImage = `url("${u}")`; setTimeout(() => URL.revokeObjectURL(u), 60000); }
+  if (bgHref) preview.style.backgroundImage = `url("${bgHref}")`;
   const imgCount = Object.keys(t.images || {}).length + Object.keys(t.art || {}).length;
   return h('div', { class: `look ${active ? 'active' : ''}` },
     h('button', { type: 'button', class: 'story-main', 'aria-pressed': String(active), 'aria-label': `Wear ${t.name}`, onclick: () => setLook(rec.id).then(renderPacks) },
-      preview, h('div', { class: 'look-info' }, h('b', { text: t.name }), h('span', { text: rec.builtin ? t.description || 'Built-in' : `${imgCount} images${t.style === 'pixel' ? ' · pixel' : ''}` }))),
-    rec.builtin ? null : h('div', { class: 'look-actions' },
+      preview, h('div', { class: 'look-info' }, h('b', { text: t.name }), h('span', { text: rec.builtin && !rec.art ? t.description || 'Built-in' : `${imgCount} images${t.style === 'pixel' ? ' · pixel' : ''}${rec.builtin ? ' · built in' : ''}` }))),
+    rec.builtin && !rec.art ? null : h('div', { class: 'look-actions' },
       h('button', { type: 'button', onclick: () => exportLook(rec) }, 'Share'),
-      h('button', { type: 'button', onclick: () => deleteLook(rec) }, 'Delete')));
+      rec.builtin ? null : h('button', { type: 'button', onclick: () => deleteLook(rec) }, 'Delete')));
 }
 
 async function renderPacks() {
@@ -445,7 +475,14 @@ async function shareOrDownload(blob, filename) {
   setTimeout(() => URL.revokeObjectURL(a.href), 10000);
 }
 
-async function exportLook(rec) { await shareOrDownload(await exportVisualZip(rec), `${slug(rec.theme.name) || 'look'}.zip`); }
+async function withFiles(rec) {
+  if (!rec.baseUrl) return rec;
+  const names = new Set([...Object.values(rec.theme.images).map((v) => (typeof v === 'string' ? v : v.file)), ...Object.values(rec.theme.art), rec.theme.fonts.display, rec.theme.fonts.body].filter(Boolean));
+  const files = {};
+  for (const n of names) { const r = await fetch(new URL(n, new URL(rec.baseUrl, location.href))); if (r.ok) files[n] = await r.blob(); }
+  return { ...rec, files };
+}
+async function exportLook(rec) { toast('Packing the look…'); await shareOrDownload(await exportVisualZip(await withFiles(rec)), `${slug(rec.theme.name) || 'look'}.zip`); }
 async function deleteLook(rec) {
   if (!confirm(`Delete the look "${rec.theme.name}"?`)) return;
   await packs.remove('visual', rec.id);
@@ -578,7 +615,7 @@ async function saveDraft(asNew) {
   const t = normalizeTheme({ ...workingTheme(), name: $('#lookName').value.trim() || workingTheme().name });
   const id = asNew || visual.builtin ? `visual-${slug(t.name)}-${Date.now().toString(36)}` : visual.id;
   t.id = id;
-  const rec = { id, kind: 'visual', installedAt: asNew || visual.builtin ? Date.now() : visual.installedAt || Date.now(), theme: t, files: visual.files || {} };
+  const rec = { id, kind: 'visual', installedAt: asNew || visual.builtin ? Date.now() : visual.installedAt || Date.now(), theme: t, files: visual.files || {}, baseUrl: visual.baseUrl || null };
   await packs.put('visual', rec);
   await setLook(id, { silent: true });
   toast(asNew || visual.builtin ? `Saved "${t.name}".` : 'Look updated.');

@@ -25,6 +25,7 @@ integration details and validation.
 
 [`studio/`](studio/) is a separate, fully customisable edition of the game. It installs as its own app, at `…/studio/`.
 
+- **Tideglass is the default look**, built from the same SpriteCook kit as the classic edition (`packs/tideglass/theme.json`, art in `assets/tideglass/`).
 - **Visual packs.** Import a `.zip` of art to re-skin everything: background, 9-slice card frames, buttons, answer tiles, offering stage, crest, nav icons, answer icons, collection badges, companion portraits, per-offering art, fonts, particles and colours. A `theme.json` is optional; images are matched by filename, and SpriteCook UI-kit manifests (including 9-slice borders) are understood.
 - **SpriteCook brief builder.** Describe a theme and style and add a reference image. The palette is taken from the reference. You get per-asset SpriteCook prompts with exact sizes and settings, a `spritecook-jobs.json` for the SpriteCook MCP server, an agent prompt for Claude, and a pre-filled `theme.json`. Generate the art, zip the folder and import it. A placeholder-art preview shows the result before you spend any credits.
 - **Customise.** Live colour, font, corner, particle and pixel-art controls. Palette from any image. Save as a new look and share it as a zip.

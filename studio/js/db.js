@@ -52,7 +52,7 @@ function writeJson(key, value) {
 
 const SETTINGS_KEY = 'codexStudio:settings';
 export const defaultSettings = {
-  visual: 'preset:tideglass',
+  visual: 'builtin:tideglass',
   content: 'rook-courtship',
   mode: 'mixed',
   companions: true,
