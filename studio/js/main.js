@@ -363,6 +363,9 @@ function renderStats() {
     const v = String(s[el.dataset.stat] ?? 0);
     if (el.textContent !== v) { el.textContent = v; el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
   }
+  const u = $('#understoodStat');
+  u.title = `${s.correct} of ${s.seen} read correctly`;
+  u.setAttribute('aria-label', `${s.understood} understood: ${u.title}`);
 }
 
 // ================================================================ codex / lore / special

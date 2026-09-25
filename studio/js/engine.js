@@ -283,6 +283,7 @@ export class Game {
     const vals = Object.values(this.p.discovered);
     return {
       seen: this.p.seen, correct: this.p.correct, streak: this.p.streak || 0, best: this.p.best || 0,
+      understood: `${this.p.seen ? Math.round((100 * this.p.correct) / this.p.seen) : 0}%`,
       entries: vals.length, rare: vals.filter((v) => v.rare).length,
       lore: Object.keys(this.p.unlockedLore).filter((id) => this.pack.lore.some((l) => l.id === id)).length,
     };

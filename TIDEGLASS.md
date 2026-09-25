@@ -242,7 +242,7 @@ can do.
   warm lamplight glints; the prompts are in `offering-prompts.json`.
 - **Procedural finds** in either story keep their glyph.
 - **Caching**: Studio caches each illustration the first time it is shown. Its
-  service worker cache is now `codex-studio-v4`.
+  service worker cache is now `codex-studio-v5`.
 
 All new CSS lives in `tideglass-extras.css`; `tideglass.css` is unchanged. The
 editor tray lists the new pieces, and the service worker (v11) caches them.
