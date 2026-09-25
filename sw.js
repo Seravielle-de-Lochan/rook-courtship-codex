@@ -1,11 +1,12 @@
-importScripts("./editor-assets.js");
+importScripts("./editor-assets.js", "./offering-art.js");
 const CACHE_PREFIX = "rook-courtship-codex-";
-const CACHE = `${CACHE_PREFIX}v11-concept-ornaments`;
+const CACHE = `${CACHE_PREFIX}v12-offering-art`;
 const ASSETS = [...new Set([
   "./assets/tideglass/cormorant-garamond.ttf", "./assets/tideglass/water-garden.png",
   "./", "./index.html", "./styles.css", "./tideglass.css", "./layout-editor.css", "./tideglass-extras.css", "./data-core.js",
-  "./data-extra.js", "./app.js", "./editor-assets.js", "./layout-editor.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png",
-  ...globalThis.TIDEGLASS_EDITOR_ASSETS.map(asset => `./${asset.file}`)
+  "./data-extra.js", "./offering-art.js", "./app.js", "./editor-assets.js", "./layout-editor.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png",
+  ...globalThis.TIDEGLASS_EDITOR_ASSETS.map(asset => `./${asset.file}`),
+  ...Object.values(globalThis.TIDEGLASS_OFFERING_ART).map(file => `./${file}`)
 ])];
 self.addEventListener("install", event => {
   // Activate only when the complete app and its artwork are available offline.

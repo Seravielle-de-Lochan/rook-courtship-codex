@@ -42,6 +42,8 @@
 
 /* ---- illustrated offerings ------------------------------------------------ */
 .offering-art { object-fit: contain; }
+/* Wide layout: keep offering art inside the 215px moon circle, clear of the source label. */
+@media (min-width: 541px) { .offering-art { width: 208px; height: 204px; margin: 10px 0 11px; } }
 
 @media (max-width: 540px) {
   .offering { --chain-h: 470px; --chain-top: 52px; --chain-x: calc(-10.2% - 9px); }
@@ -54,3 +56,7 @@
   .offering { --chain-h: 420px; --chain-x: calc(-8.1% - 9px); }
   .frame-garland { width: 36%; }
 }
+
+/* Codex thumbnails for illustrated offerings */
+.codex-entry:has(.codex-art) { display: flow-root; }
+.codex-art { float: right; width: 48px; height: 48px; object-fit: contain; margin: 0 0 4px 12px; filter: drop-shadow(0 0 8px #83c7c233); }

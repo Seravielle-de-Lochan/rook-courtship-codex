@@ -30,11 +30,8 @@
   let codexFilter = "All";
   let currentWasDaily = false;
 
-  // Illustrated offerings (SpriteCook art in assets/tideglass). Others keep their glyph.
-  const OFFERING_ART = {
-    "moonbloom": "flower_ornament.png",
-    "three-pistachios": "offering_three_pistachios.png"
-  };
+  // Illustrated offerings (SpriteCook art, mapped in offering-art.js). Others keep their glyph.
+  const OFFERING_ART = globalThis.TIDEGLASS_OFFERING_ART || {};
 
   function canonicalId(id){ return String(id).replace(/^daily-\d{4}-\d{2}-\d{2}-/,""); }
   function save(){ localStorage.setItem("rookCodexState", JSON.stringify(state)); }
@@ -116,7 +113,7 @@
     $("#glyph").textContent=o.glyph;
     // Only replace an offering's glyph when there is matching artwork.
     const art = OFFERING_ART[canonicalId(o.id)];
-    if (art) $("#offeringArt").src = `assets/tideglass/${art}`;
+    if (art) $("#offeringArt").src = art;
     $("#offeringArt").classList.toggle("hidden", !art);
     $("#glyph").classList.toggle("hidden", !!art);
     $("#offeringName").textContent=o.name;
@@ -268,6 +265,7 @@
     if(!entries.length){ $("#codexList").innerHTML='<div class="small" style="margin-top:12px">Nothing catalogued in this collection yet.</div>'; return; }
     $("#codexList").innerHTML=entries.map(e=>`
       <div class="codex-entry">
+        ${OFFERING_ART[e.id]?`<img class="codex-art" src="${OFFERING_ART[e.id]}" alt="" loading="lazy" width="48" height="48">`:""}
         <div class="codex-title ${e.rare?"rare-text":""}">${e.rare?"✦ ":""}${escapeHtml(e.name)}</div>
         <div class="codex-meta">${escapeHtml(e.collection||"Uncatalogued")} · ${escapeHtml(intents[e.intent]||e.intent)}${e.giver?` · from ${escapeHtml(e.giver)}`:""}${e.procedural?" · procedural":""}</div>
         <div class="codex-text">${escapeHtml(e.codex||"")}</div>

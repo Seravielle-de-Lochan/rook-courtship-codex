@@ -33,5 +33,200 @@
     "asset_id": "061fc1f9-2d8c-4b66-9377-e18cf5ba3407",
     "sha12": "6770b7a2d64a",
     "label": "Offering: three pistachios"
+  },
+  "offerings/sea-glass-pillow": {
+    "asset_id": "d06f49d5-3ff9-408e-89a9-99879d11422d",
+    "sha12": "c860fbf3ce97",
+    "label": "Offering: Perfect piece of green sea-glass"
+  },
+  "offerings/tide-stone": {
+    "asset_id": "8f459217-5d2a-4d12-a24b-5aec301a6811",
+    "sha12": "2bac3c6d62de",
+    "label": "Offering: Luminous tide-stone"
+  },
+  "offerings/lantern-shard": {
+    "asset_id": "2e59aa92-ff8a-4855-a310-298ba82fff0c",
+    "sha12": "f3263d7204e8",
+    "label": "Offering: Sea-glass lantern shard"
+  },
+  "offerings/daisy-pin": {
+    "asset_id": "d419f7a5-ed07-41eb-995a-f92186eacc8b",
+    "sha12": "8cbcb585ff67",
+    "label": "Offering: Tiny silver daisy pin"
+  },
+  "offerings/warm-stone": {
+    "asset_id": "24e93c72-27b6-49c4-ad50-e18c4315ed7a",
+    "sha12": "35ed66a219ba",
+    "label": "Offering: Smooth stone warmed in one palm"
+  },
+  "offerings/hair-ribbon": {
+    "asset_id": "f3c53f2d-ed2c-4921-9598-05f2341a3a0b",
+    "sha12": "fb4104d7eebe",
+    "label": "Offering: Soft ribbon matching your hair"
+  },
+  "offerings/sweater-thread": {
+    "asset_id": "fd0a4ff4-c2d1-4b19-9bcc-78237768e1d3",
+    "sha12": "95331d08d679",
+    "label": "Offering: Single silver-white thread on your sweater"
+  },
+  "offerings/brass-key": {
+    "asset_id": "18c64f9a-0eec-4ad0-85a0-14e97ab7d67d",
+    "sha12": "91eaa7d8bef7",
+    "label": "Offering: Small antique brass key"
+  },
+  "offerings/rook-button": {
+    "asset_id": "e1f755d3-ccf1-427e-8922-f6aaf001b44d",
+    "sha12": "5240a84e9ba5",
+    "label": "Offering: Silver button with a tiny engraved rook"
+  },
+  "offerings/tiny-bell": {
+    "asset_id": "9b40c22a-3c4f-4a47-be45-9a2637b352d1",
+    "sha12": "650ca717a3e0",
+    "label": "Offering: Tiny old silver bell"
+  },
+  "offerings/old-map": {
+    "asset_id": "bdceb914-debf-48ad-beb4-fe17233eda05",
+    "sha12": "d5386269663b",
+    "label": "Offering: Fragment of an old map"
+  },
+  "offerings/tiny-compass": {
+    "asset_id": "76ea7c5b-9755-4cb4-92cf-939b3d2f77a7",
+    "sha12": "aa1c8750af93",
+    "label": "Offering: Miniature compass that points somewhere unhelpful"
+  },
+  "offerings/slate": {
+    "asset_id": "411ce584-da98-4398-ad62-80f65c86c6e2",
+    "sha12": "1f8f18b6890a",
+    "label": "Offering: Beautifully smooth piece of slate"
+  },
+  "offerings/juniper": {
+    "asset_id": "a3577e08-70d0-41d1-93e2-120248b2ea3f",
+    "sha12": "17a452517b6c",
+    "label": "Offering: Juniper sprig wrapped in black thread"
+  },
+  "offerings/sea-worn-wood": {
+    "asset_id": "801d59d0-09db-448a-aee9-5641583362f1",
+    "sha12": "7d0b74bb6b59",
+    "label": "Offering: Piece of sea-worn dark wood"
+  },
+  "offerings/white-pebble": {
+    "asset_id": "9d9b6a7c-040e-4a24-9f4d-dd37642f8b3f",
+    "sha12": "1c754947efb2",
+    "label": "Offering: White pebble with one green vein"
+  },
+  "offerings/black-feather": {
+    "asset_id": "4c0848a9-df1a-4f2b-81fa-190ea2b51b33",
+    "sha12": "dee7cb52ba50",
+    "label": "Offering: Glossy black rook feather"
+  },
+  "offerings/feather-thread": {
+    "asset_id": "ebe20ff9-eb47-41e3-842b-72e516f740ba",
+    "sha12": "a1c0bd56b156",
+    "label": "Offering: Black feather tied with dark silver thread"
+  },
+  "offerings/open-clasp": {
+    "asset_id": "64789a9e-c890-4ca2-ad8b-d04d076be0d4",
+    "sha12": "1ee3a8234aa7",
+    "label": "Offering: Sea-glass chain clasp left open"
+  },
+  "offerings/velvet-ribbon": {
+    "asset_id": "3b63a0ad-409a-4279-9169-f90f89defa1d",
+    "sha12": "52a9c63aece8",
+    "label": "Offering: Narrow strip of dark teal velvet"
+  },
+  "offerings/mirror-chain": {
+    "asset_id": "122fef46-61f0-4197-b016-d61a43178d9d",
+    "sha12": "f7ea7dd2871d",
+    "label": "Offering: Short gunmetal chain beside the mirror"
+  },
+  "offerings/silver-anklet": {
+    "asset_id": "98d11c95-4ad0-4f77-b479-f1e14171f855",
+    "sha12": "c10ff7d118e4",
+    "label": "Offering: Thin silver anklet with sea-glass bead"
+  },
+  "offerings/rare-first-light": {
+    "asset_id": "9d90bf69-0d63-4683-a70c-1340e7f88e4f",
+    "sha12": "915c21263ce2",
+    "label": "Offering: First-light tideglass shard"
+  },
+  "offerings/rare-moonbloom-seed": {
+    "asset_id": "d47c8dd5-4519-4cfd-9fe6-f613b1512863",
+    "sha12": "d83fcb8f86ad",
+    "label": "Offering: Closed moon-bloom seedpod"
+  },
+  "offerings/rare-double-feather": {
+    "asset_id": "b4000274-0d85-4658-a314-bef97231062e",
+    "sha12": "72e22be53c77",
+    "label": "Offering: Paired black feathers joined by sea-glass thread"
+  },
+  "offerings/rare-pocket-watch": {
+    "asset_id": "9bca1a89-8df5-4eeb-bce2-6c502ec6db86",
+    "sha12": "edbf9540e99f",
+    "label": "Offering: Stopped silver pocket watch"
+  },
+  "offerings/rare-green-opal": {
+    "asset_id": "d2820892-442b-4099-84cc-6e032517a11b",
+    "sha12": "a8c52fb13f3b",
+    "label": "Offering: Sea-green opaline cabochon"
+  },
+  "offerings/rare-locket": {
+    "asset_id": "526d012f-5d06-4ba2-a359-2b33e08cc4fb",
+    "sha12": "7059b33c91a4",
+    "label": "Offering: Tiny empty silver locket"
+  },
+  "offerings/rare-chain-crescent": {
+    "asset_id": "243599ca-1d1f-4254-a7a1-34e683fc10ef",
+    "sha12": "5f4e3fffd456",
+    "label": "Offering: Sea-glass crescent chain link"
+  },
+  "offerings/rare-rook-token": {
+    "asset_id": "365953e8-a8bd-4e07-9389-2b247fee1a3b",
+    "sha12": "387cb62f16dc",
+    "label": "Offering: Blackened silver rook token"
+  },
+  "offerings/morrow-silver-thread": {
+    "asset_id": "c4fd832d-6c75-4eec-b771-ed0b02fa78d5",
+    "sha12": "e4dda9546b83",
+    "label": "Offering: Perfectly straight length of silver thread"
+  },
+  "offerings/morrow-green-stone": {
+    "asset_id": "b6f14fd2-fb96-4beb-8939-705c300e8a75",
+    "sha12": "6efaaf5b509a",
+    "label": "Offering: One immaculate green pebble"
+  },
+  "offerings/morrow-button": {
+    "asset_id": "83fd880c-c081-4e46-a7f2-461bc24a987d",
+    "sha12": "e8639a232f85",
+    "label": "Offering: Old mother-of-pearl button"
+  },
+  "offerings/ink-hair-tie": {
+    "asset_id": "28c2a955-2fec-4e2b-8ed3-11505befd059",
+    "sha12": "c40025175910",
+    "label": "Offering: Your own missing hair tie, returned"
+  },
+  "offerings/ink-paper-star": {
+    "asset_id": "63918b2f-342c-47a8-a9b3-3f6ba8d56c16",
+    "sha12": "bac367a57fac",
+    "label": "Offering: Tiny folded black paper star"
+  },
+  "offerings/ink-key": {
+    "asset_id": "c65574f1-7c52-421d-9c72-6c0b90d63489",
+    "sha12": "867da20201e3",
+    "label": "Offering: Very small iron key"
+  },
+  "offerings/pip-ribbon": {
+    "asset_id": "a96e37aa-520c-47c3-ab6a-2e3aadcfa78d",
+    "sha12": "ed9758035f73",
+    "label": "Offering: Teal ribbon delivered at speed"
+  },
+  "offerings/pip-shiny-washer": {
+    "asset_id": "64de264f-75c7-4909-9996-421365e491cd",
+    "sha12": "6f18d4ae7494",
+    "label": "Offering: Extremely shiny little washer"
+  },
+  "offerings/pip-leaf": {
+    "asset_id": "899634e1-82f3-4cc4-9bc2-8f68ff1c2f7d",
+    "sha12": "f73cba067f05",
+    "label": "Offering: Perfectly ridiculous curly leaf"
   }
 }

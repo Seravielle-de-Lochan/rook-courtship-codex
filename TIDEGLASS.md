@@ -199,8 +199,34 @@ swags are short there and the drops sit close to the frame.
 Also added:
 - **Day counter**: "Day N" in the frame's top-left corner, counting the calendar
   days on which a daily offering has been opened.
-- **Offering art map**: `OFFERING_ART` in `app.js` maps offering ids to artwork;
+- **Offering art map**: `offering-art.js` maps offering ids to artwork;
   offerings without art keep their glyph.
+
+## Offering illustrations — 25 September 2026
+
+Every offering now has an illustration: the 39 added here, plus *Three pistachios* and
+*Pressed moon-bloom* from earlier. That covers all handcrafted, rare and bird
+offerings. Procedural finds keep their glyph.
+
+- **How they were made**: `generate_game_art` (model `gpt-image-2.5-sunburst`,
+  detailed, transparent background), with the approved *Three pistachios* illustration
+  (`061fc1f9-2d8c-4b66-9377-e18cf5ba3407`) as the only style reference, so the set
+  matches it.
+- **Prompts**: the per-offering prompts and the shared suffixes are in
+  `assets/tideglass/offering-prompts.json`. Rare finds add a "subtle luminous aura"
+  line.
+- **Files**: `assets/tideglass/offerings/<offering-id>.webp`, trimmed and scaled to
+  400px wide. WebP keeps the whole set at about 3 MB. Asset IDs and hashes are in
+  `spritecook-assets.json` under `offerings/<id>`.
+- **Wiring**: `offering-art.js` is loaded by both `index.html` and `sw.js`, so the
+  service worker precaches every illustration for offline play (cache
+  `v12-offering-art`).
+- **Codex**: discovered entries show a small thumbnail of their offering.
+- **Wide screens**: the offering art is sized to sit inside the moon circle, which
+  keeps it clear of the source label beside it.
+
+To replace an illustration, overwrite its `.webp` file, or point its entry in
+`offering-art.js` at a new file, then bump the cache name in `sw.js`.
 
 All new CSS lives in `tideglass-extras.css`; `tideglass.css` is unchanged. The
 editor tray lists the new pieces, and the service worker (v11) caches them.
