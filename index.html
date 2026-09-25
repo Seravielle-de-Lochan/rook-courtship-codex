@@ -32,6 +32,14 @@
     <button class="daily-btn" id="dailyBtn" type="button">Open it</button>
   </section>
 
+  <nav class="tabs" aria-label="App sections">
+    <button class="tab active" data-view="play" type="button" aria-current="page">Play</button>
+    <button class="tab" data-view="codex" type="button">Codex</button>
+    <button class="tab" data-view="lore" type="button">Lore</button>
+    <button class="tab" data-view="classified" type="button">Classified</button>
+    <button class="tab tab-settings" data-view="settings" type="button" aria-label="Settings"><span class="tab-gear" aria-hidden="true">⚙</span><span class="tab-text">Settings</span></button>
+  </nav>
+
   <section id="playView">
     <div class="card offering" id="offeringCard">
       <div class="row">
@@ -78,13 +86,6 @@
     </div>
   </section>
 
-  <nav class="tabs" aria-label="App sections">
-    <button class="tab active" data-view="play">Play</button>
-    <button class="tab" data-view="codex">Codex</button>
-    <button class="tab" data-view="lore">Lore</button>
-    <button class="tab" data-view="classified">Classified</button>
-    <button class="tab" data-view="settings">Settings</button>
-  </nav>
 
   <section class="card section hidden" id="codexView">
     <div class="row"><strong>Discovered rituals</strong><span class="small" id="codexCount"></span></div>
@@ -135,7 +136,7 @@
   </section>
 
   <div id="toast" class="toast hidden" role="status"></div>
-  <div class="footer">Offline-ready once installed · progress stays on this device · v2</div>
+  <div class="footer">Offline-ready once installed · progress stays on this device · v3</div>
 </div>
 <script src="data-core.js" defer></script>
 <script src="data-extra.js" defer></script>

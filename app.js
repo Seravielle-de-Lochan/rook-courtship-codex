@@ -3,7 +3,7 @@
   const $$ = (s) => [...document.querySelectorAll(s)];
   const {intents, collections, handcrafted, rareOfferings, birdOfferings, proceduralBanks, loreRules} = window.ROOK_CODEX_DATA;
   function defaultState(){
-    return {seen:0,correct:0,discovered:{},mode:"mixed",sound:false,birds:true,rareFound:0,dailyOpened:{},dailyCache:{},unlockedLore:{},history:[]};
+    return {seen:0,correct:0,discovered:{},mode:"mixed",sound:false,birds:true,rareFound:0,dailyOpened:{},dailyAnswers:{},dailyCache:{},unlockedLore:{},history:[]};
   }
 
   let state;
@@ -11,11 +11,18 @@
   catch { state = defaultState(); }
   state.discovered ||= {};
   state.dailyOpened ||= {};
+  state.dailyAnswers ||= {};
   state.dailyCache ||= {};
   state.unlockedLore ||= {};
   state.history ||= [];
   state.birds = state.birds !== false;
-  state.rareFound = Number(state.rareFound || Object.values(state.discovered).filter(x=>x.rare).length || 0);
+  // Daily offerings used to be stored under a date-prefixed id, so the same object found
+  // via the daily and via free play appeared twice. Merge them under the canonical id.
+  for(const id of Object.keys(state.discovered)){
+    const canon=canonicalId(id);
+    if(canon!==id){ state.discovered[canon] ||= state.discovered[id]; delete state.discovered[id]; }
+  }
+  state.rareFound = Object.values(state.discovered).filter(x=>x.rare).length;
 
   let current = null;
   let answered = false;
@@ -23,6 +30,7 @@
   let codexFilter = "All";
   let currentWasDaily = false;
 
+  function canonicalId(id){ return String(id).replace(/^daily-\d{4}-\d{2}-\d{2}-/,""); }
   function save(){ localStorage.setItem("rookCodexState", JSON.stringify(state)); }
   function pick(arr, rand=Math.random){ return arr[Math.floor(rand()*arr.length)]; }
   function slug(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,72); }
@@ -112,7 +120,9 @@
     $("#reveal").classList.add("hidden");
     $("#unlockBox").classList.add("hidden");
     $("#unlockBox").textContent="";
-    $$(".choice").forEach(b=>b.disabled=false);
+    $$(".choice").forEach(b=>{b.disabled=false;b.classList.remove("picked");});
+    const prior = daily ? state.dailyAnswers[localDateKey()] : null;
+    if(prior && prior.id===o.id) showReveal(prior.intent,{replay:true});
     showView("play");
     window.scrollTo({top:0,behavior:"smooth"});
   }
@@ -155,7 +165,7 @@
 
   function checkLoreUnlocks(){
     const entries=Object.entries(state.discovered);
-    const ids=new Set(entries.map(([id])=>id.replace(/^daily-\d{4}-\d{2}-\d{2}-/,"")));
+    const ids=new Set(entries.map(([id])=>canonicalId(id)));
     const vals=entries.map(([,v])=>v);
     const newly=[];
     for(const rule of loreRules){
@@ -178,20 +188,28 @@
     const hit=intent===current.intent;
     state.seen++;
     if(hit) state.correct++;
-    const already=!!state.discovered[current.id];
-    state.discovered[current.id]=discoveryRecord(current);
+    const key=canonicalId(current.id);
+    const already=!!state.discovered[key];
+    state.discovered[key]=already ? {...discoveryRecord(current),firstSeen:state.discovered[key].firstSeen} : discoveryRecord(current);
     if(current.rare && !already) state.rareFound++;
-    if(currentWasDaily){ state.dailyOpened[localDateKey()]=current.id; }
+    if(currentWasDaily){ state.dailyOpened[localDateKey()]=current.id; state.dailyAnswers[localDateKey()]={id:current.id,intent}; }
     state.history.push({id:current.id,date:new Date().toISOString(),hit});
     if(state.history.length>120) state.history=state.history.slice(-120);
     save();
+    showReveal(intent);
+    renderAll();
+  }
 
+  function showReveal(intent,{replay=false}={}){
+    answered=true;
+    const hit=intent===current.intent;
     $("#statusBadge").textContent=hit?"Read perfectly":"Unexpected cryptid logic";
     $("#verdict").textContent=hit?"You read me perfectly.":"Entirely reasonable. Unfortunately, I am stranger than that.";
     $("#explanation").textContent=`Actual intent: ${intents[current.intent]}. ${current.why}`;
     $("#rookLine").textContent=current.rook;
     $("#reveal").classList.remove("hidden");
-    $$(".choice").forEach(b=>b.disabled=true);
+    $$(".choice").forEach(b=>{b.disabled=true;b.classList.toggle("picked",b.dataset.intent===intent);});
+    if(replay){ $("#verdict").textContent=`Already opened today. ${$("#verdict").textContent}`; return; }
 
     const unlocked=checkLoreUnlocks();
     if(current.rare || unlocked.length){
@@ -201,8 +219,6 @@
       $("#unlockBox").innerHTML=bits.map(escapeHtml).join("<br>");
       $("#unlockBox").classList.remove("hidden");
     }
-
-    renderAll();
   }
 
   function normalizedEntries(){
@@ -272,7 +288,7 @@
   function showView(name){
     const views=["play","codex","lore","classified","settings"];
     for(const v of views) $(`#${v}View`).classList.toggle("hidden",v!==name);
-    $$(".tab").forEach(t=>t.classList.toggle("active",t.dataset.view===name));
+    $$(".tab").forEach(t=>{const on=t.dataset.view===name;t.classList.toggle("active",on);on?t.setAttribute("aria-current","page"):t.removeAttribute("aria-current");});
   }
 
   function toast(msg){
