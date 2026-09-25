@@ -1,0 +1,172 @@
+# Tideglass integration
+
+Integrated locally on branch `tideglass-ui`, based on upstream commit `fa401ff`.
+This checkout has not been pushed or published.
+
+## Export inspection
+
+The original export is in `Downloads/ChatGPT-Image-Sep-17-2026-11_23_57-PM-web`.
+It contains 82 pre-sliced, transparent PNGs, a 2048 × 4410 packed atlas,
+`ui-kit.json`, `manifest.json`, a Phaser loader example, and the approved concept image.
+The original export is unchanged.
+
+The existing app is plain HTML, CSS and JavaScript. It does not use Phaser,
+so it can use the pre-sliced PNGs directly without a new framework or build step.
+`ui-kit.json` contains packed atlas coordinates; the source manifest refers to
+the original sheet. They should not be used interchangeably for slicing.
+All supplied nine-slice insets are zero. The CSS defines visually checked
+insets for the frames and buttons instead of treating those zeros as usable guides.
+
+18 original PNGs are included in `assets/tideglass/` plus one generated environmental backdrop.
+They are byte-for-byte copies. The source manifest is preserved as
+`assets/tideglass/source-manifest.json` for reference; it is not a runtime dependency.
+
+| Asset | Use |
+| --- | --- |
+| `chain_banner_decoration` | Header chain canopy |
+| `teardrop_pendant_1`, `teardrop_pendant_2` | Independently swaying side pendants |
+| `large_frame_empty` | Offering and section frames, expanding with content |
+| `large_frame_active` | Offering display with sea-glass light |
+| `wide_frame_empty` | Statistics frame |
+| `long_divider_1` | Divider above the interpretation question |
+| `pill_button_normal_1` through `_4` | Four answer buttons, retaining live text |
+| `star_icon_button`, `book_icon_button`, `list_icon_button`, `lock_icon_button`, `gear_icon_button` | Existing five navigation actions |
+| `flower_ornament` | Pressed moon-bloom, including its daily variant |
+
+## Files and behavior
+
+- `tideglass.css`: visual layer, responsive frames and controls, gentle chain
+  and pendant motion, rare glints, keyboard focus and reduced-motion support.
+- `index.html`: decorative images, navigation images and stylesheet link.
+- `app.js`: matching moon-bloom artwork, accessible current-section indication and a derived accuracy percentage.
+  Offering generation, chances, answers, lore, settings and save logic are unchanged.
+- `sw.js`: version 4 cache includes all used artwork. Installation completes
+  before activation; cleanup only removes this app's older caches. Offline
+  page fallback no longer returns HTML for missing images or scripts.
+- `styles.css`, both data files, the PWA manifest and app icons are unchanged.
+
+Decorative images are hidden from assistive technology, do not intercept taps,
+and are never used as a replacement for button text. Other offerings retain their
+original glyphs until matching item illustrations exist. The supplied concept is
+an art reference, not a screenshot used as the app interface.
+
+The same `rookCodexState` local-storage key and existing record format are used.
+The app has no runtime network, analytics or account dependency. Cormorant Garamond is bundled locally with its SIL Open Font License.
+
+## Validation
+
+Browser checks used isolated Edge profiles and a local server under a repository
+subpath, never the live site's storage. Passed checks cover:
+
+- Answer/reveal, disabled answers, statistics, reload persistence and daily revisit.
+- Existing saved progress and cached daily offerings.
+- Handcrafted and procedural modes, settings, bird offerings and rare counts.
+- All five tabs, collection filtering, classified entries and all eight lore unlocks.
+- Reset cancellation, visible keyboard focus and reduced-motion behavior.
+- Layout without horizontal page overflow at 320, 360, 390, 768 and 1280 pixels.
+- Offline reload, artwork and answering after the initial cache finishes.
+- A real upgrade from the original v2 service worker to v5, retaining progress
+  and a separate app's cache, followed by offline reload.
+- JavaScript syntax checks and `git diff --check`.
+
+Phone and desktop screenshots were visually inspected. Android installation
+and a physical phone have not been tested in this workspace.
+
+## Preview and release
+
+Serve this folder with a local HTTP server to preview it; opening `index.html`
+directly from the filesystem does not test PWA behavior. The running workspace
+preview uses `http://127.0.0.1:8765/rook-courtship-codex/`.
+
+For a release, review this branch and publish the complete folder, including
+`assets/tideglass/` and `tideglass.css`, through the existing GitHub Pages process.
+The service worker must finish downloading the new files before they are available
+offline. An already-open page may need a refresh to display the new styling.
+
+Keep the same production origin and path to retain existing device progress.
+Local preview progress is separate from production progress.
+
+## Reference-matching revision — 18 September 2026
+
+The attached phone mockup guides the composition, without embedding a phone bezel or screenshot. The revision adds a continuous watery backdrop, side chain ornaments, locally bundled Cormorant Garamond, a single offering frame, larger item artwork, slim label-only answer buttons, and three main statistics. Additional exact counts remain beneath those statistics. The percentage is calculated from saved correct/seen counts, with 0% before the first answer.
+
+The repeated side ornaments reuse the supplied hanging-charm PNG through CSS. The water and foliage backdrop was generated using the built-in image-generation tool and saved at `assets/tideglass/water-garden.png`. It is an interpretation of the reference background, not a pixel-identical extraction. Other offerings still use their original glyphs where matching illustrations are not available.
+
+Generation prompt (reference: the user-supplied mockup):
+
+> Create a production background asset for the functional website shown in this reference. Extract/recreate ONLY its atmospheric dark watery scene, filling the entire image edge to edge, portrait 2:3. Deep nearly-black ink teal water, delicate silver moonlight ripples especially flowing vertically down the right edge and bottom, subtle underwater caustics, sparse tiny glints and dark glossy narrow foliage at the lower left and lower right edges. Center and upper center mostly quiet nearly black teal negative space for overlay live HTML text. Match the reference's restrained realistic enchanted night sea aesthetic very closely. NO phone, NO bezel, NO UI, NO panels, NO borders, NO chains, NO jewelry, NO flower, NO icons, NO words, NO letters. This is an empty environmental background behind separately implemented live app UI. Save the generated asset.
+
+All browser checks passed again after the revision, including actual percentage calculation, narrow viewports and offline upgrade. Screenshots use an isolated sample moon-bloom offering for comparison; the real daily selection and user progress were not replaced.
+
+## Frame-mounted jewels — 18 September 2026
+
+`assets/tideglass/inner-frame-jewel.png` is a new transparent ornament generated
+from the supplied reference and the existing SpriteCook frame. Its silver rail
+and botanical clasp visibly connect each gem to the inner offering frame. One
+asset is mirrored for the left and right sides.
+
+The two inner jewels use different, offset two-second motion cycles with short
+direction changes and tiny vertical impacts. The upper pendants and outer side
+jewels now use related 2.6–3 second cycles, replacing their former 8–14 second
+drift. Reduced-motion mode remains fully static.
+
+The outer left and right ornaments now show clipped halves of the transparent
+SpriteCook `hanging_charm_decoration`: connected round medallions, inward chain
+swags, star charms and long drops. They replace the earlier repeated vertical
+strip and follow separate 2.58 and 2.83 second jangle cycles.
+
+## Clean frame handoff — 18 September 2026
+
+The experimental inner-frame jewels and reconstructed outer chain swags have
+been removed from the live layout because their independent layers did not stay
+visually attached to the frame across screen sizes. The generated
+`assets/tideglass/inner-frame-jewel.png` remains available as source material,
+but the app does not render it. The clean frame is ready for one transparent,
+pre-composed jewellery overlay whose attachment points can be aligned as a
+single layer. The canopy pendants retain their quicker irregular jangle.
+
+## Jewellery placement editor — 18 September 2026
+
+Settings now includes **Arrange jewellery**, an opt-in visual editor over the
+real app. Tideglass pieces can be dragged from its tray onto either the whole
+page or the offering frame, then moved, resized, rotated, flipped, reordered,
+duplicated, hidden, or deleted. Arrow keys nudge a selected piece by 0.2%; Shift
+plus an arrow nudges by 1%. Layouts persist separately under
+`rookJewelleryLayout`, so arranging ornaments cannot alter game progress. **Copy
+layout for Codex** copies the final JSON for turning a local composition into the
+shipped default.
+
+## Complete element tray and attachment chains — 21 September 2026
+
+The editor now exposes all 82 pre-sliced SpriteCook PNG components plus the
+generated frame jewel and four generated chain options, for 87 selectable
+elements in total. A category filter and text search keep the full library
+manageable on phones. The chain category contains the original shallow and
+star-drop swags as well as two taller deep-U attachments traced from the
+highlighted reference: **High-to-frame chain** and **Medallion-to-frame chain**.
+All four have real alpha transparency and can be mirrored for the right side.
+
+The two deep-U cutouts were cleaned by SpriteCook background removal after
+generation. Their reusable asset IDs and local hashes are recorded in
+`spritecook-assets.json`.
+
+## Moving overlapping pieces — 25 September 2026
+
+The editing layers now let pointer events reach only the actual ornaments, so
+the page layer cannot block a piece attached to the offering frame. The tray
+lists every placed element; selecting one raises it while editing, which makes
+it possible to move pieces that overlap. On narrower screens the tray minimises
+after an element is added or selected, leaving the offering window clear for
+dragging. **Open tray** restores the controls. Positions still save in
+`rookJewelleryLayout` and do not affect offering progress.
+
+Two live SVG chain swags on each side make the reference's curved outer loops
+legible at phone size. Their small links, attachment rings and star drops remain
+connected while each loop uses its own 1.88 or 2.16 second rattle cycle.
+
+The selected inner-jewel generation prompt asked for a single transparent,
+mirrorable left-side ornament with a silver rail clasp, articulated short chain,
+round luminous aqua sea-glass cabochon, botanical silver setting and weighted
+drop, matching the supplied mockup and SpriteCook frame. The generated PNG has
+a real alpha channel; the discarded side-garland drafts were not added because
+they rendered a checkerboard instead of transparency.

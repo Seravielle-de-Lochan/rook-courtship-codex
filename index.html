@@ -10,17 +10,25 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tideglass.css">
+  <link rel="stylesheet" href="layout-editor.css">
   <title>Rook Courtship Codex</title>
 </head>
 <body>
 <div class="app" id="app">
+  <div class="tideglass-canopy" aria-hidden="true">
+    <img class="chain-drape" src="assets/tideglass/chain_banner_decoration.png" alt="" width="945" height="304">
+    <img class="pendant pendant-left" src="assets/tideglass/teardrop_pendant_1.png" alt="" width="103" height="408">
+    <img class="pendant pendant-right" src="assets/tideglass/teardrop_pendant_2.png" alt="" width="98" height="410">
+  </div>
+  <div class="margin-verse verse-left" aria-hidden="true">Small<br>things<br>hold<br>great<br>meaning<br>✦</div><div class="margin-verse verse-right" aria-hidden="true">Beauty<br>binds<br>us<br>✦</div>
   <header class="top">
     <div>
       <div class="eyebrow">cryptid field study · pocket edition</div>
       <h1>Rook Courtship Codex</h1>
       <p class="subtitle">Interpret strange little offerings, catalogue the rituals, unlock secret lore, and continue not asking where the antique hardware came from.</p>
     </div>
-    <button class="iconbtn" id="newBtn" aria-label="New random offering">✦</button>
+    <button class="iconbtn" id="newBtn" aria-label="New random offering" title="New random offering"><img src="assets/tideglass/star_icon_button.png" alt="" width="182" height="178"></button>
   </header>
 
   <section id="dailyBanner" class="daily-banner" aria-live="polite">
@@ -31,14 +39,6 @@
     </div>
     <button class="daily-btn" id="dailyBtn" type="button">Open it</button>
   </section>
-
-  <nav class="tabs" aria-label="App sections">
-    <button class="tab active" data-view="play" type="button" aria-current="page">Play</button>
-    <button class="tab" data-view="codex" type="button">Codex</button>
-    <button class="tab" data-view="lore" type="button">Lore</button>
-    <button class="tab" data-view="classified" type="button">Classified</button>
-    <button class="tab tab-settings" data-view="settings" type="button" aria-label="Settings"><span class="tab-gear" aria-hidden="true">⚙</span><span class="tab-text">Settings</span></button>
-  </nav>
 
   <section id="playView">
     <div class="card offering" id="offeringCard">
@@ -54,13 +54,14 @@
       </div>
 
       <div class="stage" id="stage">
+        <img class="offering-art hidden" id="offeringArt" src="assets/tideglass/flower_ornament.png" alt="" width="401" height="394">
         <div class="glyph" id="glyph">🟢</div>
         <div class="name" id="offeringName">Perfect piece of green sea-glass</div>
         <div class="giver hidden" id="giverLine"></div>
       </div>
 
       <p class="desc" id="offeringDesc"></p>
-      <div class="question">What did I mean by this?</div>
+      <div class="question">What do you think it means?</div>
 
       <div class="choices" id="choices">
         <button class="choice" data-intent="affection"><strong>Affection</strong><span>I am fond of you in an embarrassingly visible way.</span></button>
@@ -78,14 +79,23 @@
       </div>
     </div>
 
+    <div class="page-jewels" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     <div class="stats">
-      <div class="stat"><b id="seenStat">0</b><span>offerings seen</span></div>
-      <div class="stat"><b id="correctStat">0</b><span>read correctly</span></div>
-      <div class="stat"><b id="uniqueStat">0</b><span>codex entries</span></div>
-      <div class="stat rare-stat"><b id="rareStat">0</b><span>rare finds</span></div>
+      <div class="stat"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 7C12 3 6 4 3 5v21c5-2 9-1 13 2 4-3 8-4 13-2V5c-5-2-10-1-13 2Zm0 0v21M6 8v14m20-14v14"/></svg></span><b id="seenStat">0</b><span>Offerings Logged</span></div>
+      <div class="stat rare-stat"><span class="stat-icon gem-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="m16 1 10 11-2 12-8 7-8-7-2-12Zm0 0v30M6 12l10-4 10 4-10 12ZM8 24l8-16 8 16"/></svg></span><b id="rareStat">0</b><span>Rare Finds</span></div>
+      <div class="stat"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 29V14M16 21C5 21 3 13 3 6c9 0 14 6 13 15Zm0-4C16 7 22 4 29 2c0 11-5 16-13 15ZM7 11l9 10m0-4 9-10"/></svg></span><b id="accuracyStat">0%</b><span>Things<br>Understood</span></div>
+      <div class="stats-detail"><span id="correctStat">0</span> read correctly · <span id="uniqueStat">0</span> codex entries</div>
+      <div class="devotion">“Curiosity is a kind of devotion.”</div>
     </div>
   </section>
 
+  <nav class="tabs" aria-label="App sections">
+    <button class="tab active" data-view="play" type="button" aria-current="page"><img src="assets/tideglass/star_icon_button.png" alt="" width="182" height="178"><span>Play</span></button>
+    <button class="tab" data-view="codex" type="button"><img src="assets/tideglass/book_icon_button.png" alt="" width="183" height="176"><span>Codex</span></button>
+    <button class="tab" data-view="lore" type="button"><img src="assets/tideglass/list_icon_button.png" alt="" width="184" height="176"><span>Lore</span></button>
+    <button class="tab" data-view="classified" type="button"><img src="assets/tideglass/lock_icon_button.png" alt="" width="181" height="176"><span>Classified</span></button>
+    <button class="tab" data-view="settings" type="button"><img src="assets/tideglass/gear_icon_button.png" alt="" width="182" height="176"><span>Settings</span></button>
+  </nav>
 
   <section class="card section hidden" id="codexView">
     <div class="row"><strong>Discovered rituals</strong><span class="small" id="codexCount"></span></div>
@@ -131,15 +141,21 @@
       <div class="small setting-help">Uses a tiny local Web Audio tone. No network required.</div>
     </div>
     <div class="settingRow">
+      <button class="primary" id="openLayoutEditor" type="button">Arrange jewellery</button>
+      <div class="small setting-help">Drag the real Tideglass pieces into place, then copy the layout for the final build.</div>
+    </div>
+    <div class="settingRow">
       <button class="danger" id="resetProgressBtn" type="button">Reset discovered codex</button>
     </div>
   </section>
 
   <div id="toast" class="toast hidden" role="status"></div>
-  <div class="footer">Offline-ready once installed · progress stays on this device · v3 · <a href="studio/">Make your own in Codex Studio</a></div>
+  <div class="footer">Offline-ready once installed · progress stays on this device · Tideglass edition · <a href="studio/">Make your own in Codex Studio</a></div>
 </div>
 <script src="data-core.js" defer></script>
 <script src="data-extra.js" defer></script>
 <script src="app.js" defer></script>
+<script src="editor-assets.js" defer></script>
+<script src="layout-editor.js" defer></script>
 </body>
 </html>
