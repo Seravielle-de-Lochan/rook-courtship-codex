@@ -323,5 +323,10 @@
     "asset_id": "745229f6-626d-4990-993f-f7d405d2e7db",
     "sha12": "e30e6f791a40",
     "label": "Moth offering: A grey owl feather"
+  },
+  "app_icon": {
+    "asset_id": "eb9479f9-975f-4ccd-9713-53fa1794d014",
+    "sha12": "6bda29fb7314",
+    "label": "App icon: rook with sea-glass (icon-*.png, studio/icons/*, cropped to the head)"
   }
 }

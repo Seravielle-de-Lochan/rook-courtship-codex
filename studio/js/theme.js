@@ -236,7 +236,7 @@ export function normalizeTheme(t = {}, base = PRESETS[0]) {
 const IMAGE_RE = /\.(png|webp|jpe?g|gif|avif|svg)$/i;
 const FONT_RE = /\.(woff2?|ttf|otf)$/i;
 const AUDIO_RE = /\.(mp3|m4a|aac|wav|ogg)$/i;
-export const SOUND_KEYS = ['appear', 'reveal']; // offering appears; its meaning is revealed
+export const SOUND_KEYS = ['appear', 'reveal', 'unlock', 'tap', 'toggle']; // offering appears; meaning revealed; lore unlocks; interface taps; switches
 const MIME = { png: 'image/png', webp: 'image/webp', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', avif: 'image/avif', svg: 'image/svg+xml', woff2: 'font/woff2', woff: 'font/woff', ttf: 'font/ttf', otf: 'font/otf', json: 'application/json', mp3: 'audio/mpeg', m4a: 'audio/mp4', aac: 'audio/aac', wav: 'audio/wav', ogg: 'audio/ogg' };
 export const mimeFor = (name) => MIME[name.split('.').pop().toLowerCase()] || 'application/octet-stream';
 const baseKey = (path) => path.split('/').pop().replace(/\.[^.]+$/, '').replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase().replace(/[\s_.]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');

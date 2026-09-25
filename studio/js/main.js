@@ -288,11 +288,12 @@ function fitChoices() {
 // audio streamed from the service worker cache, but a blob URL works online and offline).
 // Looks without a sound fall back to the built-in tones.
 const sfxCache = new Map();
+const SFX_VOLUME = { appear: 0.6, reveal: 0.6, unlock: 0.55, tap: 0.35, toggle: 0.45 };
 function playSfx(kind, fallback) {
-  if (!settings.sound || !sfxReady) return;
+  if (!settings.sound || !sfxReady || ((kind === 'tap' || kind === 'toggle') && settings.uiSound === false)) return;
   const src = applied.sounds?.[kind];
   if (!src) { if (fallback) tone(fallback, true); return; }
-  if (!sfxCache.has(src)) sfxCache.set(src, fetch(src).then((r) => (r.ok ? r.blob() : Promise.reject())).then((b) => { const a = new Audio(URL.createObjectURL(b)); a.volume = 0.6; return a; }));
+  if (!sfxCache.has(src)) sfxCache.set(src, fetch(src).then((r) => (r.ok ? r.blob() : Promise.reject())).then((b) => { const a = new Audio(URL.createObjectURL(b)); a.volume = SFX_VOLUME[kind] ?? 0.6; return a; }));
   sfxCache.get(src).then((a) => { a.currentTime = 0; return a.play(); }).catch(() => sfxCache.delete(src));
 }
 
@@ -385,7 +386,7 @@ function showNextLore() {
   $('#loreSheetBody').textContent = l.body;
   const seal = $('#loreSeal'); seal.style.animation = 'none'; void seal.offsetWidth; seal.style.animation = '';
   dlg.showModal();
-  tone('lore', settings.sound); buzz([20, 60, 20, 60, 40], settings.haptics);
+  playSfx('unlock', 'lore'); buzz([20, 60, 20, 60, 40], settings.haptics);
   setTimeout(() => burst(seal, { kind: 'lore' }), 250);
 }
 
@@ -778,6 +779,8 @@ async function renderSettings() {
   $('#contrastToggle').checked = !!settings.contrast;
   $('#blurbToggle').checked = !!settings.blurbs;
   $('#soundToggle').checked = settings.sound;
+  $('#uiSoundToggle').checked = settings.uiSound !== false;
+  $('#uiSoundToggle').disabled = !settings.sound;
   $('#hapticToggle').checked = settings.haptics;
   $('#hapticToggle').closest('.switch').classList.toggle('hidden', !('vibrate' in navigator));
   $('#installBtn').classList.toggle('hidden', !deferredInstall);
@@ -817,10 +820,12 @@ function toast(msg, action) {
 // ================================================================ wiring
 
 function wire() {
-  $('#newBtn').addEventListener('click', () => { tone('tap', settings.sound); nextOffering(); });
+  $('#newBtn').addEventListener('click', () => nextOffering()); // the new offering plays its own sound
   $('#nextBtn').addEventListener('click', nextOffering);
   $('#dailyBtn').addEventListener('click', openDaily);
-  for (const b of $$('.nav-btn')) b.addEventListener('click', () => { go(b.dataset.view); buzz(6, settings.haptics); });
+  for (const b of $$('.nav-btn')) b.addEventListener('click', () => { playSfx('tap', 'tap'); go(b.dataset.view); buzz(6, settings.haptics); });
+  // a soft switch sound for every toggle and choice in the app (the Sound switch handles its own)
+  document.addEventListener('change', (e) => { if (e.target.matches('.switch input:not(#soundToggle), select, .seg input')) playSfx('toggle', 'tap'); });
   for (const b of $$('#studioTabs [role="tab"]')) b.addEventListener('click', () => go('studio', b.dataset.pane));
   window.addEventListener('popstate', route);
   window.addEventListener('hashchange', route);
@@ -906,7 +911,8 @@ function wire() {
   $('#spacingToggle').addEventListener('change', (e) => { settings.spacing = e.target.checked; saveSettings(); applyReading(); });
   $('#contrastToggle').addEventListener('change', (e) => { settings.contrast = e.target.checked; saveSettings(); applyReading(); });
   $('#blurbToggle').addEventListener('change', (e) => { settings.blurbs = e.target.checked; saveSettings(); applyReading(); });
-  $('#soundToggle').addEventListener('change', (e) => { settings.sound = e.target.checked; saveSettings(); playSfx('reveal', 'correct'); });
+  $('#soundToggle').addEventListener('change', (e) => { settings.sound = e.target.checked; saveSettings(settings.sound ? 'Sound on.' : 'Sound off. Nothing will play.'); $('#uiSoundToggle').disabled = !settings.sound; playSfx('toggle', 'tap'); });
+  $('#uiSoundToggle').addEventListener('change', (e) => { settings.uiSound = e.target.checked; saveSettings(); });
   $('#hapticToggle').addEventListener('change', (e) => { settings.haptics = e.target.checked; saveSettings(); buzz(20, settings.haptics); });
   $('#resetBtn').addEventListener('click', () => {
     if (!confirm(`Reset all progress for "${pack.title}" on this device?`)) return;

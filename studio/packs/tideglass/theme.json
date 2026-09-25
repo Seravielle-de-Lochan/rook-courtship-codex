@@ -210,6 +210,9 @@
   },
   "sounds": {
     "appear": "sounds/offering-appear.mp3",
-    "reveal": "sounds/answer-reveal.mp3"
+    "reveal": "sounds/answer-reveal.mp3",
+    "unlock": "sounds/lore-unlock.mp3",
+    "tap": "sounds/ui-tap.wav",
+    "toggle": "sounds/ui-toggle.wav"
   }
 }

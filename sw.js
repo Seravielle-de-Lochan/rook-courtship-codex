@@ -1,10 +1,10 @@
 importScripts("./editor-assets.js", "./offering-art.js");
 const CACHE_PREFIX = "rook-courtship-codex-";
-const CACHE = `${CACHE_PREFIX}v15-phone-polish`;
+const CACHE = `${CACHE_PREFIX}v16-rook-icon-sounds`;
 const ASSETS = [...new Set([
   "./assets/tideglass/cormorant-garamond.ttf", "./assets/tideglass/water-garden.png",
   "./", "./index.html", "./styles.css", "./tideglass.css", "./layout-editor.css", "./tideglass-extras.css", "./data-core.js",
-  "./data-extra.js", "./offering-art.js", "./app.js", "./editor-assets.js", "./layout-editor.js", "./manifest.webmanifest", "./assets/tideglass/sounds/offering-appear.mp3", "./assets/tideglass/sounds/answer-reveal.mp3", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png",
+  "./data-extra.js", "./offering-art.js", "./app.js", "./editor-assets.js", "./layout-editor.js", "./manifest.webmanifest", "./assets/tideglass/sounds/offering-appear.mp3", "./assets/tideglass/sounds/answer-reveal.mp3", "./assets/tideglass/sounds/lore-unlock.mp3", "./assets/tideglass/sounds/ui-tap.wav", "./assets/tideglass/sounds/ui-toggle.wav", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png",
   ...globalThis.TIDEGLASS_EDITOR_ASSETS.map(asset => `./${asset.file}`),
   ...Object.values(globalThis.TIDEGLASS_OFFERING_ART).map(file => `./${file}`)
 ])];

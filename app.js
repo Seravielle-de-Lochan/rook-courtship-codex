@@ -3,7 +3,7 @@
   const $$ = (s) => [...document.querySelectorAll(s)];
   const {intents, collections, handcrafted, rareOfferings, birdOfferings, proceduralBanks, loreRules} = window.ROOK_CODEX_DATA;
   function defaultState(){
-    return {seen:0,correct:0,discovered:{},mode:"mixed",sound:false,birds:true,rareFound:0,dailyOpened:{},dailyAnswers:{},dailyCache:{},unlockedLore:{},history:[]};
+    return {seen:0,correct:0,discovered:{},mode:"mixed",sound:false,uiSound:true,birds:true,rareFound:0,dailyOpened:{},dailyAnswers:{},dailyCache:{},unlockedLore:{},history:[]};
   }
 
   let state;
@@ -168,14 +168,19 @@
   // only after the player has tapped something, so nothing plays on first load.
   // Each file is fetched once and played from memory: iPhone Safari won't play audio
   // streamed from the service worker's cache, but a blob URL works online and offline.
-  const SFX_FILES = { appear: "assets/tideglass/sounds/offering-appear.mp3", reveal: "assets/tideglass/sounds/answer-reveal.mp3" };
+  const SFX_FILES = {
+    appear: "assets/tideglass/sounds/offering-appear.mp3", reveal: "assets/tideglass/sounds/answer-reveal.mp3",
+    unlock: "assets/tideglass/sounds/lore-unlock.mp3", tap: "assets/tideglass/sounds/ui-tap.wav", toggle: "assets/tideglass/sounds/ui-toggle.wav"
+  };
+  const SFX_VOLUME = { appear: .6, reveal: .6, unlock: .55, tap: .35, toggle: .45 };
+  const UI_SFX = new Set(["tap", "toggle"]); // small interface clicks, which have their own switch
   const SFX = {};
   function loadSfx(name){
-    return SFX[name] ||= fetch(SFX_FILES[name]).then(r=>r.ok?r.blob():Promise.reject()).then(b=>{ const a=new Audio(URL.createObjectURL(b)); a.volume=.6; return a; });
+    return SFX[name] ||= fetch(SFX_FILES[name]).then(r=>r.ok?r.blob():Promise.reject()).then(b=>{ const a=new Audio(URL.createObjectURL(b)); a.volume=SFX_VOLUME[name]; return a; });
   }
   let soundReady=false; // set once the first offering is on screen
   function sfx(name){
-    if(!state.sound || !soundReady) return;
+    if(!state.sound || !soundReady || (UI_SFX.has(name) && state.uiSound===false)) return;
     loadSfx(name).then(a=>{ a.currentTime=0; return a.play(); }).catch(()=>{ delete SFX[name]; });
   }
 
@@ -239,6 +244,7 @@
       $("#unlockBox").innerHTML=bits.map(escapeHtml).join("<br>");
       $("#unlockBox").classList.remove("hidden");
     }
+    if(unlocked.length) setTimeout(()=>sfx("unlock"),450); // after the reveal sparkle
   }
 
   function normalizedEntries(){
@@ -261,7 +267,7 @@
     }).join("");
     const filters=["All",...collections];
     $("#collectionFilters").innerHTML=filters.map(f=>`<button type="button" class="filter-chip ${codexFilter===f?"active":""}" data-filter="${escapeHtml(f)}">${escapeHtml(f)}</button>`).join("");
-    $$("#collectionFilters .filter-chip").forEach(b=>b.addEventListener("click",()=>{codexFilter=b.dataset.filter;renderCodex();renderCollections();}));
+    $$("#collectionFilters .filter-chip").forEach(b=>b.addEventListener("click",()=>{sfx("tap");codexFilter=b.dataset.filter;renderCodex();renderCollections();}));
   }
 
   function renderCodex(){
@@ -327,14 +333,17 @@
   $("#nextBtn").addEventListener("click",nextOffering);
   $("#newBtn").addEventListener("click",nextOffering);
   $("#dailyBtn").addEventListener("click",openDaily);
-  $$(".tab").forEach(t=>t.addEventListener("click",()=>showView(t.dataset.view)));
+  $$(".tab").forEach(t=>t.addEventListener("click",()=>{sfx("tap");showView(t.dataset.view);}));
 
   $("#modeSelect").value=state.mode;
   $("#soundToggle").checked=state.sound;
+  $("#uiSoundToggle").checked=state.uiSound!==false;
+  $("#uiSoundToggle").disabled=!state.sound;
   $("#birdToggle").checked=state.birds;
-  $("#modeSelect").addEventListener("change",e=>{state.mode=e.target.value;save();toast("Free-play offering mode updated.");});
-  $("#soundToggle").addEventListener("change",e=>{state.sound=e.target.checked;save();toast(state.sound?"Sound effects on.":"Sound effects off.");sfx("appear");});
-  $("#birdToggle").addEventListener("change",e=>{state.birds=e.target.checked;save();toast(state.birds?"Morrow, Ink and Pip may now interfere.":"Bird offerings paused.");updateDailyBanner();});
+  $("#modeSelect").addEventListener("change",e=>{state.mode=e.target.value;save();toast("Free-play offering mode updated.");sfx("toggle");});
+  $("#soundToggle").addEventListener("change",e=>{state.sound=e.target.checked;save();$("#uiSoundToggle").disabled=!state.sound;toast(state.sound?"Sound on.":"Sound off. Nothing will play.");sfx("toggle");});
+  $("#uiSoundToggle").addEventListener("change",e=>{state.uiSound=e.target.checked;save();toast(state.uiSound?"Tap sounds on.":"Tap sounds off.");sfx("toggle");});
+  $("#birdToggle").addEventListener("change",e=>{state.birds=e.target.checked;save();toast(state.birds?"Morrow, Ink and Pip may now interfere.":"Bird offerings paused.");updateDailyBanner();sfx("toggle");});
 
   $("#resetProgressBtn").addEventListener("click",()=>{
     if(confirm("Reset all discovered entries, rare finds, daily history and secret lore on this device?")){

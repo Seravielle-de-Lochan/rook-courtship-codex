@@ -57,6 +57,7 @@ export const defaultSettings = {
   mode: 'mixed',
   companions: true,
   sound: false,
+  uiSound: true, // tap and switch sounds (only while sound is on)
   haptics: true,
   motion: 'full', // full | calm | off
   textSize: 'm', // m | l | xl | xxl

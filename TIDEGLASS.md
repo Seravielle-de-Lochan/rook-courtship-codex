@@ -276,3 +276,34 @@ Two sounds from Seravielle live in `assets/tideglass/sounds/`:
   `studio/PACK_FORMAT.md`), and the Tideglass look uses these two. Looks without
   sounds keep the built-in tones. Studio's cache is now `codex-studio-v7`.
 
+### Interface sounds (ElevenLabs)
+
+Three quiet interface sounds were made with ElevenLabs' sound-effects model
+(`eleven_text_to_sound_v2`). Three takes of each were generated, then picked by
+analysis: one clean hit, short, and no stray clicks.
+
+| File | Plays when | Take |
+| --- | --- | --- |
+| `ui-tap.wav` | Tabs and codex filters | A tiny rounded tick, 0.1 s |
+| `ui-toggle.wav` | Switches and menus | A soft low "thock", trimmed so it starts on the tap |
+| `lore-unlock.mp3` | Secret lore unlocks | A gentle glass chime |
+
+- **Settings:** everything needs Sound switched on, which is off by default, so
+  turning Sound off means nothing plays. A separate "Tap sounds" switch mutes
+  just the tap and toggle sounds.
+- **The game:** all five sounds are precached (cache `v16-rook-icon-sounds`).
+- **Studio:** looks can now also carry `unlock`, `tap` and `toggle` sounds, and
+  the Tideglass look uses these. Looks without them fall back to soft tones.
+  Studio's cache is `codex-studio-v9`.
+
+## App icon — 25 September 2026
+
+The app icon for both the game and Studio is now a rook, not the old abstract
+mark.
+- **Source:** a SpriteCook painting (`eb9479f9-…`, recorded as `app_icon` in
+  `spritecook-assets.json`): a glossy rook with the pale bare face at the base of
+  its beak, holding a sea-glass gem, with the moon behind.
+- **Crop:** cropped to the head, beak and gem so it reads at home-screen size.
+- **Maskable version:** a slightly wider crop keeps the gem inside Android's
+  circular safe zone.
+
