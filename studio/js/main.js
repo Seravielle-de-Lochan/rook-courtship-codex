@@ -440,7 +440,7 @@ function lookCard(rec, active) {
   if (bgHref) preview.style.backgroundImage = `url("${bgHref}")`;
   const imgCount = Object.keys(t.images || {}).length + Object.keys(t.art || {}).length;
   return h('div', { class: `look ${active ? 'active' : ''}` },
-    h('button', { type: 'button', class: 'story-main', 'aria-pressed': String(active), 'aria-label': `Wear ${t.name}`, onclick: () => setLook(rec.id).then(renderPacks) },
+    h('button', { type: 'button', class: 'story-main', 'aria-pressed': String(active), 'aria-label': `Wear ${t.name}`, onclick: () => { settings.lookChosen = true; setLook(rec.id).then(renderPacks); } },
       preview, h('div', { class: 'look-info' }, h('b', { text: t.name }), h('span', { text: rec.builtin && !rec.art ? t.description || 'Built-in' : `${imgCount} images${t.style === 'pixel' ? ' · pixel' : ''}${rec.builtin ? ' · built in' : ''}` }))),
     rec.builtin && !rec.art ? null : h('div', { class: 'look-actions' },
       h('button', { type: 'button', onclick: () => exportLook(rec) }, 'Share'),
@@ -863,6 +863,8 @@ function registerSW() {
 async function boot() {
   initFx($('#fx'));
   wire();
+  // The first Studio release defaulted to a colour-only preset; move anyone who never chose a look onto Tideglass.
+  if (settings.visual === 'preset:tideglass' && !settings.lookChosen) settings.visual = 'builtin:tideglass';
   await setLook(settings.visual, { silent: true });
   await setStory(settings.content, { silent: true });
   route();
