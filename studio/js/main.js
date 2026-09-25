@@ -39,6 +39,8 @@ let game = null;
 let visual = null;        // active visual record
 let applied = { images: {}, art: {}, sounds: {} };
 let sfxReady = false; // no sound until the first offering is on screen
+let storyArt = {};    // the built-in stories' own illustrations, shown whatever the look (a look's art wins)
+let storyLoreArt = {}; // the same for their secret lore
 let current = null;       // offering on screen
 let answered = false;
 let codexFilter = 'All';
@@ -77,11 +79,24 @@ async function setStory(id, { silent = false } = {}) {
   settings.content = pack.id; settingsStore.save(settings);
   game = new Game(pack, progressStore.load(pack.id), settings);
   codexFilter = 'All';
+  ({ art: storyArt, lore: storyLoreArt } = await builtinStoryArt(pack.id));
   renderChrome();
   renderAll();
   const today = localDateKey();
   if (!game.dailyAnswer(today)) openDaily(); else nextOffering();
   if (!silent) toast(`Now playing: ${pack.title}`);
+}
+
+// The built-in stories were illustrated for the Tideglass kit; those pictures belong to the
+// story, so they show in every look unless the look has its own art for that offering.
+async function builtinStoryArt(id) {
+  if (!BUILTIN_STORIES.some((s) => s.id === id)) return { art: {}, lore: {} };
+  try {
+    const rec = await builtinLook(BUILTIN_LOOKS[0]);
+    const base = new URL(rec.baseUrl, location.href);
+    const resolve = (map) => Object.fromEntries(Object.entries(map || {}).map(([k, f]) => [k, new URL(f, base).href]));
+    return { art: resolve(rec.theme.art), lore: resolve(rec.theme.loreArt) };
+  } catch { return { art: {}, lore: {} }; }
 }
 
 const builtinCache = new Map();
@@ -195,6 +210,7 @@ function route() {
   if (!VIEWS.includes(view) || (view === 'special' && !pack?.special)) view = 'play';
   const changed = document.body.dataset.view !== view;
   document.body.dataset.view = view;
+  if (view === 'play') requestAnimationFrame(fitChoices);
   for (const s of $$('.view')) s.classList.toggle('hidden', s.dataset.view !== view);
   for (const b of $$('.nav-btn')) { const on = b.dataset.view === view; b.classList.toggle('active', on); on ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'); }
   if (view === 'studio') showPane(pane || document.body.dataset.pane || 'looks');
@@ -222,7 +238,7 @@ function showPane(name) {
 
 // ================================================================ play
 
-function offeringArt(o) { return applied.art[canonicalId(o.id)] || null; }
+function offeringArt(o) { const id = canonicalId(o.id); return applied.art[id] || storyArt[id] || null; }
 
 function renderOfferingArt(o) {
   const src = offeringArt(o);
@@ -245,21 +261,41 @@ function renderChoices() {
   wrap.replaceChildren(...pack.intents.map((it) => {
     const icon = applied.images[`intent-${it.id}`];
     const art = applied.images[`choice-${it.id}`];
-    return h('button', { class: `choice${art ? ' has-art' : ''}`, type: 'button', 'data-intent': it.id, style: art ? `--choice-art:url("${art}");--choice-slice:var(--slice-choice-${it.id});--choice-w:var(--slice-choice-${it.id}-w)` : null, onclick: () => choose(it.id) },
+    return h('button', { class: `choice${art ? ' has-art' : ''}`, type: 'button', 'data-intent': it.id, style: art ? `--choice-art:url("${art}");--choice-slice:var(--slice-choice-${it.id});--choice-w:var(--slice-choice-${it.id}-w);--choice-h:var(--slice-choice-${it.id}-h)` : null, onclick: () => choose(it.id) },
       icon ? h('img', { class: 'choice-ico', src: icon, alt: '' }) : null,
       h('span', { class: 'choice-txt' }, h('strong', { text: it.label }), it.blurb ? h('span', { text: it.blurb }) : null));
   }));
+  fitChoices();
+}
+
+// Pill art has a fixed natural height, so a label that wraps must fit inside it: shrink every
+// label by the same amount (at most 18%, keeping them uniform), and if one still won't fit,
+// show the answers as plain tiles rather than stretch the art.
+function fitChoices() {
+  const wrap = $('#choices');
+  const pills = $$('.choice.has-art', wrap);
+  wrap.classList.remove('art-off');
+  wrap.style.removeProperty('--choice-fit');
+  if (!pills.length || !wrap.offsetParent) return;
+  const overflows = () => pills.some((c) => { const s = $('strong', c); return s && s.scrollHeight > c.clientHeight - 2; });
+  for (const f of [1, 0.94, 0.88, 0.82]) {
+    wrap.style.setProperty('--choice-fit', f);
+    if (!overflows()) return;
+  }
+  wrap.style.removeProperty('--choice-fit');
+  wrap.classList.add('art-off');
 }
 
 // A look's own sound effects, fetched once and played from memory (iPhone Safari won't play
 // audio streamed from the service worker cache, but a blob URL works online and offline).
 // Looks without a sound fall back to the built-in tones.
 const sfxCache = new Map();
+const SFX_VOLUME = { appear: 0.6, reveal: 0.6, unlock: 0.55, tap: 0.35, toggle: 0.45 };
 function playSfx(kind, fallback) {
-  if (!settings.sound || !sfxReady) return;
+  if (!settings.sound || !sfxReady || ((kind === 'tap' || kind === 'toggle') && settings.uiSound === false)) return;
   const src = applied.sounds?.[kind];
   if (!src) { if (fallback) tone(fallback, true); return; }
-  if (!sfxCache.has(src)) sfxCache.set(src, fetch(src).then((r) => (r.ok ? r.blob() : Promise.reject())).then((b) => { const a = new Audio(URL.createObjectURL(b)); a.volume = 0.6; return a; }));
+  if (!sfxCache.has(src)) sfxCache.set(src, fetch(src).then((r) => (r.ok ? r.blob() : Promise.reject())).then((b) => { const a = new Audio(URL.createObjectURL(b)); a.volume = SFX_VOLUME[kind] ?? 0.6; return a; }));
   sfxCache.get(src).then((a) => { a.currentTime = 0; return a.play(); }).catch(() => sfxCache.delete(src));
 }
 
@@ -351,8 +387,11 @@ function showNextLore() {
   $('#loreSheetTitle').textContent = l.title;
   $('#loreSheetBody').textContent = l.body;
   const seal = $('#loreSeal'); seal.style.animation = 'none'; void seal.offsetWidth; seal.style.animation = '';
+  const art = loreArtFor(l.id);
+  seal.classList.toggle('has-art', !!art);
+  seal.replaceChildren(art ? h('img', { src: art, alt: '' }) : '✦');
   dlg.showModal();
-  tone('lore', settings.sound); buzz([20, 60, 20, 60, 40], settings.haptics);
+  playSfx('unlock', 'lore'); buzz([20, 60, 20, 60, 40], settings.haptics);
   setTimeout(() => burst(seal, { kind: 'lore' }), 250);
 }
 
@@ -387,7 +426,7 @@ function renderStats() {
 // ================================================================ codex / lore / special
 
 function entryRow(e, { stamp } = {}) {
-  const src = applied.art[e.id];
+  const src = applied.art[e.id] || storyArt[e.id];
   return h('div', { class: 'entry' },
     h('div', { class: 'entry-glyph', 'aria-hidden': 'true' }, src ? h('img', { src, alt: '' }) : e.glyph || '✦'),
     h('div', { class: 'entry-body' },
@@ -420,6 +459,8 @@ function renderCodex() {
   $('#codexList').replaceChildren(...(entries.length ? entries.slice(0, 200).map((e) => entryRow(e)) : [h('div', { class: 'empty', text: q ? 'Nothing matches that search.' : 'Nothing catalogued here yet.' })]));
 }
 
+function loreArtFor(id) { return applied.loreArt?.[id] || storyLoreArt[id] || null; }
+
 function renderLore() {
   const unlocked = pack.lore.filter((l) => game.p.unlockedLore[l.id]);
   $('#loreCount').textContent = `${unlocked.length} / ${pack.lore.length} unlocked`;
@@ -427,7 +468,8 @@ function renderLore() {
     const open = !!game.p.unlockedLore[l.id];
     const [have, need] = game.loreProgress(l);
     return h('div', { class: `entry lore-entry ${open ? 'unlocked' : 'locked'}` },
-      h('div', { class: 'entry-glyph', 'aria-hidden': 'true', text: open ? '✦' : '◇' }),
+      open && loreArtFor(l.id) ? h('div', { class: 'entry-glyph has-art', 'aria-hidden': 'true' }, h('img', { src: loreArtFor(l.id), alt: '' }))
+        : h('div', { class: 'entry-glyph', 'aria-hidden': 'true', text: open ? '✦' : '◇' }),
       h('div', { class: 'entry-body' },
         h('div', { class: 'entry-title', text: open ? l.title : 'Locked entry' }),
         h('div', { class: 'lore-hint', text: l.hint }),
@@ -496,7 +538,7 @@ async function shareOrDownload(blob, filename) {
 
 async function withFiles(rec) {
   if (!rec.baseUrl) return rec;
-  const names = new Set([...Object.values(rec.theme.images).map((v) => (typeof v === 'string' ? v : v.file)), ...Object.values(rec.theme.art), rec.theme.fonts.display, rec.theme.fonts.body, ...Object.values(rec.theme.sounds || {})].filter(Boolean));
+  const names = new Set([...Object.values(rec.theme.images).map((v) => (typeof v === 'string' ? v : v.file)), ...Object.values(rec.theme.art), rec.theme.fonts.display, rec.theme.fonts.body, ...Object.values(rec.theme.sounds || {}), ...Object.values(rec.theme.loreArt || {})].filter(Boolean));
   const files = {};
   for (const n of names) { const r = await fetch(new URL(n, new URL(rec.baseUrl, location.href))); if (r.ok) files[n] = await r.blob(); }
   return { ...rec, files };
@@ -745,6 +787,8 @@ async function renderSettings() {
   $('#contrastToggle').checked = !!settings.contrast;
   $('#blurbToggle').checked = !!settings.blurbs;
   $('#soundToggle').checked = settings.sound;
+  $('#uiSoundToggle').checked = settings.uiSound !== false;
+  $('#uiSoundToggle').disabled = !settings.sound;
   $('#hapticToggle').checked = settings.haptics;
   $('#hapticToggle').closest('.switch').classList.toggle('hidden', !('vibrate' in navigator));
   $('#installBtn').classList.toggle('hidden', !deferredInstall);
@@ -762,7 +806,7 @@ function applyReading() {
   d.spacing = settings.spacing ? 'wide' : 'normal';
   d.contrast = settings.contrast ? 'high' : 'normal';
   d.blurbsForce = settings.blurbs ? 'on' : 'off';
-  requestAnimationFrame(moveIndicator);
+  requestAnimationFrame(() => { moveIndicator(); fitChoices(); });
 }
 
 function saveSettings(msg) { settingsStore.save(settings); if (game) game.settings = settings; if (msg) toast(msg); }
@@ -784,14 +828,19 @@ function toast(msg, action) {
 // ================================================================ wiring
 
 function wire() {
-  $('#newBtn').addEventListener('click', () => { tone('tap', settings.sound); nextOffering(); });
+  $('#newBtn').addEventListener('click', () => nextOffering()); // the new offering plays its own sound
   $('#nextBtn').addEventListener('click', nextOffering);
   $('#dailyBtn').addEventListener('click', openDaily);
-  for (const b of $$('.nav-btn')) b.addEventListener('click', () => { go(b.dataset.view); buzz(6, settings.haptics); });
+  for (const b of $$('.nav-btn')) b.addEventListener('click', () => { playSfx('tap', 'tap'); go(b.dataset.view); buzz(6, settings.haptics); });
+  // a soft switch sound for every toggle and choice in the app (the Sound switch handles its own)
+  document.addEventListener('change', (e) => { if (e.target.matches('.switch input:not(#soundToggle), select, .seg input')) playSfx('toggle', 'tap'); });
   for (const b of $$('#studioTabs [role="tab"]')) b.addEventListener('click', () => go('studio', b.dataset.pane));
   window.addEventListener('popstate', route);
   window.addEventListener('hashchange', route);
   window.addEventListener('resize', moveIndicator, { passive: true });
+  let fitTimer;
+  window.addEventListener('resize', () => { clearTimeout(fitTimer); fitTimer = setTimeout(fitChoices, 120); }, { passive: true });
+  document.fonts?.addEventListener?.('loadingdone', () => fitChoices());
   $('#codexSearch').addEventListener('input', renderCodex);
   $('#loreSheet').addEventListener('close', () => setTimeout(showNextLore, 250));
 
@@ -870,7 +919,8 @@ function wire() {
   $('#spacingToggle').addEventListener('change', (e) => { settings.spacing = e.target.checked; saveSettings(); applyReading(); });
   $('#contrastToggle').addEventListener('change', (e) => { settings.contrast = e.target.checked; saveSettings(); applyReading(); });
   $('#blurbToggle').addEventListener('change', (e) => { settings.blurbs = e.target.checked; saveSettings(); applyReading(); });
-  $('#soundToggle').addEventListener('change', (e) => { settings.sound = e.target.checked; saveSettings(); playSfx('reveal', 'correct'); });
+  $('#soundToggle').addEventListener('change', (e) => { settings.sound = e.target.checked; saveSettings(settings.sound ? 'Sound on.' : 'Sound off. Nothing will play.'); $('#uiSoundToggle').disabled = !settings.sound; playSfx('toggle', 'tap'); });
+  $('#uiSoundToggle').addEventListener('change', (e) => { settings.uiSound = e.target.checked; saveSettings(); });
   $('#hapticToggle').addEventListener('change', (e) => { settings.haptics = e.target.checked; saveSettings(); buzz(20, settings.haptics); });
   $('#resetBtn').addEventListener('click', () => {
     if (!confirm(`Reset all progress for "${pack.title}" on this device?`)) return;

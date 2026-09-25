@@ -325,6 +325,11 @@ dialog.sheet[open] { animation: sheetUp .45s var(--ease-out) both; }
   background: radial-gradient(circle at 35% 30%, #fff8, transparent 40%), radial-gradient(circle, var(--c-rare), color-mix(in srgb, var(--c-rare) 60%, #000)); box-shadow: 0 0 0 6px rgba(var(--rare-rgb), .18), 0 0 40px rgba(var(--rare-rgb), .45);
   animation: sealIn .9s var(--ease-spring) both; }
 [data-has-lore-seal] .seal { background: var(--img-lore-seal) center / contain no-repeat; box-shadow: none; color: transparent; }
+/* A secret with its own illustration shows that instead of the look's generic seal. */
+.seal.has-art, [data-has-lore-seal] .seal.has-art { width: 132px; height: 132px; border-radius: 0; background: none; box-shadow: none; }
+.seal.has-art img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 14px rgba(var(--accent-rgb), .35)); }
+.lore-entry .entry-glyph.has-art, [data-has-lore-seal] .lore-entry.unlocked .entry-glyph.has-art { background: var(--c-surface2); padding: 2px; }
+.entry-glyph.has-art img { width: 100%; height: 100%; object-fit: contain; }
 @keyframes sealIn { from { transform: scale(0) rotate(-90deg); } }
 
 /* ---------- art-pack layout options (canopy, pendants, pills, ring stage) ---------- */
@@ -358,10 +363,10 @@ dialog.sheet[open] { animation: sheetUp .45s var(--ease-out) both; }
 [data-blurbs="off"] .choice-txt > span { display: none; }
 [data-blurbs="off"] .choice { min-height: 56px; align-items: center; }
 [data-blurbs="off"] .choices { grid-template-columns: 1fr; }
-.choice.has-art { background: none; border-style: solid; border-color: transparent; border-radius: 0; border-width: var(--choice-w); border-image: var(--choice-art) var(--choice-slice) fill / var(--choice-w) stretch; padding: 4px 8px; min-height: 60px; align-items: center; }
+.choice.has-art { background: none; border-style: solid; border-color: transparent; border-radius: 0; border-width: var(--choice-w); border-image: var(--choice-art) var(--choice-slice) fill / var(--choice-w) stretch; padding: 2px 8px; min-height: var(--choice-h, 60px); height: var(--choice-h, auto); align-items: center; overflow: hidden; }
 .choice.has-art .choice-ico { display: none; }
 .choice.has-art .choice-txt { flex: 1; text-align: center; }
-.choice.has-art strong { font-weight: 500; font-size: 1.02rem; margin: 0; }
+.choice.has-art strong { font-weight: 500; font-size: calc(1.02rem * var(--choice-fit, 1)); line-height: 1.08; margin: 0; }
 .choice.has-art.picked, .choice.has-art.truth { filter: drop-shadow(0 0 8px rgba(var(--accent-rgb), .75)); }
 
 [data-has-stats-panel] .stats { border-style: solid; border-color: transparent; border-width: var(--slice-stats-panel-w); border-image: var(--img-stats-panel) var(--slice-stats-panel) fill / var(--slice-stats-panel-w) stretch; padding: 6px 4px; gap: 0; }
@@ -399,7 +404,10 @@ dialog.sheet[open] { animation: sheetUp .45s var(--ease-out) both; }
 @keyframes sway-small-mirrored { from { transform: scaleX(-1) rotate(-.6deg); } to { transform: scaleX(-1) rotate(.6deg); } }
 .card-garland { z-index: 2; left: 50%; top: -12px; width: 42%; height: auto; transform: translateX(-50%); filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .5)); }
 @media (max-width: 540px) {
-  [data-has-side-drop] .offering { margin-inline: 20px; }
+  [data-has-side-drop] .offering { margin-inline: 12px; }
+  [data-has-panel] .offering { padding: 10px; }
+  [data-has-panel] .offering .choices { margin-inline: -6px; }
+  :root { --pill-scale: .86; } /* read where the pill sizes are set, on the root */
   .card-decor { --dh: 430px; --dtop: 50px; }
   .card-garland { width: 40%; top: -9px; }
 }
@@ -440,9 +448,9 @@ dialog.sheet[open] { animation: sheetUp .45s var(--ease-out) both; }
 :root[data-text="xxl"] .stats .stat { flex: 0 1 calc((100% - 7px) / 2); }
 :root:is([data-text="xl"], [data-text="xxl"])[data-has-stats-panel] .stat { border-right: 0; }
 /* Pill art keeps its symbol in the end caps, which distorts when a label grows to several lines: use plain tiles instead. */
-:root:is([data-text="xxl"], [data-blurbs-force="on"]) .choice.has-art { border-image: none; border: 1px solid var(--c-border); border-radius: var(--radius-sm); background: var(--c-surface2); padding: 11px 12px; }
-:root:is([data-text="xxl"], [data-blurbs-force="on"]) .choice.has-art .choice-txt { text-align: left; }
-:root:is([data-text="xxl"], [data-blurbs-force="on"]) .choice.has-art.picked { border-color: rgba(var(--accent-rgb), .6); background: rgba(var(--accent-rgb), .1); }
+:is(:root:is([data-text="xxl"], [data-blurbs-force="on"]), .choices.art-off) .choice.has-art { height: auto; min-height: 56px; overflow: visible; border-image: none; border: 1px solid var(--c-border); border-radius: var(--radius-sm); background: var(--c-surface2); padding: 11px 12px; }
+:is(:root:is([data-text="xxl"], [data-blurbs-force="on"]), .choices.art-off) .choice.has-art .choice-txt { text-align: left; }
+:is(:root:is([data-text="xxl"], [data-blurbs-force="on"]), .choices.art-off) .choice.has-art.picked { border-color: rgba(var(--accent-rgb), .6); background: rgba(var(--accent-rgb), .1); }
 :root:is([data-text="xl"], [data-text="xxl"]) .nav-label { font-size: .6rem; }
 :root[data-text="xxl"] .size-seg { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 

@@ -276,3 +276,57 @@ Two sounds from Seravielle live in `assets/tideglass/sounds/`:
   `studio/PACK_FORMAT.md`), and the Tideglass look uses these two. Looks without
   sounds keep the built-in tones. Studio's cache is now `codex-studio-v7`.
 
+### Interface sounds (ElevenLabs)
+
+Three quiet interface sounds were made with ElevenLabs' sound-effects model
+(`eleven_text_to_sound_v2`). Three takes of each were generated, then picked by
+analysis: one clean hit, short, and no stray clicks.
+
+| File | Plays when | Take |
+| --- | --- | --- |
+| `ui-tap.wav` | Tabs and codex filters | A tiny rounded tick, 0.1 s |
+| `ui-toggle.wav` | Switches and menus | A soft low "thock", trimmed so it starts on the tap |
+| `lore-unlock.mp3` | Secret lore unlocks | A gentle glass chime |
+
+- **Settings:** everything needs Sound switched on, which is off by default, so
+  turning Sound off means nothing plays. A separate "Tap sounds" switch mutes
+  just the tap and toggle sounds.
+- **The game:** all five sounds are precached (cache `v16-rook-icon-sounds`).
+- **Studio:** looks can now also carry `unlock`, `tap` and `toggle` sounds, and
+  the Tideglass look uses these. Looks without them fall back to soft tones.
+  Studio's cache is `codex-studio-v9`.
+
+## App icon — 25 September 2026
+
+The app icon for both the game and Studio is now a rook, not the old abstract
+mark.
+- **Source:** a SpriteCook painting (`eb9479f9-…`, recorded as `app_icon` in
+  `spritecook-assets.json`): a glossy rook with the pale bare face at the base of
+  its beak, holding a sea-glass gem, with the moon behind.
+- **Crop:** cropped to the head, beak and gem so it reads at home-screen size.
+- **Maskable version:** a slightly wider crop keeps the gem inside Android's
+  circular safe zone.
+
+## Secret lore illustrations — 25 September 2026
+
+Every secret in both built-in stories now has its own picture: 8 for Rook and
+5 for the Moth Lantern Society. They are painted in the same still-life style as
+the offerings (pistachio style reference), and each one gathers the finds that
+unlock it. *Three Black Feathers*, for example, is three feathers, one for each
+of Morrow, Ink and Pip.
+
+- **Files:** `assets/tideglass/lore/<lore-id>.webp`, with the moth secrets in
+  `lore/moth-lantern/` (about 1 MB in total). Asset IDs are in
+  `spritecook-assets.json` under `lore/…`.
+- **The game:** `offering-art.js` also defines `TIDEGLASS_LORE_ART`.
+  - Unlocked entries in the Lore tab show their picture.
+  - The "Secret lore unlocked" note shows it too.
+  - Everything is precached (cache `v17-lore-art`).
+- **Studio:** looks have a new `loreArt` map. The picture replaces the generic
+  seal on the unlock sheet and in the Lore list. The built-in stories supply
+  their own lore art, so it shows in every look. Studio's cache is
+  `codex-studio-v10`.
+- **Still without art of their own:** companion portraits (Morrow, Ink, Pip,
+  Fennick, Old Lune) and collection badges (5 Rook, 3 moth). Procedural finds
+  keep their glyph by design.
+

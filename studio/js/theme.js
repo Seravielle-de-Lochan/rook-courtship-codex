@@ -227,6 +227,7 @@ export function normalizeTheme(t = {}, base = PRESETS[0]) {
     },
     images: t.images && typeof t.images === 'object' ? t.images : {},
     art: t.art && typeof t.art === 'object' ? t.art : {},
+    loreArt: t.loreArt && typeof t.loreArt === 'object' ? t.loreArt : {}, // lore id -> picture shown when that secret unlocks
     spritecook: t.spritecook || null,
   };
 }
@@ -236,7 +237,7 @@ export function normalizeTheme(t = {}, base = PRESETS[0]) {
 const IMAGE_RE = /\.(png|webp|jpe?g|gif|avif|svg)$/i;
 const FONT_RE = /\.(woff2?|ttf|otf)$/i;
 const AUDIO_RE = /\.(mp3|m4a|aac|wav|ogg)$/i;
-export const SOUND_KEYS = ['appear', 'reveal']; // offering appears; its meaning is revealed
+export const SOUND_KEYS = ['appear', 'reveal', 'unlock', 'tap', 'toggle']; // offering appears; meaning revealed; lore unlocks; interface taps; switches
 const MIME = { png: 'image/png', webp: 'image/webp', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', avif: 'image/avif', svg: 'image/svg+xml', woff2: 'font/woff2', woff: 'font/woff', ttf: 'font/ttf', otf: 'font/otf', json: 'application/json', mp3: 'audio/mpeg', m4a: 'audio/mp4', aac: 'audio/aac', wav: 'audio/wav', ogg: 'audio/ogg' };
 export const mimeFor = (name) => MIME[name.split('.').pop().toLowerCase()] || 'application/octet-stream';
 const baseKey = (path) => path.split('/').pop().replace(/\.[^.]+$/, '').replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase().replace(/[\s_.]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
@@ -339,6 +340,7 @@ export async function importVisualZip(file, contentPack) {
     if (f) { mapping[slot] = f; if (typeof v === 'object' && v?.slice != null) slices[slot] = v.slice; } else warnings.push(`theme.json maps "${slot}" to a file that isn't in the zip.`);
   }
   for (const [id, f0] of Object.entries(theme.art)) { const f = fileByLoose(f0); if (f) mapping[`offering-${id}`] = f; }
+  theme.loreArt = Object.fromEntries(Object.entries(theme.loreArt).map(([id, f0]) => [id, fileByLoose(f0)]).filter(([, f]) => f));
   for (const json of otherJson) {
     for (const comp of manifestComponents(json)) {
       const f = fileByLoose(comp.file) || fileByLoose(comp.file.replace(/\.png$/i, '.webp'));
@@ -382,7 +384,7 @@ export function buildVisualRecord({ theme, files, mapping, slices }) {
     if (slot.startsWith('offering-')) art[slot.slice(9)] = f;
     else images[slot] = slices[slot] != null ? { file: f, slice: slices[slot] } : f;
   }
-  const keep = new Set([...Object.values(mapping), theme.fonts.display, theme.fonts.body, ...Object.values(theme.sounds || {})].filter(Boolean));
+  const keep = new Set([...Object.values(mapping), theme.fonts.display, theme.fonts.body, ...Object.values(theme.sounds || {}), ...Object.values(theme.loreArt || {})].filter(Boolean));
   const kept = Object.fromEntries(Object.entries(files).filter(([k]) => keep.has(k)));
   return { id: theme.id, kind: 'visual', installedAt: Date.now(), theme: { ...theme, images, art }, files: kept };
 }
@@ -466,15 +468,24 @@ export async function applyVisual(record, root = document.documentElement) {
       st.setProperty(`--slice-${k}`, `${t} ${r} ${b} ${l}`);
       // Rendered border width: from the pack if given, else the source slice scaled to something sensible on screen.
       const w = typeof v === 'object' && v?.width != null ? quad(v.width) : [t, r, b, l].map((n) => Math.max(6, Math.min(28, Math.round(n * 0.5))));
-      st.setProperty(`--slice-${k}-w`, w.map((n) => `${Math.max(0, Math.min(120, n))}px`).join(' '));
+      // Answer pills scale with --pill-scale (smaller end caps on narrow phones), everything else is fixed.
+      const px = (n) => (slot.startsWith('choice-') ? `calc(${n}px * var(--pill-scale, 1))` : `${n}px`);
+      st.setProperty(`--slice-${k}-w`, w.map((n) => px(Math.max(0, Math.min(120, n)))).join(' '));
       if (slot === 'panel') st.setProperty('--panel-bw', `${Math.max(0, Math.min(120, w[3]))}px`); // left edge, for ornaments placed from the card's outer edge
+      // Per-answer pill art is drawn at its natural height (the image height at the same scale as its
+      // top border), so its rounded ends and icon are never squashed or stretched.
+      if (slot.startsWith('choice-') && t > 0 && w[0] > 0) {
+        try { const im = new Image(); im.src = u; await im.decode(); st.setProperty(`--slice-${k}-h`, px(Math.round((im.naturalHeight * w[0]) / t))); } catch { /* fall back to flexible height */ }
+      }
     }
   }
   const art = {};
   for (const [id, f] of Object.entries(theme.art || {})) { const u = url(f); if (u) art[id] = u; }
+  const loreArt = {};
+  for (const [id, f] of Object.entries(theme.loreArt || {})) { const u = url(f); if (u) loreArt[id] = u; }
   const sounds = {};
   for (const [k, f] of Object.entries(theme.sounds || {})) { const u = url(f); if (u) sounds[k] = u; }
-  return { images: imgMap, art, sounds, motion: theme.motion, style: theme.style };
+  return { images: imgMap, art, loreArt, sounds, motion: theme.motion, style: theme.style };
 }
 
 export function presetRecord(preset) { return { id: preset.id, kind: 'visual', builtin: true, theme: normalizeTheme(preset, preset), files: {} }; }
