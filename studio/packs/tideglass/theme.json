@@ -1,0 +1,215 @@
+{
+  "format": "codex-visual-pack",
+  "version": 1,
+  "id": "builtin:tideglass",
+  "name": "Tideglass",
+  "author": "Seravielle de Lochan",
+  "description": "Silver chains and sea-glass over night water. Your SpriteCook Tideglass kit, with illustrated offerings for both built-in stories.",
+  "style": "hd",
+  "radius": 26,
+  "colors": {
+    "bg": "#030a0d",
+    "bg2": "#0d3a3d",
+    "surface": "#0c2227",
+    "surface2": "#0a1b20",
+    "border": "#405b5e",
+    "text": "#e4eee8",
+    "muted": "#a9bebb",
+    "accent": "#8fdacb",
+    "accent2": "#d6c4cf",
+    "rare": "#e8d7a7",
+    "danger": "#e5c8d4"
+  },
+  "font": {
+    "display": "pack",
+    "body": "pack"
+  },
+  "fonts": {
+    "display": "cormorant-garamond.ttf",
+    "body": "cormorant-garamond.ttf"
+  },
+  "motion": {
+    "particles": "sprite",
+    "density": 0.45
+  },
+  "layout": {
+    "header": "centered",
+    "stage": "ring",
+    "choiceBlurbs": false,
+    "backgroundFit": "tile",
+    "swagAt": 0.431,
+    "swagLift": 0.15
+  },
+  "images": {
+    "background": "water-garden.png",
+    "canopy": "chain_banner_decoration.png",
+    "pendantLeft": "teardrop_pendant_1.png",
+    "pendantRight": "teardrop_pendant_2.png",
+    "divider": "long_divider_1.png",
+    "panel": {
+      "file": "large_frame_empty.png",
+      "slice": 86,
+      "width": 24
+    },
+    "statsPanel": {
+      "file": "wide_frame_empty.png",
+      "slice": 75,
+      "width": 24
+    },
+    "choice": {
+      "file": "pill_button_normal_3.png",
+      "slice": [
+        20,
+        70,
+        20,
+        100
+      ],
+      "width": [
+        13,
+        46,
+        13,
+        66
+      ]
+    },
+    "choice-affection": {
+      "file": "pill_button_normal_1.png",
+      "slice": [
+        20,
+        70,
+        20,
+        100
+      ],
+      "width": [
+        13,
+        46,
+        13,
+        66
+      ]
+    },
+    "choice-seduction": {
+      "file": "pill_button_normal_2.png",
+      "slice": [
+        20,
+        70,
+        20,
+        100
+      ],
+      "width": [
+        13,
+        46,
+        13,
+        66
+      ]
+    },
+    "choice-thought": {
+      "file": "pill_button_normal_3.png",
+      "slice": [
+        20,
+        70,
+        20,
+        100
+      ],
+      "width": [
+        13,
+        46,
+        13,
+        66
+      ]
+    },
+    "choice-dontask": {
+      "file": "pill_button_normal_4.png",
+      "slice": [
+        20,
+        70,
+        20,
+        100
+      ],
+      "width": [
+        13,
+        46,
+        13,
+        66
+      ]
+    },
+    "particle": "small_star_icon.png",
+    "rareBadge": "star_icon.png",
+    "loreSeal": "round_medallion_1.png",
+    "loreLock": "lock_icon_button.png",
+    "navPlay": "star_icon_button.png",
+    "navCodex": "book_icon_button.png",
+    "navLore": "list_icon_button.png",
+    "navSpecial": "lock_icon_button.png",
+    "navStudio": "gear_icon_button.png",
+    "headerCharm": "crescent_moon_ornament.png",
+    "newButton": "rook_medallion.png",
+    "cardGarland": "frame_star_garland.png",
+    "sideDrop": "side_chain_drop_clean.png",
+    "sideSwag": "side_chain_swag_clean.png"
+  },
+  "art": {
+    "moonbloom": "flower_ornament.png",
+    "three-pistachios": "offering_three_pistachios.png",
+    "sea-glass-pillow": "offerings/sea-glass-pillow.webp",
+    "tide-stone": "offerings/tide-stone.webp",
+    "lantern-shard": "offerings/lantern-shard.webp",
+    "daisy-pin": "offerings/daisy-pin.webp",
+    "warm-stone": "offerings/warm-stone.webp",
+    "hair-ribbon": "offerings/hair-ribbon.webp",
+    "sweater-thread": "offerings/sweater-thread.webp",
+    "brass-key": "offerings/brass-key.webp",
+    "rook-button": "offerings/rook-button.webp",
+    "tiny-bell": "offerings/tiny-bell.webp",
+    "old-map": "offerings/old-map.webp",
+    "tiny-compass": "offerings/tiny-compass.webp",
+    "slate": "offerings/slate.webp",
+    "juniper": "offerings/juniper.webp",
+    "sea-worn-wood": "offerings/sea-worn-wood.webp",
+    "white-pebble": "offerings/white-pebble.webp",
+    "black-feather": "offerings/black-feather.webp",
+    "feather-thread": "offerings/feather-thread.webp",
+    "open-clasp": "offerings/open-clasp.webp",
+    "velvet-ribbon": "offerings/velvet-ribbon.webp",
+    "mirror-chain": "offerings/mirror-chain.webp",
+    "silver-anklet": "offerings/silver-anklet.webp",
+    "rare-first-light": "offerings/rare-first-light.webp",
+    "rare-moonbloom-seed": "offerings/rare-moonbloom-seed.webp",
+    "rare-double-feather": "offerings/rare-double-feather.webp",
+    "rare-pocket-watch": "offerings/rare-pocket-watch.webp",
+    "rare-green-opal": "offerings/rare-green-opal.webp",
+    "rare-locket": "offerings/rare-locket.webp",
+    "rare-chain-crescent": "offerings/rare-chain-crescent.webp",
+    "rare-rook-token": "offerings/rare-rook-token.webp",
+    "morrow-silver-thread": "offerings/morrow-silver-thread.webp",
+    "morrow-green-stone": "offerings/morrow-green-stone.webp",
+    "morrow-button": "offerings/morrow-button.webp",
+    "ink-hair-tie": "offerings/ink-hair-tie.webp",
+    "ink-paper-star": "offerings/ink-paper-star.webp",
+    "ink-key": "offerings/ink-key.webp",
+    "pip-ribbon": "offerings/pip-ribbon.webp",
+    "pip-shiny-washer": "offerings/pip-shiny-washer.webp",
+    "pip-leaf": "offerings/pip-leaf.webp",
+    "first-wick": "offerings/moth-lantern/first-wick.webp",
+    "clean-glass": "offerings/moth-lantern/clean-glass.webp",
+    "wax-heart": "offerings/moth-lantern/wax-heart.webp",
+    "match-row": "offerings/moth-lantern/match-row.webp",
+    "moonflower": "offerings/moth-lantern/moonflower.webp",
+    "jasmine-hat": "offerings/moth-lantern/jasmine-hat.webp",
+    "dew-clover": "offerings/moth-lantern/dew-clover.webp",
+    "petal-trail": "offerings/moth-lantern/petal-trail.webp",
+    "bishop-candle": "offerings/moth-lantern/bishop-candle.webp",
+    "lamp-key": "offerings/moth-lantern/lamp-key.webp",
+    "finial": "offerings/moth-lantern/finial.webp",
+    "stained-chip": "offerings/moth-lantern/stained-chip.webp",
+    "rare-first-flame": "offerings/moth-lantern/rare-first-flame.webp",
+    "rare-wing-scale": "offerings/moth-lantern/rare-wing-scale.webp",
+    "rare-cathedral-rose": "offerings/moth-lantern/rare-cathedral-rose.webp",
+    "fennick-button": "offerings/moth-lantern/fennick-button.webp",
+    "fennick-crumb": "offerings/moth-lantern/fennick-crumb.webp",
+    "lune-map": "offerings/moth-lantern/lune-map.webp",
+    "lune-feather": "offerings/moth-lantern/lune-feather.webp"
+  },
+  "sounds": {
+    "appear": "sounds/offering-appear.mp3",
+    "reveal": "sounds/answer-reveal.mp3"
+  }
+}

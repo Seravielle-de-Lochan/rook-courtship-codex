@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en" data-motion="full" data-style="hd" data-scheme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b1016">
+  <meta name="description" content="A pocket courtship codex you can re-skin and re-write: import SpriteCook art packs and generate your own offerings and lore.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Codex Studio">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/studio.css">
+  <title>Codex Studio</title>
+  <script>
+    // Paint the last-used colours before the app boots, so there is no flash of the default theme.
+    try { const s = JSON.parse(localStorage.getItem('codexStudio:settings') || '{}'), d = document.documentElement.dataset; d.text = s.textSize || 'm'; d.font = s.font || 'look'; d.spacing = s.spacing ? 'wide' : 'normal'; d.contrast = s.contrast ? 'high' : 'normal'; d.blurbsForce = s.blurbs ? 'on' : 'off'; } catch (e) {}
+    try { const p = JSON.parse(localStorage.getItem('codexStudio:paint') || 'null'); if (p) { for (const [k, v] of Object.entries(p.vars)) document.documentElement.style.setProperty(k, v); document.documentElement.dataset.scheme = p.scheme; document.querySelector('meta[name="theme-color"]').content = p.vars['--c-bg']; } } catch (e) {}
+  </script>
+</head>
+<body>
+<div class="bg-layer" aria-hidden="true"><div class="aurora a1"></div><div class="aurora a2"></div></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<div class="app" id="app">
+  <div class="decor" aria-hidden="true">
+    <img class="decor-canopy" id="decorCanopy" alt="" hidden>
+    <img class="decor-pendant decor-left" id="decorPendantL" alt="" hidden>
+    <img class="decor-pendant decor-right" id="decorPendantR" alt="" hidden>
+    <img class="decor-charm" id="decorCharm" alt="" hidden>
+  </div>
+  <header class="top" id="top">
+    <div class="crest" id="crest" aria-hidden="true"><span>✦</span></div>
+    <div class="title-block">
+      <div class="eyebrow" id="eyebrow">field study · pocket edition</div>
+      <h1 id="title">Codex Studio</h1>
+      <p class="subtitle" id="subtitle"></p>
+    </div>
+    <button class="iconbtn" id="newBtn" type="button" aria-label="New random offering"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 6.9L21 11l-6.6 2.1L12 20l-2.4-6.9L3 11l6.6-2.1z"/></svg></button>
+  </header>
+
+  <main id="views">
+    <!-- PLAY -->
+    <section class="view" data-view="play" id="view-play">
+      <div class="daily-banner card" id="dailyBanner">
+        <div class="daily-copy">
+          <div class="kicker" id="dailyKicker">Today's offering</div>
+          <div class="daily-title" id="dailyTitle">Something is waiting for you.</div>
+          <div class="small" id="dailySub">A new offering appears once each local day.</div>
+        </div>
+        <button class="btn btn-soft daily-btn" id="dailyBtn" type="button">Open it</button>
+      </div>
+
+      <article class="card offering" id="offeringCard" aria-live="polite">
+        <div class="card-decor" aria-hidden="true">
+          <img class="side-drop side-left" id="sideDropL" alt="" hidden>
+          <img class="side-swag side-left" id="sideSwagL" alt="" hidden>
+          <img class="side-drop side-right" id="sideDropR" alt="" hidden>
+          <img class="side-swag side-right" id="sideSwagR" alt="" hidden>
+          <img class="card-garland" id="cardGarland" alt="" hidden>
+        </div>
+        <div class="row">
+          <div class="source-wrap">
+            <div class="small" id="sourceLabel">Handcrafted offering</div>
+            <div class="collection-label" id="collectionLabel"></div>
+          </div>
+          <div class="badge-row">
+            <span class="badge badge-rare hidden" id="rareBadge"><i class="rare-ico" aria-hidden="true"></i>RARE</span>
+            <span class="badge" id="statusBadge">Uninterpreted</span>
+          </div>
+        </div>
+        <div class="stage" id="stage">
+          <div class="stage-veil" aria-hidden="true"></div>
+          <div class="halo" aria-hidden="true"></div>
+          <div class="glyph" id="glyph" aria-hidden="true"></div>
+          <div class="name" id="offeringName"></div>
+          <div class="giver hidden" id="giverLine"></div>
+        </div>
+        <p class="desc" id="offeringDesc"></p>
+        <div class="question" id="question">What did I mean by this?</div>
+        <div class="choices" id="choices"></div>
+        <div class="reveal hidden" id="reveal">
+          <div class="verdict" id="verdict"></div>
+          <div class="explanation" id="explanation"></div>
+          <div class="giver-line" id="giverSays"></div>
+          <div class="unlock hidden" id="unlockBox"></div>
+          <button class="btn btn-primary" id="nextBtn" type="button">Next offering</button>
+        </div>
+      </article>
+
+      <div class="stats" id="stats">
+        <div class="stat"><b data-stat="seen">0</b><span>seen</span></div>
+        <div class="stat" id="understoodStat"><b data-stat="understood">0%</b><span>understood</span></div>
+        <div class="stat"><b data-stat="streak">0</b><span>streak</span></div>
+        <div class="stat"><b data-stat="entries">0</b><span>codex</span></div>
+        <div class="stat stat-rare"><b data-stat="rare">0</b><span>rare</span></div>
+      </div>
+    </section>
+
+    <!-- CODEX -->
+    <section class="view hidden" data-view="codex" id="view-codex">
+      <div class="card section">
+        <div class="row"><h2 id="codexTitle">Discovered</h2><span class="small" id="codexCount"></span></div>
+        <div class="collection-grid" id="collectionGrid"></div>
+        <div class="search-row"><input type="search" id="codexSearch" placeholder="Search the codex" aria-label="Search the codex" autocomplete="off"></div>
+        <div class="chip-row scroll-x" id="collectionFilters" role="toolbar" aria-label="Filter by collection"></div>
+        <div id="codexList" class="entry-list"></div>
+      </div>
+    </section>
+
+    <!-- LORE -->
+    <section class="view hidden" data-view="lore" id="view-lore">
+      <div class="card section">
+        <div class="row"><h2 id="loreTitle">Secret lore</h2><span class="small" id="loreCount"></span></div>
+        <p class="section-intro" id="loreIntro"></p>
+        <div id="loreList" class="entry-list"></div>
+      </div>
+    </section>
+
+    <!-- SPECIAL (pack-defined, e.g. "Classified") -->
+    <section class="view hidden" data-view="special" id="view-special">
+      <div class="card section">
+        <div class="row"><h2 id="specialTitle">Special file</h2><span class="small" id="specialCount"></span></div>
+        <p class="section-intro" id="specialIntro"></p>
+        <div id="specialList" class="entry-list"></div>
+      </div>
+    </section>
+
+    <!-- STUDIO -->
+    <section class="view hidden" data-view="studio" id="view-studio">
+      <div class="seg scroll-x" role="tablist" aria-label="Studio sections" id="studioTabs">
+        <button role="tab" type="button" data-pane="looks" aria-selected="true">Packs</button>
+        <button role="tab" type="button" data-pane="customise" aria-selected="false">Customise</button>
+        <button role="tab" type="button" data-pane="spritecook" aria-selected="false">SpriteCook</button>
+        <button role="tab" type="button" data-pane="forge" aria-selected="false">Lore Forge</button>
+        <button role="tab" type="button" data-pane="settings" aria-selected="false">Settings</button>
+      </div>
+
+      <!-- Packs -->
+      <div class="pane" data-pane="looks" role="tabpanel">
+        <div class="card section">
+          <div class="row"><h2>Visual looks</h2><span class="small" id="lookCount"></span></div>
+          <p class="section-intro">Tap a look to wear it. Import a zip of art (from SpriteCook or anywhere) to add your own.</p>
+          <div class="look-grid" id="lookGrid"></div>
+        </div>
+        <div class="card section">
+          <div class="row"><h2>Stories</h2><span class="small">content packs</span></div>
+          <p class="section-intro">Each story has its own offerings, lore and progress. Switching keeps every story's progress.</p>
+          <div class="story-list" id="storyList"></div>
+        </div>
+        <div class="card section import-card" id="dropZone">
+          <h2>Import a pack</h2>
+          <p class="section-intro">Drop or choose a <b>.zip</b> visual pack (images + optional <code>theme.json</code>) or a <b>.json</b> / <b>.zip</b> story pack.</p>
+          <div class="btn-row">
+            <label class="btn btn-primary file-btn">Choose file<input type="file" id="importFile" accept=".zip,.json,application/zip,application/json" hidden></label>
+            <button class="btn btn-soft" id="demoArtBtn" type="button">Try the demo art pack</button>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-ghost" id="templateBtn" type="button">Download blank template</button>
+            <a class="btn btn-ghost" href="PACK_FORMAT.md" target="_blank" rel="noopener">Pack format guide</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Customise -->
+      <div class="pane hidden" data-pane="customise" role="tabpanel">
+        <div class="card section">
+          <div class="row"><h2>Customise this look</h2><span class="small" id="customBase"></span></div>
+          <p class="section-intro">Changes preview live. Save them as a new look to keep them.</p>
+          <div class="field">
+            <span class="field-label">Palette from an image</span>
+            <div class="btn-row"><label class="btn btn-soft file-btn">Pick an image<input type="file" id="paletteFile" accept="image/*" hidden></label></div>
+            <div class="swatch-row" id="paletteSwatches"></div>
+          </div>
+          <div class="color-grid" id="colorGrid"></div>
+          <div class="field"><label class="field-label" for="radiusRange">Corner roundness <output id="radiusOut"></output></label><input type="range" id="radiusRange" min="0" max="36" step="1"></div>
+          <div class="field two">
+            <div><label class="field-label" for="fontDisplay">Title font</label><select id="fontDisplay"></select></div>
+            <div><label class="field-label" for="fontBody">Body font</label><select id="fontBody"></select></div>
+          </div>
+          <div class="field two">
+            <div><label class="field-label" for="particleSel">Ambient particles</label><select id="particleSel"><option value="motes">Glowing motes</option><option value="sparkles">Sparkles</option><option value="petals">Petals</option><option value="bubbles">Bubbles</option><option value="embers">Embers</option><option value="snow">Snow</option><option value="sprite">Pack sprite</option><option value="none">None</option></select></div>
+            <div><label class="field-label" for="densityRange">Density <output id="densityOut"></output></label><input type="range" id="densityRange" min="0" max="2" step="0.1"></div>
+          </div>
+          <label class="switch"><input type="checkbox" id="pixelToggle"><span>Pixel-art rendering (crisp, unsmoothed images)</span></label>
+          <div class="field"><label class="field-label" for="lookName">Look name</label><input type="text" id="lookName" maxlength="60"></div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="saveLookBtn" type="button">Save as new look</button>
+            <button class="btn btn-soft" id="updateLookBtn" type="button">Update this look</button>
+            <button class="btn btn-ghost" id="revertLookBtn" type="button">Revert</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SpriteCook -->
+      <div class="pane hidden" data-pane="spritecook" role="tabpanel">
+        <div class="card section">
+          <h2>Design a look with SpriteCook</h2>
+          <p class="section-intro">Describe your visual identity and add a reference image. You'll get SpriteCook prompts with the exact sizes and settings, plus a ready-made <code>theme.json</code>. Generate the art, drop it into the brief folder, zip it, and import it under <b>Packs</b>.</p>
+          <ol class="steps">
+            <li><b>Describe</b> the look below and add a reference image.</li>
+            <li><b>Download the brief</b>, or copy the prompts or the agent prompt.</li>
+            <li><b>Generate</b> in SpriteCook, using your reference as the style image.</li>
+            <li><b>Zip</b> the folder with the images and <b>import</b> it.</li>
+          </ol>
+          <div class="field"><label class="field-label" for="scName">Look name</label><input type="text" id="scName" maxlength="60" placeholder="e.g. Moonlit Apothecary"></div>
+          <div class="field"><label class="field-label" for="scTheme">Theme and world <span class="hint">(SpriteCook "theme")</span></label><textarea id="scTheme" rows="3" placeholder="e.g. a moonlit apothecary in a coastal village; glass bottles, dried herbs, sea-glass, candle smoke"></textarea></div>
+          <div class="field"><label class="field-label" for="scStyle">Art style <span class="hint">(SpriteCook "style")</span></label><input type="text" id="scStyle" placeholder="e.g. soft painterly storybook, gentle rim light"></div>
+          <div class="field two">
+            <div><label class="field-label" for="scPixel">Rendering</label><select id="scPixel"><option value="hd">Detailed / HD</option><option value="pixel">Pixel art</option></select></div>
+            <div><label class="field-label" for="scTier">Asset set</label><select id="scTier"><option value="essential">Essential (about 10 images)</option><option value="complete">Complete (icons, badges and portraits)</option><option value="deluxe">Deluxe (+ art for every offering)</option></select></div>
+          </div>
+          <div class="field">
+            <span class="field-label">Visual reference</span>
+            <div class="ref-row">
+              <label class="ref-drop" id="refDrop"><input type="file" id="scRef" accept="image/*" hidden><img id="refPreview" alt="" class="hidden"><span id="refHint">Add a reference image<br><small>Used for your palette and as SpriteCook's style image</small></span></label>
+              <div class="swatch-row col" id="refSwatches"></div>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="scBuildBtn" type="button">Build the brief</button>
+          </div>
+        </div>
+        <div class="card section hidden" id="scOut">
+          <div class="row"><h2>Your SpriteCook brief</h2><span class="small" id="scCount"></span></div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="scZipBtn" type="button">Download brief (.zip)</button>
+            <button class="btn btn-soft" id="scAgentBtn" type="button">Copy agent prompt</button>
+            <button class="btn btn-ghost" id="scPreviewBtn" type="button">Preview with placeholder art</button>
+          </div>
+          <details class="disclosure"><summary>Style lock: paste into SpriteCook once</summary><pre class="code" id="scLock"></pre></details>
+          <div id="scJobs" class="job-list"></div>
+        </div>
+      </div>
+
+      <!-- Lore Forge -->
+      <div class="pane hidden" data-pane="forge" role="tabpanel">
+        <div class="card section">
+          <h2>Lore Forge</h2>
+          <p class="section-intro">Write your own story: who gives the offerings, who receives them, what the gestures can mean, and the secret lore behind them. Claude writes the whole pack; you can edit it before you play.</p>
+          <div class="field two">
+            <div><label class="field-label" for="fgGiver">Who gives the offerings?</label><input type="text" id="fgGiver" placeholder="e.g. Wren, a lighthouse ghost"></div>
+            <div><label class="field-label" for="fgRecipient">Who receives them?</label><input type="text" id="fgRecipient" placeholder="e.g. Jo"></div>
+          </div>
+          <div class="field"><label class="field-label" for="fgWorld">World, setting and relationship</label><textarea id="fgWorld" rows="3" placeholder="e.g. A drowned-bell coastline. Wren courts the lighthouse keeper with things the tide brings in, and is extremely bad at being subtle."></textarea></div>
+          <div class="field"><label class="field-label" for="fgTone">Tone</label><input type="text" id="fgTone" placeholder="e.g. cosy, teasing, a little gothic, romantic but tasteful"></div>
+          <div class="field"><label class="field-label" for="fgIntents">What can an offering mean? <span class="hint">(one per line; leave blank to let Claude invent 4)</span></label><textarea id="fgIntents" rows="3" placeholder="Affection&#10;Flirtation&#10;I saw this and thought of you&#10;Please do not ask where I got this"></textarea></div>
+          <div class="field two">
+            <div><label class="field-label" for="fgCompanions">Side characters who also bring gifts</label><input type="text" id="fgCompanions" placeholder="e.g. two gulls called Brine and Bishop"></div>
+            <div><label class="field-label" for="fgSize">Pack size</label><select id="fgSize"><option value="small">Small (12 offerings)</option><option value="standard" selected>Standard (24 offerings)</option><option value="large">Large (36 offerings)</option></select></div>
+          </div>
+          <label class="switch"><input type="checkbox" id="fgSpecial" checked><span>Include a "special file" tab for one kind of offering (like Rook's <i>Provenance: Classified</i>)</span></label>
+          <label class="switch"><input type="checkbox" id="fgUseRef"><span>Show Claude my SpriteCook reference image for inspiration</span></label>
+          <div class="field"><label class="field-label" for="fgNotes">Anything else?</label><textarea id="fgNotes" rows="2" placeholder="Running jokes, favourite things, words to avoid…"></textarea></div>
+
+          <details class="disclosure" id="fgApiBox">
+            <summary>Generate here with your Anthropic API key</summary>
+            <p class="small">Your key goes from this browser straight to Anthropic. It's kept only for this session unless you tick "remember".</p>
+            <div class="field two">
+              <div><label class="field-label" for="fgKey">API key</label><input type="password" id="fgKey" autocomplete="off" placeholder="sk-ant-…"></div>
+              <div><label class="field-label" for="fgModel">Model</label><select id="fgModel"><option value="claude-opus-5">Claude Opus 5 (best writing)</option><option value="claude-sonnet-5">Claude Sonnet 5 (faster, cheaper)</option></select></div>
+            </div>
+            <label class="switch"><input type="checkbox" id="fgRemember"><span>Remember the key on this device</span></label>
+            <div class="btn-row"><button class="btn btn-primary" id="fgGenerateBtn" type="button">Generate story pack</button></div>
+            <div class="progress hidden" id="fgProgress"><div class="progress-bar"><i></i></div><span class="small" id="fgProgressText">Writing…</span></div>
+          </details>
+          <div class="btn-row">
+            <button class="btn btn-soft" id="fgCopyBtn" type="button">Copy prompt for Claude</button>
+          </div>
+          <p class="small">No API key? Copy the prompt into a chat with Claude and paste the JSON it gives you back below.</p>
+        </div>
+        <div class="card section">
+          <div class="row"><h2>Install a story</h2><button class="btn btn-ghost btn-sm" id="fgRemixBtn" type="button">Load current story</button></div>
+          <textarea id="fgJson" class="code-input" rows="8" spellcheck="false" placeholder='Paste the pack JSON here ({"format":"codex-content-pack", …})'></textarea>
+          <div id="fgReport" class="report"></div>
+          <div class="btn-row">
+            <button class="btn btn-soft" id="fgValidateBtn" type="button">Check</button>
+            <button class="btn btn-primary" id="fgInstallBtn" type="button">Install and play</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <div class="pane hidden" data-pane="settings" role="tabpanel">
+        <div class="card section settings" id="a11yCard">
+          <h2>Reading &amp; accessibility</h2>
+          <fieldset class="field seg-field">
+            <legend class="field-label">Text size</legend>
+            <div class="size-seg" role="radiogroup" aria-label="Text size">
+              <label><input type="radio" name="textSize" value="m"><span style="font-size:.9rem">Aa</span><small>Default</small></label>
+              <label><input type="radio" name="textSize" value="l"><span style="font-size:1.05rem">Aa</span><small>Large</small></label>
+              <label><input type="radio" name="textSize" value="xl"><span style="font-size:1.2rem">Aa</span><small>Larger</small></label>
+              <label><input type="radio" name="textSize" value="xxl"><span style="font-size:1.38rem">Aa</span><small>Largest</small></label>
+            </div>
+          </fieldset>
+          <div class="field"><label class="field-label" for="fontSelect">Font</label>
+            <select id="fontSelect"><option value="look">The look's own font</option><option value="plain">Plain sans-serif</option><option value="legible">Atkinson Hyperlegible (easiest to read)</option></select></div>
+          <label class="switch"><input type="checkbox" id="spacingToggle"><span>Extra space between letters, words and lines</span></label>
+          <label class="switch"><input type="checkbox" id="contrastToggle"><span>High contrast: brighter text on solid backgrounds</span></label>
+          <label class="switch"><input type="checkbox" id="blurbToggle"><span>Always show what each answer means</span></label>
+          <div class="field"><label class="field-label" for="motionSelect">Animation</label>
+            <select id="motionSelect"><option value="full">Full</option><option value="calm">Calm (fewer particles)</option><option value="off">Off</option></select></div>
+          <p class="a11y-sample" id="a11ySample">Folded once over the arm of your chair, soft side up, exactly where your fingers will brush it.</p>
+        </div>
+        <div class="card section settings">
+          <h2>Play settings</h2>
+          <div class="field"><label class="field-label" for="modeSelect">Free-play offerings: handcrafted, procedurally generated, or both</label>
+            <select id="modeSelect"><option value="mixed">Mixed</option><option value="procedural">Procedural only (endless)</option><option value="handcrafted">Handcrafted only</option></select></div>
+          <label class="switch"><input type="checkbox" id="companionToggle"><span id="companionLabel">Allow offerings from companions</span></label>
+          <label class="switch"><input type="checkbox" id="soundToggle"><span>Soft chimes</span></label>
+          <label class="switch"><input type="checkbox" id="hapticToggle"><span>Haptic taps (Android)</span></label>
+        </div>
+        <div class="card section">
+          <h2>App</h2>
+          <div class="btn-row"><button class="btn btn-primary hidden" id="installBtn" type="button">Install app</button></div>
+          <p class="small hidden" id="iosInstall">To install on iPhone or iPad: tap <b>Share</b>, then <b>Add to Home Screen</b>.</p>
+          <p class="small" id="storageInfo"></p>
+          <div class="btn-row"><button class="btn btn-danger" id="resetBtn" type="button">Reset this story's progress</button></div>
+          <p class="small">Codex Studio · everything stays on this device · <a href="../">classic Rook edition</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<nav class="bottom-nav" id="nav" aria-label="Sections">
+  <span class="nav-indicator" aria-hidden="true"></span>
+  <button class="nav-btn active" data-view="play" type="button" aria-current="page"><span class="nav-ico" data-slot="navPlay"><svg viewBox="0 0 24 24"><path d="M4 11h16v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM3 7h18v4H3zM12 7v14M12 7c-2-4-6-4-6-1.5S10 7 12 7zm0 0c2-4 6-4 6-1.5S14 7 12 7z"/></svg></span><span class="nav-label">Play</span></button>
+  <button class="nav-btn" data-view="codex" type="button"><span class="nav-ico" data-slot="navCodex"><svg viewBox="0 0 24 24"><path d="M3 5.5C6 4 9 4 12 6c3-2 6-2 9-.5V19c-3-1.5-6-1.5-9 .5-3-2-6-2-9-.5zM12 6v13.5"/></svg></span><span class="nav-label">Codex</span></button>
+  <button class="nav-btn" data-view="lore" type="button"><span class="nav-ico" data-slot="navLore"><svg viewBox="0 0 24 24"><path d="M7 3h11a2 2 0 0 1 0 4H7zM7 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11V7M9 11h6M9 15h4"/></svg></span><span class="nav-label">Lore</span></button>
+  <button class="nav-btn" data-view="special" type="button" id="specialNav"><span class="nav-ico" data-slot="navSpecial"><svg viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM9 13h6"/></svg></span><span class="nav-label" id="specialNavLabel">File</span></button>
+  <button class="nav-btn" data-view="studio" type="button"><span class="nav-ico" data-slot="navStudio"><svg viewBox="0 0 24 24"><path d="M14 4l6 6-9.5 9.5a3 3 0 0 1-2 .9H4v-4.5a3 3 0 0 1 .9-2zM12 6l6 6"/></svg></span><span class="nav-label">Studio</span></button>
+</nav>
+
+<div class="toast hidden" id="toast" role="status"><span id="toastText"></span><button class="toast-action hidden" id="toastAction" type="button"></button></div>
+
+<dialog class="sheet" id="loreSheet" aria-labelledby="loreSheetTitle">
+  <div class="sheet-body lore-sheet">
+    <div class="seal" id="loreSeal" aria-hidden="true">✦</div>
+    <div class="kicker">Secret lore unlocked</div>
+    <h2 id="loreSheetTitle"></h2>
+    <p id="loreSheetBody"></p>
+    <form method="dialog"><button class="btn btn-primary">Keep reading</button></form>
+  </div>
+</dialog>
+
+<dialog class="sheet" id="importSheet" aria-labelledby="importTitle">
+  <div class="sheet-body">
+    <h2 id="importTitle">Review visual pack</h2>
+    <div class="field"><label class="field-label" for="importName">Name</label><input type="text" id="importName" maxlength="60"></div>
+    <div class="swatch-row" id="importSwatches"></div>
+    <div class="report" id="importReport"></div>
+    <p class="small">Each image is matched to a slot by its filename. Change a slot here if the guess is wrong.</p>
+    <div class="map-list" id="importMap"></div>
+    <div class="btn-row sticky-actions">
+      <button class="btn btn-ghost" id="importCancel" type="button">Cancel</button>
+      <button class="btn btn-primary" id="importConfirm" type="button">Install and wear</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="sheet" id="welcomeSheet" aria-labelledby="welcomeTitle">
+  <div class="sheet-body">
+    <div class="kicker">Welcome to Codex Studio</div>
+    <h2 id="welcomeTitle">Every offering means something.</h2>
+    <p>Each day brings one small offering. Guess what it meant, fill your Codex, and unlock secret lore when the right finds come together.</p>
+    <p>Then make it yours. In <b>Studio</b> you can change the whole look, design an art pack with SpriteCook, or have Claude write a new story with your own characters and lore.</p>
+    <form method="dialog" class="btn-row"><button class="btn btn-primary">Open today's offering</button><button class="btn btn-soft" value="reading">Reading options: text size, font, contrast</button></form>
+  </div>
+</dialog>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
   const $$ = (s) => [...document.querySelectorAll(s)];
   const {intents, collections, handcrafted, rareOfferings, birdOfferings, proceduralBanks, loreRules} = window.ROOK_CODEX_DATA;
   function defaultState(){
-    return {seen:0,correct:0,discovered:{},mode:"mixed",sound:false,birds:true,rareFound:0,dailyOpened:{},dailyCache:{},unlockedLore:{},history:[]};
+    return {seen:0,correct:0,discovered:{},mode:"mixed",sound:false,birds:true,rareFound:0,dailyOpened:{},dailyAnswers:{},dailyCache:{},unlockedLore:{},history:[]};
   }
 
   let state;
@@ -11,11 +11,18 @@
   catch { state = defaultState(); }
   state.discovered ||= {};
   state.dailyOpened ||= {};
+  state.dailyAnswers ||= {};
   state.dailyCache ||= {};
   state.unlockedLore ||= {};
   state.history ||= [];
   state.birds = state.birds !== false;
-  state.rareFound = Number(state.rareFound || Object.values(state.discovered).filter(x=>x.rare).length || 0);
+  // Daily offerings used to be stored under a date-prefixed id, so the same object found
+  // via the daily and via free play appeared twice. Merge them under the canonical id.
+  for(const id of Object.keys(state.discovered)){
+    const canon=canonicalId(id);
+    if(canon!==id){ state.discovered[canon] ||= state.discovered[id]; delete state.discovered[id]; }
+  }
+  state.rareFound = Object.values(state.discovered).filter(x=>x.rare).length;
 
   let current = null;
   let answered = false;
@@ -23,6 +30,10 @@
   let codexFilter = "All";
   let currentWasDaily = false;
 
+  // Illustrated offerings (SpriteCook art, mapped in offering-art.js). Others keep their glyph.
+  const OFFERING_ART = globalThis.TIDEGLASS_OFFERING_ART || {};
+
+  function canonicalId(id){ return String(id).replace(/^daily-\d{4}-\d{2}-\d{2}-/,""); }
   function save(){ localStorage.setItem("rookCodexState", JSON.stringify(state)); }
   function pick(arr, rand=Math.random){ return arr[Math.floor(rand()*arr.length)]; }
   function slug(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,72); }
@@ -100,6 +111,11 @@
   function setOffering(o,{daily=false}={}){
     current=o; answered=false; currentWasDaily=daily;
     $("#glyph").textContent=o.glyph;
+    // Only replace an offering's glyph when there is matching artwork.
+    const art = OFFERING_ART[canonicalId(o.id)];
+    if (art) $("#offeringArt").src = art;
+    $("#offeringArt").classList.toggle("hidden", !art);
+    $("#glyph").classList.toggle("hidden", !!art);
     $("#offeringName").textContent=o.name;
     $("#offeringDesc").textContent=o.desc;
     $("#collectionLabel").textContent=o.collection || "Uncatalogued";
@@ -112,9 +128,12 @@
     $("#reveal").classList.add("hidden");
     $("#unlockBox").classList.add("hidden");
     $("#unlockBox").textContent="";
-    $$(".choice").forEach(b=>b.disabled=false);
+    $$(".choice").forEach(b=>{b.disabled=false;b.classList.remove("picked");});
+    const prior = daily ? state.dailyAnswers[localDateKey()] : null;
+    if(prior && prior.id===o.id) showReveal(prior.intent,{replay:true});
     showView("play");
     window.scrollTo({top:0,behavior:"smooth"});
+    if(!(prior && prior.id===o.id)) sfx("appear");
   }
 
   function nextOffering(){
@@ -131,22 +150,33 @@
     setOffering(state.dailyCache[key],{daily:true});
   }
 
+  // "Day N": how many calendar days a daily offering has been opened, counting today once it is.
+  function updateDayCount(){
+    const days=Object.keys(state.dailyOpened).length;
+    $("#dayCount").textContent=`Day ${Math.max(1,days)}`;
+  }
+
   function updateDailyBanner(){
     const key=localDateKey();
     const opened=!!state.dailyOpened[key];
     $("#dailyTitle").textContent = opened ? "Today's offering has been opened." : "Something is waiting for you.";
-    $("#dailySub").textContent = opened ? "You can revisit it whenever you like — tomorrow brings a new one." : "One deterministic offering is waiting for this calendar day.";
+    $("#dailySub").textContent = opened ? "You can revisit it whenever you like — tomorrow brings a new one." : "A little something chosen for you today.";
     $("#dailyBtn").textContent = opened ? "Revisit" : "Open it";
   }
 
-  function tone(freq=520){
-    if(!state.sound) return;
-    try{
-      const ctx = new (window.AudioContext||window.webkitAudioContext)();
-      const o=ctx.createOscillator(),g=ctx.createGain();
-      o.frequency.value=freq;g.gain.value=.025;o.connect(g);g.connect(ctx.destination);o.start();
-      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.08);o.stop(ctx.currentTime+.09);
-    }catch{}
+  // Sound effects (only when Sound is switched on in Settings). Browsers allow audio
+  // only after the player has tapped something, so nothing plays on first load.
+  // Each file is fetched once and played from memory: iPhone Safari won't play audio
+  // streamed from the service worker's cache, but a blob URL works online and offline.
+  const SFX_FILES = { appear: "assets/tideglass/sounds/offering-appear.mp3", reveal: "assets/tideglass/sounds/answer-reveal.mp3" };
+  const SFX = {};
+  function loadSfx(name){
+    return SFX[name] ||= fetch(SFX_FILES[name]).then(r=>r.ok?r.blob():Promise.reject()).then(b=>{ const a=new Audio(URL.createObjectURL(b)); a.volume=.6; return a; });
+  }
+  let soundReady=false; // set once the first offering is on screen
+  function sfx(name){
+    if(!state.sound || !soundReady) return;
+    loadSfx(name).then(a=>{ a.currentTime=0; return a.play(); }).catch(()=>{ delete SFX[name]; });
   }
 
   function discoveryRecord(o){
@@ -155,7 +185,7 @@
 
   function checkLoreUnlocks(){
     const entries=Object.entries(state.discovered);
-    const ids=new Set(entries.map(([id])=>id.replace(/^daily-\d{4}-\d{2}-\d{2}-/,"")));
+    const ids=new Set(entries.map(([id])=>canonicalId(id)));
     const vals=entries.map(([,v])=>v);
     const newly=[];
     for(const rule of loreRules){
@@ -174,24 +204,32 @@
 
   function choose(intent){
     if(answered || !current) return;
-    answered=true; tone(current.rare?660:520);
+    answered=true; sfx("reveal");
     const hit=intent===current.intent;
     state.seen++;
     if(hit) state.correct++;
-    const already=!!state.discovered[current.id];
-    state.discovered[current.id]=discoveryRecord(current);
+    const key=canonicalId(current.id);
+    const already=!!state.discovered[key];
+    state.discovered[key]=already ? {...discoveryRecord(current),firstSeen:state.discovered[key].firstSeen} : discoveryRecord(current);
     if(current.rare && !already) state.rareFound++;
-    if(currentWasDaily){ state.dailyOpened[localDateKey()]=current.id; }
+    if(currentWasDaily){ state.dailyOpened[localDateKey()]=current.id; state.dailyAnswers[localDateKey()]={id:current.id,intent}; }
     state.history.push({id:current.id,date:new Date().toISOString(),hit});
     if(state.history.length>120) state.history=state.history.slice(-120);
     save();
+    showReveal(intent);
+    renderAll();
+  }
 
+  function showReveal(intent,{replay=false}={}){
+    answered=true;
+    const hit=intent===current.intent;
     $("#statusBadge").textContent=hit?"Read perfectly":"Unexpected cryptid logic";
     $("#verdict").textContent=hit?"You read me perfectly.":"Entirely reasonable. Unfortunately, I am stranger than that.";
     $("#explanation").textContent=`Actual intent: ${intents[current.intent]}. ${current.why}`;
     $("#rookLine").textContent=current.rook;
     $("#reveal").classList.remove("hidden");
-    $$(".choice").forEach(b=>b.disabled=true);
+    $$(".choice").forEach(b=>{b.disabled=true;b.classList.toggle("picked",b.dataset.intent===intent);});
+    if(replay){ $("#verdict").textContent=`Already opened today. ${$("#verdict").textContent}`; return; }
 
     const unlocked=checkLoreUnlocks();
     if(current.rare || unlocked.length){
@@ -201,8 +239,6 @@
       $("#unlockBox").innerHTML=bits.map(escapeHtml).join("<br>");
       $("#unlockBox").classList.remove("hidden");
     }
-
-    renderAll();
   }
 
   function normalizedEntries(){
@@ -211,6 +247,7 @@
 
   function renderStats(){
     $("#seenStat").textContent=state.seen||0;
+    $("#accuracyStat").textContent=state.seen ? `${Math.round(100*state.correct/state.seen)}%` : "0%";
     $("#correctStat").textContent=state.correct||0;
     $("#uniqueStat").textContent=Object.keys(state.discovered).length;
     $("#rareStat").textContent=state.rareFound||0;
@@ -234,6 +271,7 @@
     if(!entries.length){ $("#codexList").innerHTML='<div class="small" style="margin-top:12px">Nothing catalogued in this collection yet.</div>'; return; }
     $("#codexList").innerHTML=entries.map(e=>`
       <div class="codex-entry">
+        ${OFFERING_ART[e.id]?`<img class="codex-art" src="${OFFERING_ART[e.id]}" alt="" loading="lazy" width="48" height="48">`:""}
         <div class="codex-title ${e.rare?"rare-text":""}">${e.rare?"✦ ":""}${escapeHtml(e.name)}</div>
         <div class="codex-meta">${escapeHtml(e.collection||"Uncatalogued")} · ${escapeHtml(intents[e.intent]||e.intent)}${e.giver?` · from ${escapeHtml(e.giver)}`:""}${e.procedural?" · procedural":""}</div>
         <div class="codex-text">${escapeHtml(e.codex||"")}</div>
@@ -267,12 +305,17 @@
       </div>`).join("");
   }
 
-  function renderAll(){ renderStats();renderCollections();renderCodex();renderLore();renderClassified();updateDailyBanner(); }
+  function renderAll(){ updateDayCount(); renderStats();renderCollections();renderCodex();renderLore();renderClassified();updateDailyBanner(); }
 
   function showView(name){
     const views=["play","codex","lore","classified","settings"];
     for(const v of views) $(`#${v}View`).classList.toggle("hidden",v!==name);
-    $$(".tab").forEach(t=>t.classList.toggle("active",t.dataset.view===name));
+    $$(".tab").forEach(t=>{
+      const active=t.dataset.view===name;
+      t.classList.toggle("active",active);
+      if(active) t.setAttribute("aria-current","page");
+      else t.removeAttribute("aria-current");
+    });
   }
 
   function toast(msg){
@@ -290,7 +333,7 @@
   $("#soundToggle").checked=state.sound;
   $("#birdToggle").checked=state.birds;
   $("#modeSelect").addEventListener("change",e=>{state.mode=e.target.value;save();toast("Free-play offering mode updated.");});
-  $("#soundToggle").addEventListener("change",e=>{state.sound=e.target.checked;save();toast(state.sound?"Soft click enabled.":"Sound disabled.");});
+  $("#soundToggle").addEventListener("change",e=>{state.sound=e.target.checked;save();toast(state.sound?"Sound effects on.":"Sound effects off.");sfx("appear");});
   $("#birdToggle").addEventListener("change",e=>{state.birds=e.target.checked;save();toast(state.birds?"Morrow, Ink and Pip may now interfere.":"Bird offerings paused.");updateDailyBanner();});
 
   $("#resetProgressBtn").addEventListener("click",()=>{
@@ -306,5 +349,7 @@
   renderAll();
   const today=localDateKey();
   if(!state.dailyOpened[today]) openDaily(); else nextOffering();
+  soundReady=true;
+  if(state.sound) Object.keys(SFX_FILES).forEach(n=>loadSfx(n).catch(()=>{}));
 
 })();
