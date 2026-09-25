@@ -31,7 +31,14 @@ globalThis.TIDEGLASS_EDITOR_ASSETS = (() => {
     {key:'hanging-charm',label:'Side chains',file:'assets/tideglass/hanging_charm_decoration.png',width:190,anchor:'page',category:'ornaments'},
     {key:'teardrop-1',label:'Teardrop I',file:'assets/tideglass/teardrop_pendant_1.png',width:48,anchor:'page',category:'ornaments'},
     {key:'teardrop-2',label:'Teardrop II',file:'assets/tideglass/teardrop_pendant_2.png',width:48,anchor:'page',category:'ornaments'},
-    {key:'chain-banner',label:'Chain drape',file:'assets/tideglass/chain_banner_decoration.png',width:300,anchor:'page',category:'ornaments'}
+    {key:'chain-banner',label:'Chain drape',file:'assets/tideglass/chain_banner_decoration.png',width:300,anchor:'page',category:'ornaments'},
+    {key:'side-chain-column',label:'Long side chain',file:'assets/tideglass/side_chain_column.png',width:120,anchor:'page',category:'new-chains'},
+    {key:'side-chain-drop',label:'Side chain drop',file:'assets/tideglass/side_chain_drop.png',width:34,anchor:'page',category:'new-chains'},
+    {key:'side-chain-swag',label:'Side chain swag',file:'assets/tideglass/side_chain_swag.png',width:110,anchor:'frame',category:'new-chains'},
+    {key:'frame-star-garland',label:'Frame star garland',file:'assets/tideglass/frame_star_garland.png',width:190,anchor:'frame',category:'new-chains'},
+    {key:'crescent-moon',label:'Crescent moon',file:'assets/tideglass/crescent_moon_ornament.png',width:40,anchor:'page',category:'ornaments'},
+    {key:'rook-medallion',label:'Rook medallion',file:'assets/tideglass/rook_medallion.png',width:60,anchor:'page',category:'ornaments'},
+    {key:'offering-three-pistachios',label:'Three pistachios',file:'assets/tideglass/offering_three_pistachios.png',width:120,anchor:'frame',category:'ornaments'}
   ];
   const representedFiles = new Set(featured.map(asset => asset.file.split('/').pop().replace('.png','')));
   const labelFor = name => name.replaceAll('_',' ').replace(/\b\w/g,letter=>letter.toUpperCase());

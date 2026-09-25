@@ -170,3 +170,39 @@ round luminous aqua sea-glass cabochon, botanical silver setting and weighted
 drop, matching the supplied mockup and SpriteCook frame. The generated PNG has
 a real alpha channel; the discarded side-garland drafts were not added because
 they rendered a checkerboard instead of transparency.
+
+## Concept ornaments — 25 September 2026
+
+Five new SpriteCook pieces bring the classic layout closer to the approved concept
+(SpriteCook asset `5d326516-4679-45b0-8262-1d97f8cfadb1`, the phone mockup). Each
+was generated with `generate_game_art` (model `gpt-image-2.5-sunburst`, detailed,
+transparent background) using the concept as `reference_asset_id` and existing kit
+pieces as `style_asset_ids` (`chain_banner_decoration`, `hanging_charm_decoration`,
+`round_medallion_1`; the offering art used `flower_ornament`). Asset IDs and local
+hashes are recorded in `spritecook-assets.json`. The files were trimmed to their
+visible content and scaled to about twice their largest displayed size.
+
+| Asset | Use |
+| --- | --- |
+| `side_chain_column` | Source image for the long side chains (also in the editor tray) |
+| `side_chain_drop`, `side_chain_swag` | Cut from `side_chain_column`: the tall drop hangs in each side margin, and the swag runs from its middle medallion to the frame edge |
+| `crescent_moon_ornament` | Hangs from the canopy, left of the title |
+| `rook_medallion` | The "new offering" button, top right |
+| `frame_star_garland` | Across the top edge of the offering frame |
+| `offering_three_pistachios` | Illustration for *Three pistachios* |
+
+The side chains are positioned from the offering frame itself (`tideglass-extras.css`),
+not from the page, so they cannot drift away from it at different screen sizes. The
+swags tuck just behind the frame edge. On phones the side margin is narrow, so the
+swags are short there and the drops sit close to the frame.
+
+Also added:
+- **Day counter**: "Day N" in the frame's top-left corner, counting the calendar
+  days on which a daily offering has been opened.
+- **Offering art map**: `OFFERING_ART` in `app.js` maps offering ids to artwork;
+  offerings without art keep their glyph.
+
+All new CSS lives in `tideglass-extras.css`; `tideglass.css` is unchanged. The
+editor tray lists the new pieces, and the service worker (v11) caches them.
+Layout was checked at 320–1280px against the `tideglass-ui` branch: no new
+overlaps, and the garland clears the frame labels at every width.

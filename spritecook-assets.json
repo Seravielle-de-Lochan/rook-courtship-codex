@@ -8,5 +8,30 @@
     "asset_id": "19dda177-eede-5c45-b067-e082c0ab4b53",
     "sha12": "0e963ef03e41",
     "label": "Medallion-to-frame chain"
+  },
+  "side_chain_column": {
+    "asset_id": "ce252dd0-b5ac-4c8e-862a-44c55187b8c9",
+    "sha12": "4d4ef0cb2cef",
+    "label": "Side chain column"
+  },
+  "crescent_moon_ornament": {
+    "asset_id": "de7ee8b9-3e4a-47d4-9db7-0cc4431ddbfb",
+    "sha12": "ed3ca88d981d",
+    "label": "Crescent moon ornament"
+  },
+  "rook_medallion": {
+    "asset_id": "07db7006-6cc4-4c78-a9fe-fd12ea4874dc",
+    "sha12": "f844d310a6b7",
+    "label": "Rook medallion"
+  },
+  "frame_star_garland": {
+    "asset_id": "f310392f-e550-47b4-bf1e-7bb675e09ed9",
+    "sha12": "c1f88bf079bf",
+    "label": "Frame star garland"
+  },
+  "offering_three_pistachios": {
+    "asset_id": "061fc1f9-2d8c-4b66-9377-e18cf5ba3407",
+    "sha12": "6770b7a2d64a",
+    "label": "Offering: three pistachios"
   }
 }

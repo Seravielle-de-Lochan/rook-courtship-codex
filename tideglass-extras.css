@@ -1,0 +1,56 @@
+/* Tideglass concept additions: side chains anchored to the offering frame, crescent,
+   frame garland, day counter and illustrated offerings. Art: SpriteCook, see spritecook-assets.json. */
+
+/* ---- side chains ---------------------------------------------------------
+   Both pieces are cut from one SpriteCook image (side_chain_column.png), so they
+   always match. They are positioned from the frame itself: the drop hangs in the
+   side margin and the swag runs from its middle medallion to the frame edge,
+   tucked just behind it, so nothing can drift apart as the screen changes size. */
+.offering {
+  --chain-h: 640px;                 /* drawn height of the drop */
+  --chain-top: 70px;                /* start below the margin verses */
+  --chain-x: calc(-17.6% - 22px);   /* left edge of the drop, relative to the frame */
+  --chain-cx: calc(var(--chain-x) + var(--chain-h) * .0376); /* centre line of the drop */
+  --swag-w: calc(-1 * var(--chain-cx) + 2px);                 /* from that centre to the frame edge */
+}
+.side-chain { position: absolute; z-index: -1; pointer-events: none; user-select: none; max-width: none; }
+.side-chain-drop { top: var(--chain-top); height: var(--chain-h); width: calc(var(--chain-h) * .0752); }
+.side-chain-swag { width: var(--swag-w); height: auto; aspect-ratio: 268 / 150; top: calc(var(--chain-top) + var(--chain-h) * .47); transform: translateY(-31%); }
+.side-chain.left.side-chain-drop { left: var(--chain-x); }
+.side-chain.left.side-chain-swag { left: var(--chain-cx); }
+.side-chain.right.side-chain-drop { transform: scaleX(-1); }
+.side-chain.right.side-chain-swag { transform: scaleX(-1) translateY(-31%); }
+.side-chain.right.side-chain-drop { right: var(--chain-x); }
+.side-chain.right.side-chain-swag { right: var(--chain-cx); }
+.side-chain-drop { transform-origin: 50% 0; animation: side-chain-sway 3.1s ease-in-out infinite alternate; }
+.side-chain.right.side-chain-drop { animation-name: side-chain-sway-mirrored; animation-duration: 3.4s; animation-delay: -1.2s; }
+@keyframes side-chain-sway { from { transform: rotate(-.6deg); } to { transform: rotate(.6deg); } }
+@keyframes side-chain-sway-mirrored { from { transform: scaleX(-1) rotate(-.6deg); } to { transform: scaleX(-1) rotate(.6deg); } }
+
+/* ---- small ornaments ------------------------------------------------------ */
+.crescent-ornament { position: absolute; left: 15%; top: 57%; width: 42px; height: auto; transform-origin: 50% 0; animation: pendant-sway 2.9s ease-in-out infinite alternate; filter: drop-shadow(0 0 8px #61c9c54a); }
+.frame-garland { position: absolute; z-index: 3; left: 50%; top: -12px; width: 42%; height: auto; transform: translateX(-50%); pointer-events: none; filter: drop-shadow(0 2px 4px #0008); }
+
+/* ---- day counter in the frame corner ------------------------------------ */
+.offering .badge-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+.day-count { white-space: nowrap; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #b9cfc8; margin-bottom: 4px; }
+.day-count::after { content: "✦"; display: block; font-size: 9px; letter-spacing: 0; color: #9fc9bf; margin-top: 1px; text-align: center; }
+.day-count { padding-left: 4px; }
+
+/* ---- the rook medallion is the "new offering" button ---------------------- */
+.top .iconbtn img { object-fit: contain; filter: drop-shadow(0 0 6px #6fd8d055); }
+
+/* ---- illustrated offerings ------------------------------------------------ */
+.offering-art { object-fit: contain; }
+
+@media (max-width: 540px) {
+  .offering { --chain-h: 470px; --chain-top: 52px; --chain-x: calc(-10.2% - 9px); }
+  .crescent-ornament { width: 27px; left: 12%; top: 58%; }
+  .frame-garland { width: 38%; top: -9px; }
+  .day-count { font-size: 9px; letter-spacing: .14em; margin-bottom: 2px; }
+  .day-count::after { font-size: 7px; }
+}
+@media (max-width: 360px) {
+  .offering { --chain-h: 420px; --chain-x: calc(-8.1% - 9px); }
+  .frame-garland { width: 36%; }
+}

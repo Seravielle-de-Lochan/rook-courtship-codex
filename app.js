@@ -30,6 +30,12 @@
   let codexFilter = "All";
   let currentWasDaily = false;
 
+  // Illustrated offerings (SpriteCook art in assets/tideglass). Others keep their glyph.
+  const OFFERING_ART = {
+    "moonbloom": "flower_ornament.png",
+    "three-pistachios": "offering_three_pistachios.png"
+  };
+
   function canonicalId(id){ return String(id).replace(/^daily-\d{4}-\d{2}-\d{2}-/,""); }
   function save(){ localStorage.setItem("rookCodexState", JSON.stringify(state)); }
   function pick(arr, rand=Math.random){ return arr[Math.floor(rand()*arr.length)]; }
@@ -108,10 +114,11 @@
   function setOffering(o,{daily=false}={}){
     current=o; answered=false; currentWasDaily=daily;
     $("#glyph").textContent=o.glyph;
-    // Only replace an offering's glyph when the export has matching artwork.
-    const hasArtwork = o.id.replace(/^daily-\d{4}-\d{2}-\d{2}-/, "") === "moonbloom";
-    $("#offeringArt").classList.toggle("hidden", !hasArtwork);
-    $("#glyph").classList.toggle("hidden", hasArtwork);
+    // Only replace an offering's glyph when there is matching artwork.
+    const art = OFFERING_ART[canonicalId(o.id)];
+    if (art) $("#offeringArt").src = `assets/tideglass/${art}`;
+    $("#offeringArt").classList.toggle("hidden", !art);
+    $("#glyph").classList.toggle("hidden", !!art);
     $("#offeringName").textContent=o.name;
     $("#offeringDesc").textContent=o.desc;
     $("#collectionLabel").textContent=o.collection || "Uncatalogued";
@@ -143,6 +150,12 @@
     const key=localDateKey();
     if(!state.dailyCache[key]){ state.dailyCache[key]=dailyOffering(key); save(); }
     setOffering(state.dailyCache[key],{daily:true});
+  }
+
+  // "Day N": how many calendar days a daily offering has been opened, counting today once it is.
+  function updateDayCount(){
+    const days=Object.keys(state.dailyOpened).length;
+    $("#dayCount").textContent=`Day ${Math.max(1,days)}`;
   }
 
   function updateDailyBanner(){
@@ -288,7 +301,7 @@
       </div>`).join("");
   }
 
-  function renderAll(){ renderStats();renderCollections();renderCodex();renderLore();renderClassified();updateDailyBanner(); }
+  function renderAll(){ updateDayCount(); renderStats();renderCollections();renderCodex();renderLore();renderClassified();updateDailyBanner(); }
 
   function showView(name){
     const views=["play","codex","lore","classified","settings"];

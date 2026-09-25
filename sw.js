@@ -1,9 +1,9 @@
 importScripts("./editor-assets.js");
 const CACHE_PREFIX = "rook-courtship-codex-";
-const CACHE = `${CACHE_PREFIX}v10-tideglass-fixes`;
+const CACHE = `${CACHE_PREFIX}v11-concept-ornaments`;
 const ASSETS = [...new Set([
   "./assets/tideglass/cormorant-garamond.ttf", "./assets/tideglass/water-garden.png",
-  "./", "./index.html", "./styles.css", "./tideglass.css", "./layout-editor.css", "./data-core.js",
+  "./", "./index.html", "./styles.css", "./tideglass.css", "./layout-editor.css", "./tideglass-extras.css", "./data-core.js",
   "./data-extra.js", "./app.js", "./editor-assets.js", "./layout-editor.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png",
   ...globalThis.TIDEGLASS_EDITOR_ASSETS.map(asset => `./${asset.file}`)
 ])];

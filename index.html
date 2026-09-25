@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="tideglass.css">
   <link rel="stylesheet" href="layout-editor.css">
+  <link rel="stylesheet" href="tideglass-extras.css">
   <title>Rook Courtship Codex</title>
 </head>
 <body>
@@ -20,6 +21,7 @@
     <img class="chain-drape" src="assets/tideglass/chain_banner_decoration.png" alt="" width="945" height="304">
     <img class="pendant pendant-left" src="assets/tideglass/teardrop_pendant_1.png" alt="" width="103" height="408">
     <img class="pendant pendant-right" src="assets/tideglass/teardrop_pendant_2.png" alt="" width="98" height="410">
+    <img class="crescent-ornament" src="assets/tideglass/crescent_moon_ornament.png" alt="" width="220" height="456">
   </div>
   <div class="margin-verse verse-left" aria-hidden="true">Small<br>things<br>hold<br>great<br>meaning<br>✦</div><div class="margin-verse verse-right" aria-hidden="true">Beauty<br>binds<br>us<br>✦</div>
   <header class="top">
@@ -28,7 +30,7 @@
       <h1>Rook Courtship Codex</h1>
       <p class="subtitle">Interpret strange little offerings, catalogue the rituals, unlock secret lore, and continue not asking where the antique hardware came from.</p>
     </div>
-    <button class="iconbtn" id="newBtn" aria-label="New random offering" title="New random offering"><img src="assets/tideglass/star_icon_button.png" alt="" width="182" height="178"></button>
+    <button class="iconbtn" id="newBtn" aria-label="New random offering" title="New random offering"><img src="assets/tideglass/rook_medallion.png" alt="" width="220" height="267"></button>
   </header>
 
   <section id="dailyBanner" class="daily-banner" aria-live="polite">
@@ -42,12 +44,18 @@
 
   <section id="playView">
     <div class="card offering" id="offeringCard">
+      <img class="side-chain side-chain-drop left" src="assets/tideglass/side_chain_drop.png" alt="" aria-hidden="true">
+      <img class="side-chain side-chain-swag left" src="assets/tideglass/side_chain_swag.png" alt="" aria-hidden="true">
+      <img class="side-chain side-chain-drop right" src="assets/tideglass/side_chain_drop.png" alt="" aria-hidden="true">
+      <img class="side-chain side-chain-swag right" src="assets/tideglass/side_chain_swag.png" alt="" aria-hidden="true">
+      <img class="frame-garland" src="assets/tideglass/frame_star_garland.png" alt="" aria-hidden="true" width="640" height="163">
       <div class="row">
         <div class="source-wrap">
           <div class="small" id="sourceLabel">Handcrafted offering</div>
           <div class="collection-label" id="collectionLabel">Domestic Cryptid</div>
         </div>
         <div class="badge-row">
+          <div class="day-count" id="dayCount">Day 1</div>
           <span class="badge hidden" id="rareBadge">✦ RARE</span>
           <span class="badge" id="statusBadge">Uninterpreted</span>
         </div>
