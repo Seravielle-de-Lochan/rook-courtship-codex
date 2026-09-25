@@ -1,6 +1,6 @@
 importScripts("./editor-assets.js", "./offering-art.js");
 const CACHE_PREFIX = "rook-courtship-codex-";
-const CACHE = `${CACHE_PREFIX}v12-offering-art`;
+const CACHE = `${CACHE_PREFIX}v13-swag-anchor`;
 const ASSETS = [...new Set([
   "./assets/tideglass/cormorant-garamond.ttf", "./assets/tideglass/water-garden.png",
   "./", "./index.html", "./styles.css", "./tideglass.css", "./layout-editor.css", "./tideglass-extras.css", "./data-core.js",

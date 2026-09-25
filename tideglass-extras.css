@@ -4,7 +4,7 @@
 /* ---- side chains ---------------------------------------------------------
    Both pieces are cut from one SpriteCook image (side_chain_column.png), so they
    always match. They are positioned from the frame itself: the drop hangs in the
-   side margin and the swag runs from its middle medallion to the frame edge,
+   side margin and the swag runs from the top of its round gem to the frame edge,
    tucked just behind it, so nothing can drift apart as the screen changes size. */
 .offering {
   --chain-h: 640px;                 /* drawn height of the drop */
@@ -15,11 +15,18 @@
 }
 .side-chain { position: absolute; z-index: -1; pointer-events: none; user-select: none; max-width: none; }
 .side-chain-drop { top: var(--chain-top); height: var(--chain-h); width: calc(var(--chain-h) * .0752); }
-.side-chain-swag { width: var(--swag-w); height: auto; aspect-ratio: 268 / 150; top: calc(var(--chain-top) + var(--chain-h) * .47); transform: translateY(-31%); }
+/* The drop image still carries stubs of the original chain on the right of its round gem.
+   Clip them away so only the swag's own strands leave the gem. */
+.side-chain-drop { clip-path: polygon(0 0, 100% 0, 100% 44.6%, 89% 44.6%, 89% 46.2%, 86% 46.2%, 86% 49%, 100% 49%, 100% 100%, 0 100%); }
+/* The swag hangs from the top of the drop's round gem (43.1%–48.4% of the drop): its
+   strands start at the top of the silver ring and drape over the gem to the frame. The
+   sliver of gem cut into the swag image is clipped away so it cannot sit out of line
+   with the real one. */
+.side-chain-swag { width: var(--swag-w); height: auto; aspect-ratio: 268 / 150; top: calc(var(--chain-top) + var(--chain-h) * .431); transform: translateY(-15%); clip-path: inset(0 0 0 7.5%); }
 .side-chain.left.side-chain-drop { left: var(--chain-x); }
 .side-chain.left.side-chain-swag { left: var(--chain-cx); }
 .side-chain.right.side-chain-drop { transform: scaleX(-1); }
-.side-chain.right.side-chain-swag { transform: scaleX(-1) translateY(-31%); }
+.side-chain.right.side-chain-swag { transform: scaleX(-1) translateY(-15%); }
 .side-chain.right.side-chain-drop { right: var(--chain-x); }
 .side-chain.right.side-chain-swag { right: var(--chain-cx); }
 .side-chain-drop { transform-origin: 50% 0; animation: side-chain-sway 3.1s ease-in-out infinite alternate; }
