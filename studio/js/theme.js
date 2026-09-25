@@ -211,6 +211,7 @@ export function normalizeTheme(t = {}, base = PRESETS[0]) {
     colors,
     font: { display: t.font?.display in FONT_STACKS ? t.font.display : base.font.display, body: t.font?.body in FONT_STACKS ? t.font.body : base.font.body },
     fonts: { display: t.fonts?.display || null, body: t.fonts?.body || null },
+    sounds: Object.fromEntries(SOUND_KEYS.map((k) => [k, typeof t.sounds?.[k] === 'string' ? t.sounds[k] : null])),
     motion: {
       particles: ['motes', 'sparkles', 'petals', 'bubbles', 'embers', 'snow', 'sprite', 'none'].includes(t.motion?.particles) ? t.motion.particles : base.motion.particles,
       density: Number.isFinite(+t.motion?.density) ? Math.max(0, Math.min(2, +t.motion.density)) : base.motion.density,
@@ -234,7 +235,9 @@ export function normalizeTheme(t = {}, base = PRESETS[0]) {
 
 const IMAGE_RE = /\.(png|webp|jpe?g|gif|avif|svg)$/i;
 const FONT_RE = /\.(woff2?|ttf|otf)$/i;
-const MIME = { png: 'image/png', webp: 'image/webp', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', avif: 'image/avif', svg: 'image/svg+xml', woff2: 'font/woff2', woff: 'font/woff', ttf: 'font/ttf', otf: 'font/otf', json: 'application/json' };
+const AUDIO_RE = /\.(mp3|m4a|aac|wav|ogg)$/i;
+export const SOUND_KEYS = ['appear', 'reveal']; // offering appears; its meaning is revealed
+const MIME = { png: 'image/png', webp: 'image/webp', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', avif: 'image/avif', svg: 'image/svg+xml', woff2: 'font/woff2', woff: 'font/woff', ttf: 'font/ttf', otf: 'font/otf', json: 'application/json', mp3: 'audio/mpeg', m4a: 'audio/mp4', aac: 'audio/aac', wav: 'audio/wav', ogg: 'audio/ogg' };
 export const mimeFor = (name) => MIME[name.split('.').pop().toLowerCase()] || 'application/octet-stream';
 const baseKey = (path) => path.split('/').pop().replace(/\.[^.]+$/, '').replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase().replace(/[\s_.]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
 const kebab = (k) => k.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
@@ -316,11 +319,11 @@ export async function importVisualZip(file, contentPack) {
       try { themeJson = JSON.parse(new TextDecoder().decode(bytes)); } catch (e) { warnings.push(`theme.json could not be read (${e.message}); using filenames instead.`); }
     } else if (/\.json$/i.test(rel)) {
       try { otherJson.push(JSON.parse(new TextDecoder().decode(bytes))); } catch { /* not ours */ }
-    } else if (IMAGE_RE.test(rel) || FONT_RE.test(rel)) {
+    } else if (IMAGE_RE.test(rel) || FONT_RE.test(rel) || AUDIO_RE.test(rel)) {
       files[rel] = new Blob([bytes], { type: mimeFor(rel) });
     }
   }
-  if (!Object.keys(files).length) throw new Error('No images were found in that zip. Expected PNG/WebP/JPEG files (and optionally theme.json).');
+  if (!Object.keys(files).length) throw new Error('No images were found in that zip. Expected PNG/WebP/JPEG files (and optionally theme.json and sounds).');
 
   const slots = allSlots(contentPack);
   const theme = normalizeTheme(themeJson || { name: file.name?.replace(/\.zip$/i, '') || 'Imported pack' });
@@ -345,9 +348,14 @@ export async function importVisualZip(file, contentPack) {
   }
   const used = new Set(Object.values(mapping));
   for (const f of Object.keys(files)) {
-    if (used.has(f) || FONT_RE.test(f)) continue;
+    if (used.has(f) || FONT_RE.test(f) || AUDIO_RE.test(f)) continue;
     const slot = guessSlot(f, slots);
     if (slot && !mapping[slot]) { mapping[slot] = f; used.add(f); }
+  }
+  // sounds: named in theme.json, or files called e.g. offering-appear.mp3 / answer-reveal.mp3
+  for (const k of SOUND_KEYS) {
+    const named = theme.sounds[k] && fileByLoose(theme.sounds[k]);
+    theme.sounds[k] = named || Object.keys(files).find((f) => AUDIO_RE.test(f) && new RegExp(`(^|[^a-z])${k}`, 'i').test(f.split('/').pop())) || null;
   }
   // fonts
   const fontFiles = Object.keys(files).filter((f) => FONT_RE.test(f));
@@ -362,7 +370,7 @@ export async function importVisualZip(file, contentPack) {
     const src = files[mapping.background] || files[mapping.panel] || files[mapping.stage];
     if (src) { try { theme.colors = normalizeTheme({ colors: colorsFromPalette(await extractPalette(src)) }).colors; } catch { /* keep preset colours */ } }
   }
-  return { theme, files, mapping, slices, warnings, unmapped: Object.keys(files).filter((f) => !Object.values(mapping).includes(f) && !FONT_RE.test(f)) };
+  return { theme, files, mapping, slices, warnings, unmapped: Object.keys(files).filter((f) => !Object.values(mapping).includes(f) && !FONT_RE.test(f) && !AUDIO_RE.test(f)) };
 }
 
 /** Finalise a reviewed import into a stored record. */
@@ -374,7 +382,7 @@ export function buildVisualRecord({ theme, files, mapping, slices }) {
     if (slot.startsWith('offering-')) art[slot.slice(9)] = f;
     else images[slot] = slices[slot] != null ? { file: f, slice: slices[slot] } : f;
   }
-  const keep = new Set([...Object.values(mapping), theme.fonts.display, theme.fonts.body].filter(Boolean));
+  const keep = new Set([...Object.values(mapping), theme.fonts.display, theme.fonts.body, ...Object.values(theme.sounds || {})].filter(Boolean));
   const kept = Object.fromEntries(Object.entries(files).filter(([k]) => keep.has(k)));
   return { id: theme.id, kind: 'visual', installedAt: Date.now(), theme: { ...theme, images, art }, files: kept };
 }
@@ -464,7 +472,9 @@ export async function applyVisual(record, root = document.documentElement) {
   }
   const art = {};
   for (const [id, f] of Object.entries(theme.art || {})) { const u = url(f); if (u) art[id] = u; }
-  return { images: imgMap, art, motion: theme.motion, style: theme.style };
+  const sounds = {};
+  for (const [k, f] of Object.entries(theme.sounds || {})) { const u = url(f); if (u) sounds[k] = u; }
+  return { images: imgMap, art, sounds, motion: theme.motion, style: theme.style };
 }
 
 export function presetRecord(preset) { return { id: preset.id, kind: 'visual', builtin: true, theme: normalizeTheme(preset, preset), files: {} }; }

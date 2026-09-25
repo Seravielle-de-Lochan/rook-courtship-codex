@@ -133,6 +133,7 @@
     if(prior && prior.id===o.id) showReveal(prior.intent,{replay:true});
     showView("play");
     window.scrollTo({top:0,behavior:"smooth"});
+    if(!(prior && prior.id===o.id)) sfx("appear");
   }
 
   function nextOffering(){
@@ -163,14 +164,19 @@
     $("#dailyBtn").textContent = opened ? "Revisit" : "Open it";
   }
 
-  function tone(freq=520){
-    if(!state.sound) return;
-    try{
-      const ctx = new (window.AudioContext||window.webkitAudioContext)();
-      const o=ctx.createOscillator(),g=ctx.createGain();
-      o.frequency.value=freq;g.gain.value=.025;o.connect(g);g.connect(ctx.destination);o.start();
-      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.08);o.stop(ctx.currentTime+.09);
-    }catch{}
+  // Sound effects (only when Sound is switched on in Settings). Browsers allow audio
+  // only after the player has tapped something, so nothing plays on first load.
+  // Each file is fetched once and played from memory: iPhone Safari won't play audio
+  // streamed from the service worker's cache, but a blob URL works online and offline.
+  const SFX_FILES = { appear: "assets/tideglass/sounds/offering-appear.mp3", reveal: "assets/tideglass/sounds/answer-reveal.mp3" };
+  const SFX = {};
+  function loadSfx(name){
+    return SFX[name] ||= fetch(SFX_FILES[name]).then(r=>r.ok?r.blob():Promise.reject()).then(b=>{ const a=new Audio(URL.createObjectURL(b)); a.volume=.6; return a; });
+  }
+  let soundReady=false; // set once the first offering is on screen
+  function sfx(name){
+    if(!state.sound || !soundReady) return;
+    loadSfx(name).then(a=>{ a.currentTime=0; return a.play(); }).catch(()=>{ delete SFX[name]; });
   }
 
   function discoveryRecord(o){
@@ -198,7 +204,7 @@
 
   function choose(intent){
     if(answered || !current) return;
-    answered=true; tone(current.rare?660:520);
+    answered=true; sfx("reveal");
     const hit=intent===current.intent;
     state.seen++;
     if(hit) state.correct++;
@@ -327,7 +333,7 @@
   $("#soundToggle").checked=state.sound;
   $("#birdToggle").checked=state.birds;
   $("#modeSelect").addEventListener("change",e=>{state.mode=e.target.value;save();toast("Free-play offering mode updated.");});
-  $("#soundToggle").addEventListener("change",e=>{state.sound=e.target.checked;save();toast(state.sound?"Soft click enabled.":"Sound disabled.");});
+  $("#soundToggle").addEventListener("change",e=>{state.sound=e.target.checked;save();toast(state.sound?"Sound effects on.":"Sound effects off.");sfx("appear");});
   $("#birdToggle").addEventListener("change",e=>{state.birds=e.target.checked;save();toast(state.birds?"Morrow, Ink and Pip may now interfere.":"Bird offerings paused.");updateDailyBanner();});
 
   $("#resetProgressBtn").addEventListener("click",()=>{
@@ -343,5 +349,7 @@
   renderAll();
   const today=localDateKey();
   if(!state.dailyOpened[today]) openDaily(); else nextOffering();
+  soundReady=true;
+  if(state.sound) Object.keys(SFX_FILES).forEach(n=>loadSfx(n).catch(()=>{}));
 
 })();

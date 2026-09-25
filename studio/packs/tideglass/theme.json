@@ -207,5 +207,9 @@
     "fennick-crumb": "offerings/moth-lantern/fennick-crumb.webp",
     "lune-map": "offerings/moth-lantern/lune-map.webp",
     "lune-feather": "offerings/moth-lantern/lune-feather.webp"
+  },
+  "sounds": {
+    "appear": "sounds/offering-appear.mp3",
+    "reveal": "sounds/answer-reveal.mp3"
   }
 }

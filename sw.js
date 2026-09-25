@@ -1,10 +1,10 @@
 importScripts("./editor-assets.js", "./offering-art.js");
 const CACHE_PREFIX = "rook-courtship-codex-";
-const CACHE = `${CACHE_PREFIX}v13-swag-anchor`;
+const CACHE = `${CACHE_PREFIX}v14-sound-effects`;
 const ASSETS = [...new Set([
   "./assets/tideglass/cormorant-garamond.ttf", "./assets/tideglass/water-garden.png",
   "./", "./index.html", "./styles.css", "./tideglass.css", "./layout-editor.css", "./tideglass-extras.css", "./data-core.js",
-  "./data-extra.js", "./offering-art.js", "./app.js", "./editor-assets.js", "./layout-editor.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png",
+  "./data-extra.js", "./offering-art.js", "./app.js", "./editor-assets.js", "./layout-editor.js", "./manifest.webmanifest", "./assets/tideglass/sounds/offering-appear.mp3", "./assets/tideglass/sounds/answer-reveal.mp3", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png",
   ...globalThis.TIDEGLASS_EDITOR_ASSETS.map(asset => `./${asset.file}`),
   ...Object.values(globalThis.TIDEGLASS_OFFERING_ART).map(file => `./${file}`)
 ])];

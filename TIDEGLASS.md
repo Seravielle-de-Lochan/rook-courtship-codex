@@ -254,3 +254,25 @@ All new CSS lives in `tideglass-extras.css`; `tideglass.css` is unchanged. The
 editor tray lists the new pieces, and the service worker (v11) caches them.
 Layout was checked at 320–1280px against the `tideglass-ui` branch: no new
 overlaps, and the garland clears the frame labels at every width.
+
+## Sound effects — 25 September 2026
+
+Two sounds from Seravielle live in `assets/tideglass/sounds/`:
+
+- `offering-appear.mp3` ("short warm happy") plays when an offering appears.
+- `answer-reveal.mp3` ("single bright sparkle") plays when its meaning is revealed.
+
+**How they play:**
+- Both need Sound switched on in Settings, which is off by default.
+- Nothing plays on first load: browsers allow audio only after the player has
+  tapped something.
+- Each file is fetched once and played from memory. iPhone Safari won't play
+  audio streamed from a service worker's cache, but a blob URL works online and
+  offline.
+
+**Where they're used:**
+- **The game:** precached for offline play (cache `v14-sound-effects`).
+- **Studio:** looks can now carry `sounds` in `theme.json` (see
+  `studio/PACK_FORMAT.md`), and the Tideglass look uses these two. Looks without
+  sounds keep the built-in tones. Studio's cache is now `codex-studio-v7`.
+

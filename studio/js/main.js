@@ -37,7 +37,8 @@ let settings = settingsStore.load();
 let pack = null;          // active, validated content pack
 let game = null;
 let visual = null;        // active visual record
-let applied = { images: {}, art: {} };
+let applied = { images: {}, art: {}, sounds: {} };
+let sfxReady = false; // no sound until the first offering is on screen
 let current = null;       // offering on screen
 let answered = false;
 let codexFilter = 'All';
@@ -250,6 +251,18 @@ function renderChoices() {
   }));
 }
 
+// A look's own sound effects, fetched once and played from memory (iPhone Safari won't play
+// audio streamed from the service worker cache, but a blob URL works online and offline).
+// Looks without a sound fall back to the built-in tones.
+const sfxCache = new Map();
+function playSfx(kind, fallback) {
+  if (!settings.sound || !sfxReady) return;
+  const src = applied.sounds?.[kind];
+  if (!src) { if (fallback) tone(fallback, true); return; }
+  if (!sfxCache.has(src)) sfxCache.set(src, fetch(src).then((r) => (r.ok ? r.blob() : Promise.reject())).then((b) => { const a = new Audio(URL.createObjectURL(b)); a.volume = 0.6; return a; }));
+  sfxCache.get(src).then((a) => { a.currentTime = 0; return a.play(); }).catch(() => sfxCache.delete(src));
+}
+
 function setOffering(o, { daily = false } = {}) {
   current = o; answered = false;
   renderOfferingArt(o);
@@ -267,8 +280,9 @@ function setOffering(o, { daily = false } = {}) {
   void stage.offsetWidth; // restart animations
   stage.classList.add('enter');
   const ch = $('#choices'); ch.classList.remove('enter'); void ch.offsetWidth; ch.classList.add('enter');
-  if (o.rare) { setTimeout(() => burst($('#glyph'), { kind: 'rare' }), 450); tone('rare', settings.sound); }
+  if (o.rare) { setTimeout(() => burst($('#glyph'), { kind: 'rare' }), 450); if (!applied.sounds?.appear) tone('rare', settings.sound); }
   const prior = daily ? game.dailyAnswer() : null;
+  if (!(prior && prior.id === o.id)) playSfx('appear');
   if (prior && prior.id === o.id) reveal(prior.intent, { replay: true });
   if (currentView() !== 'play') go('play');
   if (window.scrollY > 120) $('#offeringCard').scrollIntoView({ behavior: motionLevel() === 'off' ? 'auto' : 'smooth', block: 'start' });
@@ -318,8 +332,8 @@ function reveal(intent, { replay = false, res = null } = {}) {
   stage.classList.remove('enter', 'hit', 'miss'); void stage.offsetWidth;
   stage.classList.add(hit ? 'hit' : 'miss');
   const picked = $(`.choice[data-intent="${CSS.escape(intent)}"]`);
-  if (hit) { burst(picked || stage, { kind: current.rare ? 'rare' : 'correct' }); tone('correct', settings.sound); buzz([12, 40, 18], settings.haptics); }
-  else { tone('wrong', settings.sound); buzz(30, settings.haptics); }
+  if (hit) { burst(picked || stage, { kind: current.rare ? 'rare' : 'correct' }); playSfx('reveal', 'correct'); buzz([12, 40, 18], settings.haptics); }
+  else { playSfx('reveal', 'wrong'); buzz(30, settings.haptics); }
 
   const bits = [];
   if (current.rare && res?.isNew) bits.push('✦ Rare find added to the Codex.');
@@ -482,7 +496,7 @@ async function shareOrDownload(blob, filename) {
 
 async function withFiles(rec) {
   if (!rec.baseUrl) return rec;
-  const names = new Set([...Object.values(rec.theme.images).map((v) => (typeof v === 'string' ? v : v.file)), ...Object.values(rec.theme.art), rec.theme.fonts.display, rec.theme.fonts.body].filter(Boolean));
+  const names = new Set([...Object.values(rec.theme.images).map((v) => (typeof v === 'string' ? v : v.file)), ...Object.values(rec.theme.art), rec.theme.fonts.display, rec.theme.fonts.body, ...Object.values(rec.theme.sounds || {})].filter(Boolean));
   const files = {};
   for (const n of names) { const r = await fetch(new URL(n, new URL(rec.baseUrl, location.href))); if (r.ok) files[n] = await r.blob(); }
   return { ...rec, files };
@@ -856,7 +870,7 @@ function wire() {
   $('#spacingToggle').addEventListener('change', (e) => { settings.spacing = e.target.checked; saveSettings(); applyReading(); });
   $('#contrastToggle').addEventListener('change', (e) => { settings.contrast = e.target.checked; saveSettings(); applyReading(); });
   $('#blurbToggle').addEventListener('change', (e) => { settings.blurbs = e.target.checked; saveSettings(); applyReading(); });
-  $('#soundToggle').addEventListener('change', (e) => { settings.sound = e.target.checked; saveSettings(); tone('correct', settings.sound); });
+  $('#soundToggle').addEventListener('change', (e) => { settings.sound = e.target.checked; saveSettings(); playSfx('reveal', 'correct'); });
   $('#hapticToggle').addEventListener('change', (e) => { settings.haptics = e.target.checked; saveSettings(); buzz(20, settings.haptics); });
   $('#resetBtn').addEventListener('click', () => {
     if (!confirm(`Reset all progress for "${pack.title}" on this device?`)) return;
@@ -898,6 +912,7 @@ async function boot() {
   await setLook(settings.visual, { silent: true });
   await setStory(settings.content, { silent: true });
   route();
+  sfxReady = true;
   registerSW();
   if (!settings.onboarded) setTimeout(() => $('#welcomeSheet').showModal(), 500);
   // Opened from the OS with a pack file (installed PWA file handler).
