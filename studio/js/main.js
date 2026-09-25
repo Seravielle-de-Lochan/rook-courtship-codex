@@ -153,7 +153,8 @@ function renderChrome() {
 }
 
 function renderArt() {
-  for (const [id, slot] of [['#decorCanopy', 'canopy'], ['#decorPendantL', 'pendantLeft'], ['#decorPendantR', 'pendantRight']]) {
+  for (const [id, slot] of [['#decorCanopy', 'canopy'], ['#decorPendantL', 'pendantLeft'], ['#decorPendantR', 'pendantRight'], ['#decorCharm', 'headerCharm'],
+    ['#sideDropL', 'sideDrop'], ['#sideDropR', 'sideDrop'], ['#sideSwagL', 'sideSwag'], ['#sideSwagR', 'sideSwag'], ['#cardGarland', 'cardGarland']]) {
     const img = $(id);
     const src = applied.images[slot];
     img.hidden = !src;
@@ -162,7 +163,8 @@ function renderArt() {
   $('#app').classList.toggle('has-canopy', !!applied.images.canopy);
   const nb = $('#newBtn');
   if (!nb.dataset.svg) nb.dataset.svg = nb.innerHTML;
-  if (applied.images.navPlay) nb.replaceChildren(h('img', { src: applied.images.navPlay, alt: '' }));
+  const nbArt = applied.images.newButton || applied.images.navPlay;
+  if (nbArt) nb.replaceChildren(h('img', { src: nbArt, alt: '' }));
   else nb.innerHTML = nb.dataset.svg; // our own static markup
   const crest = $('#crest');
   crest.replaceChildren(applied.images.crest ? h('img', { src: applied.images.crest, alt: '' }) : h('span', { text: '✦' }));

@@ -34,6 +34,16 @@ export const STATIC_SLOTS = [
     prompt: 'single tall hanging pendant ornament on a short chain, vertical, transparent background', aliases: ['pendant-left', 'teardrop-pendant-1', 'hanging-left'] },
   { key: 'pendantRight', label: 'Hanging pendant (right)', tier: 'complete', aspect: '9:16', w: 64, h: 256, mode: 'ui', bg: 'transparent',
     prompt: 'a second, slightly different tall hanging pendant ornament on a short chain, vertical, transparent background', aliases: ['pendant-right', 'teardrop-pendant-2', 'hanging-right'] },
+  { key: 'headerCharm', label: 'Header charm (hangs beside the title)', tier: 'complete', aspect: '9:16', w: 96, h: 192, mode: 'ui', bg: 'transparent',
+    prompt: 'small hanging charm ornament on a short chain, such as a crescent moon, vertical, transparent background', aliases: ['header-charm', 'crescent-moon-ornament', 'crescent-ornament', 'title-charm'] },
+  { key: 'newButton', label: 'New-offering button', tier: 'complete', aspect: '1:1', w: 128, h: 128, mode: 'ui', bg: 'transparent',
+    prompt: 'round ornamental medallion button with an emblem at its centre, no text, front view', aliases: ['new-button', 'new-offering-button', 'rook-medallion', 'shuffle-button'] },
+  { key: 'cardGarland', label: 'Card garland (top edge of the offering card)', tier: 'complete', aspect: '16:9', w: 512, h: 128, mode: 'ui', bg: 'transparent',
+    prompt: 'short symmetrical ornamental garland that drapes along the top edge of a card, small central charm, transparent background, no text', aliases: ['card-garland', 'frame-garland', 'frame-star-garland'] },
+  { key: 'sideDrop', label: 'Side chain (hangs beside the offering card)', tier: 'complete', aspect: '9:16', w: 64, h: 512, mode: 'ui', bg: 'transparent',
+    prompt: 'very tall thin vertical hanging chain of linked gems and charms with one round gem near the middle, transparent background', aliases: ['side-drop', 'side-chain', 'side-chain-drop', 'side-chain-drop-clean', 'side-chain-column'] },
+  { key: 'sideSwag', label: 'Side swag (drapes from the side chain to the card)', tier: 'complete', aspect: '16:9', w: 256, h: 144, mode: 'ui', bg: 'transparent',
+    prompt: 'short draped double chain swag with small hanging charms, attached at its top-left and top-right ends, transparent background', aliases: ['side-swag', 'side-chain-swag', 'side-chain-swag-clean', 'chain-swag'] },
   { key: 'divider', label: 'Ornamental divider', tier: 'complete', aspect: '16:9', w: 512, h: 32, mode: 'ui', bg: 'transparent',
     prompt: 'long thin horizontal ornamental divider line with a small central flourish, transparent background', aliases: ['long-divider', 'long-divider-1', 'rule', 'separator'] },
   { key: 'statsPanel', label: 'Stats frame (9-slice)', tier: 'complete', nine: true, slice: 40, aspect: '16:9', w: 384, h: 216, mode: 'ui', bg: 'transparent',
@@ -180,6 +190,8 @@ export function colorsFromPalette(palette, preferLight = null) {
 
 const COLOR_KEYS = ['bg', 'bg2', 'surface', 'surface2', 'border', 'text', 'muted', 'accent', 'accent2', 'rare', 'danger'];
 
+const clamp01 = (v, dflt) => (typeof v === 'number' && v >= 0 && v <= 1 ? v : dflt);
+
 export function normalizeTheme(t = {}, base = PRESETS[0]) {
   const colors = { ...base.colors };
   for (const k of COLOR_KEYS) if (isHex(t.colors?.[k])) colors[k] = t.colors[k].trim();
@@ -208,6 +220,9 @@ export function normalizeTheme(t = {}, base = PRESETS[0]) {
       stage: t.layout?.stage === 'ring' ? 'ring' : 'box',
       choiceBlurbs: t.layout?.choiceBlurbs !== false,
       backgroundFit: t.layout?.backgroundFit === 'tile' ? 'tile' : 'cover',
+      // where the side swag hangs from the side chain (fraction of its height), and how far down the swag image its strands start
+      swagAt: clamp01(t.layout?.swagAt, 0.43),
+      swagLift: clamp01(t.layout?.swagLift, 0.15),
     },
     images: t.images && typeof t.images === 'object' ? t.images : {},
     art: t.art && typeof t.art === 'object' ? t.art : {},
@@ -392,7 +407,7 @@ export async function applyVisual(record, root = document.documentElement) {
 
   const st = root.style;
   // wipe previous image vars
-  for (const prop of [...st]) if (prop.startsWith('--img-') || prop.startsWith('--slice-')) st.removeProperty(prop);
+  for (const prop of [...st]) if (prop.startsWith('--img-') || prop.startsWith('--slice-') || prop === '--panel-bw') st.removeProperty(prop);
   for (const a of [...root.attributes]) if (a.name.startsWith('data-has-')) root.removeAttribute(a.name);
 
   for (const [k, v] of Object.entries(theme.colors)) st.setProperty(`--c-${kebab(k)}`, v);
@@ -408,6 +423,8 @@ export async function applyVisual(record, root = document.documentElement) {
   root.dataset.stage = theme.layout.stage;
   root.dataset.blurbs = theme.layout.choiceBlurbs ? 'on' : 'off';
   root.dataset.bgfit = theme.layout.backgroundFit;
+  root.style.setProperty('--swag-at', theme.layout.swagAt);
+  root.style.setProperty('--swag-lift', `${-theme.layout.swagLift * 100}%`);
   root.dataset.scheme = lum(hexToRgb(theme.colors.bg)) > 0.4 ? 'light' : 'dark';
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme.colors.bg);
 
@@ -442,6 +459,7 @@ export async function applyVisual(record, root = document.documentElement) {
       // Rendered border width: from the pack if given, else the source slice scaled to something sensible on screen.
       const w = typeof v === 'object' && v?.width != null ? quad(v.width) : [t, r, b, l].map((n) => Math.max(6, Math.min(28, Math.round(n * 0.5))));
       st.setProperty(`--slice-${k}-w`, w.map((n) => `${Math.max(0, Math.min(120, n))}px`).join(' '));
+      if (slot === 'panel') st.setProperty('--panel-bw', `${Math.max(0, Math.min(120, w[3]))}px`); // left edge, for ornaments placed from the card's outer edge
     }
   }
   const art = {};

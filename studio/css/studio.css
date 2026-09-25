@@ -372,7 +372,37 @@ dialog.sheet[open] { animation: sheetUp .45s var(--ease-out) both; }
 [data-bgfit="tile"] .aurora { opacity: .08; }
 [data-has-nav-play] .nav-ico, [data-has-nav-codex] .nav-ico { width: 32px; height: 32px; }
 .nav-ico img { width: 32px; height: 32px; }
-[data-motion="off"] .decor-pendant, [data-motion="calm"] .decor-pendant { animation: none; }
+[data-motion="off"] :is(.decor-pendant, .decor-charm, .side-drop), [data-motion="calm"] :is(.decor-pendant, .decor-charm, .side-drop) { animation: none; }
+
+/* ---------- ornaments (headerCharm, newButton, cardGarland, sideDrop, sideSwag) ---------- */
+.decor-charm { left: 17%; top: clamp(40px, 13.5vw, 104px); width: clamp(20px, 5.6vw, 36px); height: auto; transform-origin: 50% 0; animation: sway 3.3s ease-in-out infinite alternate; animation-delay: -.8s; filter: drop-shadow(0 0 8px rgba(var(--accent-rgb), .3)); }
+[data-has-new-button] .iconbtn { border: 0; background: none; padding: 0; box-shadow: none; }
+[data-has-new-button] .iconbtn img { filter: drop-shadow(0 0 6px rgba(var(--accent-rgb), .35)); }
+[data-has-new-button][data-header="centered"] .app.has-canopy .iconbtn { width: clamp(38px, 11vw, 54px); height: clamp(46px, 13.2vw, 64px); }
+
+/* Card ornaments are placed from the card's outer edge: the decor box is widened by the
+   frame's border width. Side pieces sit behind the card, the garland in front of it. */
+.offering { position: relative; }
+.card-decor { position: absolute; inset: calc(-1 * var(--panel-bw, 1px)); pointer-events: none;
+  --dh: 560px; --dw: calc(var(--dh) * .0758); --dtop: 64px;
+  --dgap: 58px; /* space between the side chain and the card, where the swag drapes */
+  --dx: max(calc(-1 * var(--dw) - var(--dgap)), calc((100% - 100vw) / 2 + 4px)); /* stay on screen when the margin is narrow */
+  --dcx: calc(var(--dx) + var(--dw) / 2); }
+.card-decor img { position: absolute; pointer-events: none; user-select: none; max-width: none; }
+.side-drop { z-index: -1; top: var(--dtop); height: var(--dh); width: var(--dw); transform-origin: 50% 0; animation: sway-small 3.1s ease-in-out infinite alternate; }
+.side-swag { z-index: -1; top: calc(var(--dtop) + var(--dh) * var(--swag-at, .43)); width: calc(-1 * var(--dcx) + 6px); height: auto; transform: translateY(var(--swag-lift, -15%)); }
+.side-drop.side-left { left: var(--dx); }
+.side-swag.side-left { left: var(--dcx); }
+.side-drop.side-right { right: var(--dx); animation-name: sway-small-mirrored; animation-duration: 3.4s; animation-delay: -1.2s; }
+.side-swag.side-right { right: var(--dcx); transform: scaleX(-1) translateY(var(--swag-lift, -15%)); }
+@keyframes sway-small { from { transform: rotate(-.6deg); } to { transform: rotate(.6deg); } }
+@keyframes sway-small-mirrored { from { transform: scaleX(-1) rotate(-.6deg); } to { transform: scaleX(-1) rotate(.6deg); } }
+.card-garland { z-index: 2; left: 50%; top: -12px; width: 42%; height: auto; transform: translateX(-50%); filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .5)); }
+@media (max-width: 540px) {
+  [data-has-side-drop] .offering { margin-inline: 20px; }
+  .card-decor { --dh: 430px; --dtop: 50px; }
+  .card-garland { width: 40%; top: -9px; }
+}
 
 /* ---------- reading & accessibility ---------- */
 @font-face { font-family: "Atkinson Hyperlegible"; src: url("../fonts/atkinson-hyperlegible-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }

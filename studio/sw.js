@@ -1,6 +1,6 @@
 // Codex Studio service worker: precache the app shell, serve it cache-first,
 // and let the page decide when to activate an update.
-const VERSION = 'codex-studio-v5';
+const VERSION = 'codex-studio-v6';
 const SHELL = [
   './', './index.html', './css/studio.css', './manifest.webmanifest',
   './js/main.js', './js/engine.js', './js/db.js', './js/theme.js', './js/fx.js', './js/forge.js', './js/zip.js',
@@ -11,6 +11,11 @@ const SHELL = [
   '../assets/tideglass/book_icon_button.png',
   '../assets/tideglass/chain_banner_decoration.png',
   '../assets/tideglass/cormorant-garamond.ttf',
+  '../assets/tideglass/crescent_moon_ornament.png',
+  '../assets/tideglass/frame_star_garland.png',
+  '../assets/tideglass/rook_medallion.png',
+  '../assets/tideglass/side_chain_drop_clean.png',
+  '../assets/tideglass/side_chain_swag_clean.png',
   '../assets/tideglass/flower_ornament.png',
   '../assets/tideglass/gear_icon_button.png',
   '../assets/tideglass/large_frame_empty.png',

@@ -36,7 +36,9 @@
     "header": "centered",
     "stage": "ring",
     "choiceBlurbs": false,
-    "backgroundFit": "tile"
+    "backgroundFit": "tile",
+    "swagAt": 0.431,
+    "swagLift": 0.15
   },
   "images": {
     "background": "water-garden.png",
@@ -137,7 +139,12 @@
     "navCodex": "book_icon_button.png",
     "navLore": "list_icon_button.png",
     "navSpecial": "lock_icon_button.png",
-    "navStudio": "gear_icon_button.png"
+    "navStudio": "gear_icon_button.png",
+    "headerCharm": "crescent_moon_ornament.png",
+    "newButton": "rook_medallion.png",
+    "cardGarland": "frame_star_garland.png",
+    "sideDrop": "side_chain_drop_clean.png",
+    "sideSwag": "side_chain_swag_clean.png"
   },
   "art": {
     "moonbloom": "flower_ornament.png",
