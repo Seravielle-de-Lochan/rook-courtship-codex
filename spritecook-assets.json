@@ -228,5 +228,100 @@
     "asset_id": "899634e1-82f3-4cc4-9bc2-8f68ff1c2f7d",
     "sha12": "f73cba067f05",
     "label": "Offering: Perfectly ridiculous curly leaf"
+  },
+  "offerings/moth-lantern/first-wick": {
+    "asset_id": "386f3543-e083-4423-b487-8af26577e216",
+    "sha12": "e32bec759742",
+    "label": "Moth offering: The first wick you ever trimmed here"
+  },
+  "offerings/moth-lantern/clean-glass": {
+    "asset_id": "ed1377d4-c9c6-4b0f-8f68-82d141418e73",
+    "sha12": "7e24c20c0c8a",
+    "label": "Moth offering: Lantern glass polished spotless"
+  },
+  "offerings/moth-lantern/wax-heart": {
+    "asset_id": "3b786511-dcc0-4364-b903-05192bd34793",
+    "sha12": "a801c3195221",
+    "label": "Moth offering: A drip of wax in a vaguely heart shape"
+  },
+  "offerings/moth-lantern/match-row": {
+    "asset_id": "a8465df7-c45d-42a5-8206-169eeeb7aa18",
+    "sha12": "27037782584f",
+    "label": "Moth offering: Seven matches in a row"
+  },
+  "offerings/moth-lantern/moonflower": {
+    "asset_id": "32c27e37-69ce-4f74-b189-91e5ad4a95d3",
+    "sha12": "a219e357d2fc",
+    "label": "Moth offering: A moonflower opened on your pillow"
+  },
+  "offerings/moth-lantern/jasmine-hat": {
+    "asset_id": "33938378-a2ed-448e-8666-001f40b19253",
+    "sha12": "3322084f7521",
+    "label": "Moth offering: Night jasmine tucked in your hatband"
+  },
+  "offerings/moth-lantern/dew-clover": {
+    "asset_id": "a9b395bf-7ec9-415f-97c6-46d6c91baf76",
+    "sha12": "15cf800a93c2",
+    "label": "Moth offering: Four-leaf clover, heavy with dew"
+  },
+  "offerings/moth-lantern/petal-trail": {
+    "asset_id": "b66dde99-0a3b-48d3-9794-abeeb8e045f2",
+    "sha12": "fa4a7d15afb4",
+    "label": "Moth offering: A trail of pale petals to the door"
+  },
+  "offerings/moth-lantern/bishop-candle": {
+    "asset_id": "30297e14-75c4-4247-9795-c17c0d3c0997",
+    "sha12": "a54b8a446083",
+    "label": "Moth offering: An extremely nice church candle"
+  },
+  "offerings/moth-lantern/lamp-key": {
+    "asset_id": "1474f828-38ed-46fd-9af2-d5bd9037cbe5",
+    "sha12": "00a0badfda11",
+    "label": "Moth offering: The master key to every lamp on the hill"
+  },
+  "offerings/moth-lantern/finial": {
+    "asset_id": "43ceb010-664b-42e3-93ae-7f0ed88756dc",
+    "sha12": "c002b32ad0db",
+    "label": "Moth offering: A gilded lantern finial"
+  },
+  "offerings/moth-lantern/stained-chip": {
+    "asset_id": "2a93b992-859a-4a00-a0bb-0a80fe6d6fa4",
+    "sha12": "476acf94fc4d",
+    "label": "Moth offering: A chip of blue stained glass"
+  },
+  "offerings/moth-lantern/rare-first-flame": {
+    "asset_id": "ec9f5a87-c15b-48fb-ba69-71c2da27cd8a",
+    "sha12": "be66a68a3b7c",
+    "label": "Moth offering: A flame that will not go out"
+  },
+  "offerings/moth-lantern/rare-wing-scale": {
+    "asset_id": "6aca32e9-404f-4013-b218-3bd1359be82c",
+    "sha12": "c00e17343bb6",
+    "label": "Moth offering: A single silver wing-scale in a locket"
+  },
+  "offerings/moth-lantern/rare-cathedral-rose": {
+    "asset_id": "cd806402-f9f9-4e6c-bcd3-ee6d858a6863",
+    "sha12": "564b4d45f935",
+    "label": "Moth offering: The cathedral's rose-window key"
+  },
+  "offerings/moth-lantern/fennick-button": {
+    "asset_id": "7ad7d3e8-84d2-4915-a252-3f914c153dd1",
+    "sha12": "609341b3b54f",
+    "label": "Moth offering: A button, delivered at speed"
+  },
+  "offerings/moth-lantern/fennick-crumb": {
+    "asset_id": "a5dd7384-0847-47a4-800c-cbea43e80c48",
+    "sha12": "4fd7a0d7240d",
+    "label": "Moth offering: One heroic biscuit crumb"
+  },
+  "offerings/moth-lantern/lune-map": {
+    "asset_id": "daf8128f-a06c-4459-9170-1b65ff062c69",
+    "sha12": "54eb2b9855ba",
+    "label": "Moth offering: A map of every lamp in the old town"
+  },
+  "offerings/moth-lantern/lune-feather": {
+    "asset_id": "745229f6-626d-4990-993f-f7d405d2e7db",
+    "sha12": "e30e6f791a40",
+    "label": "Moth offering: A grey owl feather"
   }
 }

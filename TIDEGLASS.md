@@ -228,6 +228,22 @@ offerings. Procedural finds keep their glyph.
 To replace an illustration, overwrite its `.webp` file, or point its entry in
 `offering-art.js` at a new file, then bump the cache name in `sw.js`.
 
+### In Studio
+
+The built-in **Tideglass** look in Studio (`studio/packs/tideglass/theme.json`) uses
+the same files through its `art` map, so people can see what an illustrated look
+can do.
+
+- **Rook story**: all 41 illustrations.
+- **Moth Lantern Society story**: 19 more illustrations in
+  `assets/tideglass/offerings/moth-lantern/`. That covers every handcrafted, rare
+  and companion offering (Fennick and Old Lune). They use the same settings and
+  pistachio style reference as the Rook set, with a lamplighter's-town theme and
+  warm lamplight glints; the prompts are in `offering-prompts.json`.
+- **Procedural finds** in either story keep their glyph.
+- **Caching**: Studio caches each illustration the first time it is shown. Its
+  service worker cache is now `codex-studio-v4`.
+
 All new CSS lives in `tideglass-extras.css`; `tideglass.css` is unchanged. The
 editor tray lists the new pieces, and the service worker (v11) caches them.
 Layout was checked at 320–1280px against the `tideglass-ui` branch: no new

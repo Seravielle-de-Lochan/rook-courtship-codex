@@ -1,6 +1,6 @@
 // Codex Studio service worker: precache the app shell, serve it cache-first,
 // and let the page decide when to activate an update.
-const VERSION = 'codex-studio-v3';
+const VERSION = 'codex-studio-v4';
 const SHELL = [
   './', './index.html', './css/studio.css', './manifest.webmanifest',
   './js/main.js', './js/engine.js', './js/db.js', './js/theme.js', './js/fx.js', './js/forge.js', './js/zip.js',
