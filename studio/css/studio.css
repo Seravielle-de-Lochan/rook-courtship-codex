@@ -386,7 +386,7 @@ dialog.sheet[open] { animation: sheetUp .45s var(--ease-out) both; }
 .card-decor { position: absolute; inset: calc(-1 * var(--panel-bw, 1px)); pointer-events: none;
   --dh: 560px; --dw: calc(var(--dh) * .0758); --dtop: 64px;
   --dgap: 58px; /* space between the side chain and the card, where the swag drapes */
-  --dx: max(calc(-1 * var(--dw) - var(--dgap)), calc((100% - 100vw) / 2 + 4px)); /* stay on screen when the margin is narrow */
+  --dx: max(calc(-1 * var(--dw) - var(--dgap)), calc((100% - 100vw) / 2 + 10px)); /* stay on screen (with room to sway) when the margin is narrow */
   --dcx: calc(var(--dx) + var(--dw) / 2); }
 .card-decor img { position: absolute; pointer-events: none; user-select: none; max-width: none; }
 .side-drop { z-index: -1; top: var(--dtop); height: var(--dh); width: var(--dw); transform-origin: 50% 0; animation: sway-small 3.1s ease-in-out infinite alternate; }

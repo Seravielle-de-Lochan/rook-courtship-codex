@@ -68,6 +68,8 @@ If the zip contains a **SpriteCook UI-kit manifest** (or any JSON listing compon
   - `"stage": "ring"` shows the offering inside a thin glowing ring instead of a box.
   - `"choiceBlurbs": false` shows only the answer labels, one per row.
   - `"backgroundFit": "tile"` fits the background to the page width and repeats it downwards, instead of cropping it to cover the screen.
+  - `"swagAt"` (0–1, default `0.43`): how far down the `side-drop` image the `side-swag` hangs from. Point it at the top of whatever the swag should hang from, such as a gem.
+  - `"swagLift"` (0–1, default `0.15`): how far down the `side-swag` image its strands start. The swag is raised by this much, so the strands meet the `swagAt` point.
 - Text colours are automatically nudged, if needed, so they stay readable against the card colour.
 
 ### Image slots
@@ -84,6 +86,11 @@ If the zip contains a **SpriteCook UI-kit manifest** (or any JSON listing compon
 | `canopy` | Decoration hanging from the top of the screen | wide, e.g. 945×304 | |
 | `pendant-left`, `pendant-right` | Swaying ornaments at the top corners | tall, e.g. 100×400 | |
 | `divider` | Flourish under the title and the offering name | wide and thin | |
+| `header-charm` | Small charm hanging beside the title, e.g. from the canopy | tall, e.g. 96×192 | |
+| `new-button` | The "new offering" button (otherwise `nav-play` is used) | 128×128 | |
+| `card-garland` | Garland along the top edge of the offering card | wide, e.g. 640×163 | |
+| `side-drop` | Tall chain hanging beside the offering card, mirrored on the right | very tall, e.g. 65×858 | |
+| `side-swag` | Swag draped from the side chain to the card edge, mirrored on the right. It attaches at its top-left and top-right. | wide, e.g. 248×150 | |
 | `stats-panel` | Frame around the stats row | 16:9 | ✓ |
 | `choice-<intent id>` | Answer button art for one specific answer | wide pill | ✓ |
 | `particle` | Floating ambient sprite | 32×32 | |

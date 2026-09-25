@@ -242,7 +242,13 @@ can do.
   warm lamplight glints; the prompts are in `offering-prompts.json`.
 - **Procedural finds** in either story keep their glyph.
 - **Caching**: Studio caches each illustration the first time it is shown. Its
-  service worker cache is now `codex-studio-v5`.
+  service worker cache is now `codex-studio-v6`.
+- **Ornaments**: the Tideglass look also fills Studio's ornament slots with the
+  concept pieces: `headerCharm` (crescent), `newButton` (rook medallion),
+  `cardGarland` (star garland), and `sideDrop`/`sideSwag`. The side pieces use
+  `side_chain_drop_clean.png` and `side_chain_swag_clean.png`, copies of the game's
+  chain pieces without the stubs and gem sliver left over from cutting the
+  original image.
 
 All new CSS lives in `tideglass-extras.css`; `tideglass.css` is unchanged. The
 editor tray lists the new pieces, and the service worker (v11) caches them.
