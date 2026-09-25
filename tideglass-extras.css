@@ -73,3 +73,10 @@
 .lore-art { float: right; width: 64px; height: 64px; object-fit: contain; margin: 0 0 6px 12px; filter: drop-shadow(0 0 10px #83c7c23d); }
 .unlock-art-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 8px; }
 .unlock-art { width: 96px; height: 96px; object-fit: contain; filter: drop-shadow(0 0 12px #83c7c24d); }
+
+/* Companion portraits and collection badges */
+.giver-portrait { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 8px; border: 1px solid #8cbfa766; background: #0b1c20; }
+.collection-badge { width: 18px; height: 18px; object-fit: contain; vertical-align: -4px; margin-left: 5px; }
+.collection-card-badge { width: 36px; height: 36px; object-fit: contain; grid-row: 1 / span 2; }
+.collection-card:has(.collection-card-badge) { display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 10px; align-items: start; }
+.collection-card:has(.collection-card-badge) > :not(.collection-card-badge) { grid-column: 2; }

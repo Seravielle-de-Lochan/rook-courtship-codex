@@ -326,7 +326,29 @@ of Morrow, Ink and Pip.
   seal on the unlock sheet and in the Lore list. The built-in stories supply
   their own lore art, so it shows in every look. Studio's cache is
   `codex-studio-v10`.
-- **Still without art of their own:** companion portraits (Morrow, Ink, Pip,
-  Fennick, Old Lune) and collection badges (5 Rook, 3 moth). Procedural finds
-  keep their glyph by design.
+- **Portraits and badges:** see the next section. Procedural finds keep their
+  glyph by design.
+
+## Companion portraits and collection badges — 25 September 2026
+
+This adds 13 more SpriteCook pieces in the same painterly style:
+
+- **Portraits (5):** `assets/tideglass/companions/<name>.webp`, 256 px.
+  - The three rooks: Morrow (a silver thread at the throat, courting with
+    standards), Ink (half in shadow) and Pip (a teal ribbon, all spectacle).
+  - The two moths: Fennick (fluffy, one singed wing tip) and Old Lune (lace
+    wings, very dusty).
+- **Badges (8):** `assets/tideglass/collections/<collection>.webp`, 160 px.
+  Each is a round silver medallion with a single emblem, so it reads even at
+  18 px.
+
+Where they appear:
+- **The game:** portraits sit beside "Presented by …", and badges follow the
+  collection name and head each Codex collection card. `offering-art.js`
+  defines `TIDEGLASS_COMPANION_ART` and `TIDEGLASS_COLLECTION_ART`, and
+  everything is precached (cache `v18-portraits-badges`).
+- **Studio:** they fill the existing `companion-*` and `collection-*` slots of
+  the Tideglass look. The built-in stories also carry them into every other look,
+  and a look's own portraits or badges win. The portrait circle is now 34 px.
+  Studio's cache is `codex-studio-v11`.
 

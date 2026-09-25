@@ -127,7 +127,7 @@ body[data-view]:not([data-view="play"]) .subtitle { display: none; }
 @keyframes float { 50% { transform: translateY(-7px) rotate(2deg); } }
 .name { font-size: 1.18rem; font-weight: 760; margin-top: 12px; line-height: 1.25; text-shadow: 0 2px 10px rgba(var(--bg-rgb), .6); overflow-wrap: anywhere; }
 .giver { font-size: .76rem; color: var(--c-accent); margin-top: 8px; display: flex; align-items: center; gap: 6px; }
-.giver img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(var(--accent-rgb), .4); }
+.giver img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(var(--accent-rgb), .4); background: var(--c-surface2); }
 .stage-veil { position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0;
   background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,.22) 45%, rgba(var(--accent-rgb), .35) 50%, transparent 75%), var(--c-surface2); background-size: 250% 100%, auto; }
 .stage.enter .stage-veil { animation: unveil .9s var(--ease-out) both; }

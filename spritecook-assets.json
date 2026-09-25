@@ -393,5 +393,70 @@
     "asset_id": "f75a90db-cede-4702-92f2-789c7930d6ff",
     "sha12": "e732bb72c0b8",
     "label": "Secret lore: What Moths Do Not Give"
+  },
+  "companions/morrow": {
+    "asset_id": "f30e2bfd-f636-46ed-a45d-80e980676e73",
+    "sha12": "45abe02a0b27",
+    "label": "Companion portrait: Morrow"
+  },
+  "companions/ink": {
+    "asset_id": "30d35f8b-2f7e-47f8-885a-8d9778e3f1bd",
+    "sha12": "80b4fe46f860",
+    "label": "Companion portrait: Ink"
+  },
+  "companions/pip": {
+    "asset_id": "84715d11-6e7d-4f61-b12a-5c0cf1f09b77",
+    "sha12": "ccd2a04a57cf",
+    "label": "Companion portrait: Pip"
+  },
+  "companions/fennick": {
+    "asset_id": "e107e95a-2d69-4809-9636-b623f1e7b2b9",
+    "sha12": "bd4988037e4e",
+    "label": "Companion portrait: Fennick"
+  },
+  "companions/old-lune": {
+    "asset_id": "2b75e464-f8e1-46b2-b214-faedfc5ca533",
+    "sha12": "74a47f22c930",
+    "label": "Companion portrait: Old Lune"
+  },
+  "collections/tideglass-reach": {
+    "asset_id": "789bcfd2-dae8-4d7b-b776-a4464ab463f0",
+    "sha12": "58c4df434cd1",
+    "label": "Collection badge: Tideglass Reach"
+  },
+  "collections/domestic-cryptid": {
+    "asset_id": "85bbaefb-91b3-4a73-9292-2916112e8731",
+    "sha12": "d099e18ff144",
+    "label": "Collection badge: Domestic Cryptid"
+  },
+  "collections/questionable-antiques": {
+    "asset_id": "3a27cc97-c697-4f09-8e80-6dec641ce6dd",
+    "sha12": "03474d5d8985",
+    "label": "Collection badge: Questionable Antiques"
+  },
+  "collections/things-rook-found-outside": {
+    "asset_id": "277cc7b7-9cd6-4658-85ee-a03f7796a33f",
+    "sha12": "765e94fdd31f",
+    "label": "Collection badge: Things Rook Found Outside"
+  },
+  "collections/flirting-with-hardware": {
+    "asset_id": "94ff4e45-44c9-4439-8928-387fa01b87aa",
+    "sha12": "9905c5297cd1",
+    "label": "Collection badge: Flirting With Hardware"
+  },
+  "collections/lamp-room": {
+    "asset_id": "f6dfe037-d90d-44d3-b0e7-e724338e7b54",
+    "sha12": "fff024d01dd2",
+    "label": "Collection badge: Lamp Room"
+  },
+  "collections/night-garden": {
+    "asset_id": "50e6b3c5-72de-459e-a2a6-37509f522c2e",
+    "sha12": "9972108c7b86",
+    "label": "Collection badge: Night Garden"
+  },
+  "collections/unofficial-acquisitions": {
+    "asset_id": "e037592b-2926-44a1-8810-2311653174eb",
+    "sha12": "c02d6db5ff78",
+    "label": "Collection badge: Unofficial Acquisitions"
   }
 }
