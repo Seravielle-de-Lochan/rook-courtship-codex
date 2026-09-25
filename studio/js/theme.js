@@ -466,8 +466,15 @@ export async function applyVisual(record, root = document.documentElement) {
       st.setProperty(`--slice-${k}`, `${t} ${r} ${b} ${l}`);
       // Rendered border width: from the pack if given, else the source slice scaled to something sensible on screen.
       const w = typeof v === 'object' && v?.width != null ? quad(v.width) : [t, r, b, l].map((n) => Math.max(6, Math.min(28, Math.round(n * 0.5))));
-      st.setProperty(`--slice-${k}-w`, w.map((n) => `${Math.max(0, Math.min(120, n))}px`).join(' '));
+      // Answer pills scale with --pill-scale (smaller end caps on narrow phones), everything else is fixed.
+      const px = (n) => (slot.startsWith('choice-') ? `calc(${n}px * var(--pill-scale, 1))` : `${n}px`);
+      st.setProperty(`--slice-${k}-w`, w.map((n) => px(Math.max(0, Math.min(120, n)))).join(' '));
       if (slot === 'panel') st.setProperty('--panel-bw', `${Math.max(0, Math.min(120, w[3]))}px`); // left edge, for ornaments placed from the card's outer edge
+      // Per-answer pill art is drawn at its natural height (the image height at the same scale as its
+      // top border), so its rounded ends and icon are never squashed or stretched.
+      if (slot.startsWith('choice-') && t > 0 && w[0] > 0) {
+        try { const im = new Image(); im.src = u; await im.decode(); st.setProperty(`--slice-${k}-h`, px(Math.round((im.naturalHeight * w[0]) / t))); } catch { /* fall back to flexible height */ }
+      }
     }
   }
   const art = {};

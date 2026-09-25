@@ -39,6 +39,7 @@ let game = null;
 let visual = null;        // active visual record
 let applied = { images: {}, art: {}, sounds: {} };
 let sfxReady = false; // no sound until the first offering is on screen
+let storyArt = {};    // the built-in stories' own illustrations, shown whatever the look (a look's art wins)
 let current = null;       // offering on screen
 let answered = false;
 let codexFilter = 'All';
@@ -77,11 +78,23 @@ async function setStory(id, { silent = false } = {}) {
   settings.content = pack.id; settingsStore.save(settings);
   game = new Game(pack, progressStore.load(pack.id), settings);
   codexFilter = 'All';
+  storyArt = await builtinStoryArt(pack.id);
   renderChrome();
   renderAll();
   const today = localDateKey();
   if (!game.dailyAnswer(today)) openDaily(); else nextOffering();
   if (!silent) toast(`Now playing: ${pack.title}`);
+}
+
+// The built-in stories were illustrated for the Tideglass kit; those pictures belong to the
+// story, so they show in every look unless the look has its own art for that offering.
+async function builtinStoryArt(id) {
+  if (!BUILTIN_STORIES.some((s) => s.id === id)) return {};
+  try {
+    const rec = await builtinLook(BUILTIN_LOOKS[0]);
+    const base = new URL(rec.baseUrl, location.href);
+    return Object.fromEntries(Object.entries(rec.theme.art).map(([k, f]) => [k, new URL(f, base).href]));
+  } catch { return {}; }
 }
 
 const builtinCache = new Map();
@@ -195,6 +208,7 @@ function route() {
   if (!VIEWS.includes(view) || (view === 'special' && !pack?.special)) view = 'play';
   const changed = document.body.dataset.view !== view;
   document.body.dataset.view = view;
+  if (view === 'play') requestAnimationFrame(fitChoices);
   for (const s of $$('.view')) s.classList.toggle('hidden', s.dataset.view !== view);
   for (const b of $$('.nav-btn')) { const on = b.dataset.view === view; b.classList.toggle('active', on); on ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'); }
   if (view === 'studio') showPane(pane || document.body.dataset.pane || 'looks');
@@ -222,7 +236,7 @@ function showPane(name) {
 
 // ================================================================ play
 
-function offeringArt(o) { return applied.art[canonicalId(o.id)] || null; }
+function offeringArt(o) { const id = canonicalId(o.id); return applied.art[id] || storyArt[id] || null; }
 
 function renderOfferingArt(o) {
   const src = offeringArt(o);
@@ -245,10 +259,29 @@ function renderChoices() {
   wrap.replaceChildren(...pack.intents.map((it) => {
     const icon = applied.images[`intent-${it.id}`];
     const art = applied.images[`choice-${it.id}`];
-    return h('button', { class: `choice${art ? ' has-art' : ''}`, type: 'button', 'data-intent': it.id, style: art ? `--choice-art:url("${art}");--choice-slice:var(--slice-choice-${it.id});--choice-w:var(--slice-choice-${it.id}-w)` : null, onclick: () => choose(it.id) },
+    return h('button', { class: `choice${art ? ' has-art' : ''}`, type: 'button', 'data-intent': it.id, style: art ? `--choice-art:url("${art}");--choice-slice:var(--slice-choice-${it.id});--choice-w:var(--slice-choice-${it.id}-w);--choice-h:var(--slice-choice-${it.id}-h)` : null, onclick: () => choose(it.id) },
       icon ? h('img', { class: 'choice-ico', src: icon, alt: '' }) : null,
       h('span', { class: 'choice-txt' }, h('strong', { text: it.label }), it.blurb ? h('span', { text: it.blurb }) : null));
   }));
+  fitChoices();
+}
+
+// Pill art has a fixed natural height, so a label that wraps must fit inside it: shrink every
+// label by the same amount (at most 18%, keeping them uniform), and if one still won't fit,
+// show the answers as plain tiles rather than stretch the art.
+function fitChoices() {
+  const wrap = $('#choices');
+  const pills = $$('.choice.has-art', wrap);
+  wrap.classList.remove('art-off');
+  wrap.style.removeProperty('--choice-fit');
+  if (!pills.length || !wrap.offsetParent) return;
+  const overflows = () => pills.some((c) => { const s = $('strong', c); return s && s.scrollHeight > c.clientHeight - 2; });
+  for (const f of [1, 0.94, 0.88, 0.82]) {
+    wrap.style.setProperty('--choice-fit', f);
+    if (!overflows()) return;
+  }
+  wrap.style.removeProperty('--choice-fit');
+  wrap.classList.add('art-off');
 }
 
 // A look's own sound effects, fetched once and played from memory (iPhone Safari won't play
@@ -387,7 +420,7 @@ function renderStats() {
 // ================================================================ codex / lore / special
 
 function entryRow(e, { stamp } = {}) {
-  const src = applied.art[e.id];
+  const src = applied.art[e.id] || storyArt[e.id];
   return h('div', { class: 'entry' },
     h('div', { class: 'entry-glyph', 'aria-hidden': 'true' }, src ? h('img', { src, alt: '' }) : e.glyph || '✦'),
     h('div', { class: 'entry-body' },
@@ -762,7 +795,7 @@ function applyReading() {
   d.spacing = settings.spacing ? 'wide' : 'normal';
   d.contrast = settings.contrast ? 'high' : 'normal';
   d.blurbsForce = settings.blurbs ? 'on' : 'off';
-  requestAnimationFrame(moveIndicator);
+  requestAnimationFrame(() => { moveIndicator(); fitChoices(); });
 }
 
 function saveSettings(msg) { settingsStore.save(settings); if (game) game.settings = settings; if (msg) toast(msg); }
@@ -792,6 +825,9 @@ function wire() {
   window.addEventListener('popstate', route);
   window.addEventListener('hashchange', route);
   window.addEventListener('resize', moveIndicator, { passive: true });
+  let fitTimer;
+  window.addEventListener('resize', () => { clearTimeout(fitTimer); fitTimer = setTimeout(fitChoices, 120); }, { passive: true });
+  document.fonts?.addEventListener?.('loadingdone', () => fitChoices());
   $('#codexSearch').addEventListener('input', renderCodex);
   $('#loreSheet').addEventListener('close', () => setTimeout(showNextLore, 250));
 
