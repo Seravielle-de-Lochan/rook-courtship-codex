@@ -56,3 +56,17 @@ globalThis.TIDEGLASS_LORE_ART = {
   "reach-collector": "assets/tideglass/lore/reach-collector.webp",
   "rare-language": "assets/tideglass/lore/rare-language.webp"
 };
+
+// Companion portraits (by name) and collection badges (by collection name).
+globalThis.TIDEGLASS_COMPANION_ART = {
+  "Morrow": "assets/tideglass/companions/morrow.webp",
+  "Ink": "assets/tideglass/companions/ink.webp",
+  "Pip": "assets/tideglass/companions/pip.webp"
+};
+globalThis.TIDEGLASS_COLLECTION_ART = {
+  "Tideglass Reach": "assets/tideglass/collections/tideglass-reach.webp",
+  "Domestic Cryptid": "assets/tideglass/collections/domestic-cryptid.webp",
+  "Questionable Antiques": "assets/tideglass/collections/questionable-antiques.webp",
+  "Things Rook Found Outside": "assets/tideglass/collections/things-rook-found-outside.webp",
+  "Flirting With Hardware": "assets/tideglass/collections/flirting-with-hardware.webp"
+};

@@ -144,7 +144,20 @@
     "newButton": "rook_medallion.png",
     "cardGarland": "frame_star_garland.png",
     "sideDrop": "side_chain_drop_clean.png",
-    "sideSwag": "side_chain_swag_clean.png"
+    "sideSwag": "side_chain_swag_clean.png",
+    "companion-morrow": "companions/morrow.webp",
+    "companion-ink": "companions/ink.webp",
+    "companion-pip": "companions/pip.webp",
+    "companion-fennick": "companions/fennick.webp",
+    "companion-old-lune": "companions/old-lune.webp",
+    "collection-tideglass-reach": "collections/tideglass-reach.webp",
+    "collection-domestic-cryptid": "collections/domestic-cryptid.webp",
+    "collection-questionable-antiques": "collections/questionable-antiques.webp",
+    "collection-things-rook-found-outside": "collections/things-rook-found-outside.webp",
+    "collection-flirting-with-hardware": "collections/flirting-with-hardware.webp",
+    "collection-lamp-room": "collections/lamp-room.webp",
+    "collection-night-garden": "collections/night-garden.webp",
+    "collection-unofficial-acquisitions": "collections/unofficial-acquisitions.webp"
   },
   "art": {
     "moonbloom": "flower_ornament.png",

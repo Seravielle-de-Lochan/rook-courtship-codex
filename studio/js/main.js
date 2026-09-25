@@ -41,6 +41,7 @@ let applied = { images: {}, art: {}, sounds: {} };
 let sfxReady = false; // no sound until the first offering is on screen
 let storyArt = {};    // the built-in stories' own illustrations, shown whatever the look (a look's art wins)
 let storyLoreArt = {}; // the same for their secret lore
+let storyImages = {};  // and their companion portraits and collection badges
 let current = null;       // offering on screen
 let answered = false;
 let codexFilter = 'All';
@@ -79,7 +80,7 @@ async function setStory(id, { silent = false } = {}) {
   settings.content = pack.id; settingsStore.save(settings);
   game = new Game(pack, progressStore.load(pack.id), settings);
   codexFilter = 'All';
-  ({ art: storyArt, lore: storyLoreArt } = await builtinStoryArt(pack.id));
+  ({ art: storyArt, lore: storyLoreArt, images: storyImages } = await builtinStoryArt(pack.id));
   renderChrome();
   renderAll();
   const today = localDateKey();
@@ -90,13 +91,14 @@ async function setStory(id, { silent = false } = {}) {
 // The built-in stories were illustrated for the Tideglass kit; those pictures belong to the
 // story, so they show in every look unless the look has its own art for that offering.
 async function builtinStoryArt(id) {
-  if (!BUILTIN_STORIES.some((s) => s.id === id)) return { art: {}, lore: {} };
+  if (!BUILTIN_STORIES.some((s) => s.id === id)) return { art: {}, lore: {}, images: {} };
   try {
     const rec = await builtinLook(BUILTIN_LOOKS[0]);
     const base = new URL(rec.baseUrl, location.href);
     const resolve = (map) => Object.fromEntries(Object.entries(map || {}).map(([k, f]) => [k, new URL(f, base).href]));
-    return { art: resolve(rec.theme.art), lore: resolve(rec.theme.loreArt) };
-  } catch { return { art: {}, lore: {} }; }
+    const people = Object.fromEntries(Object.entries(rec.theme.images).filter(([k]) => /^(companion|collection)-/.test(k)).map(([k, v]) => [k, typeof v === 'string' ? v : v.file]));
+    return { art: resolve(rec.theme.art), lore: resolve(rec.theme.loreArt), images: resolve(people) };
+  } catch { return { art: {}, lore: {}, images: {} }; }
 }
 
 const builtinCache = new Map();
@@ -238,6 +240,9 @@ function showPane(name) {
 
 // ================================================================ play
 
+// A look's own portrait or badge wins; otherwise the built-in story's.
+function storyImage(key) { return applied.images[key] || storyImages[key] || null; }
+
 function offeringArt(o) { const id = canonicalId(o.id); return applied.art[id] || storyArt[id] || null; }
 
 function renderOfferingArt(o) {
@@ -247,12 +252,12 @@ function renderOfferingArt(o) {
   const giver = $('#giverLine');
   giver.replaceChildren();
   if (o.giver) {
-    const portrait = applied.images[`companion-${slug(o.giver)}`];
+    const portrait = storyImage(`companion-${slug(o.giver)}`);
     if (portrait) giver.append(h('img', { src: portrait, alt: '' }));
     giver.append(`Presented by ${o.giver}`);
   }
   giver.classList.toggle('hidden', !o.giver);
-  const colIcon = applied.images[`collection-${slug(o.collection)}`];
+  const colIcon = storyImage(`collection-${slug(o.collection)}`);
   $('#collectionLabel').replaceChildren(...(colIcon ? [h('img', { src: colIcon, alt: '' })] : []), o.collection || '');
 }
 
@@ -444,7 +449,7 @@ function renderCodex() {
     const found = all.filter((e) => e.collection === c.name);
     const hand = handByCol(c.name);
     const handFound = hand.filter((o) => game.p.discovered[o.id]).length;
-    const icon = applied.images[`collection-${slug(c.name)}`];
+    const icon = storyImage(`collection-${slug(c.name)}`);
     return h('div', { class: 'collection-card' },
       icon ? h('img', { src: icon, alt: '' }) : null,
       h('div', {}, h('b', { text: c.name }), h('span', { text: `${found.length} found · ${handFound}/${hand.length} handcrafted` }),

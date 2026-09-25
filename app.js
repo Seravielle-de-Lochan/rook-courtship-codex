@@ -33,6 +33,9 @@
   // Illustrated offerings (SpriteCook art, mapped in offering-art.js). Others keep their glyph.
   const OFFERING_ART = globalThis.TIDEGLASS_OFFERING_ART || {};
   const LORE_ART = globalThis.TIDEGLASS_LORE_ART || {};
+  const COMPANION_ART = globalThis.TIDEGLASS_COMPANION_ART || {};
+  const COLLECTION_ART = globalThis.TIDEGLASS_COLLECTION_ART || {};
+  const badge = (c, cls) => COLLECTION_ART[c] ? `<img class="${cls}" src="${COLLECTION_ART[c]}" alt="">` : "";
 
   function canonicalId(id){ return String(id).replace(/^daily-\d{4}-\d{2}-\d{2}-/,""); }
   function save(){ localStorage.setItem("rookCodexState", JSON.stringify(state)); }
@@ -119,9 +122,9 @@
     $("#glyph").classList.toggle("hidden", !!art);
     $("#offeringName").textContent=o.name;
     $("#offeringDesc").textContent=o.desc;
-    $("#collectionLabel").textContent=o.collection || "Uncatalogued";
+    $("#collectionLabel").innerHTML=escapeHtml(o.collection || "Uncatalogued")+badge(o.collection,"collection-badge"); // badge at the card edge, clear of the art
     $("#sourceLabel").textContent = daily ? "Today's courtship offering" : o.giver ? `Offering from ${o.giver}` : o.rare ? "Rare courtship offering" : o.procedural ? "Procedurally generated offering" : "Handcrafted offering";
-    $("#giverLine").textContent=o.giver ? `Presented by ${o.giver}` : "";
+    $("#giverLine").innerHTML=o.giver ? (COMPANION_ART[o.giver]?`<img class="giver-portrait" src="${COMPANION_ART[o.giver]}" alt="">`:"")+escapeHtml(`Presented by ${o.giver}`) : "";
     $("#giverLine").classList.toggle("hidden",!o.giver);
     $("#rareBadge").classList.toggle("hidden",!o.rare);
     $("#stage").classList.toggle("rare",!!o.rare);
@@ -265,7 +268,7 @@
     const vals=Object.values(state.discovered);
     $("#collectionGrid").innerHTML=collections.map(c=>{
       const n=vals.filter(v=>v.collection===c).length;
-      return `<div class="collection-card"><b>${escapeHtml(c)}</b><span>${n} discovered · procedural finds can continue indefinitely</span></div>`;
+      return `<div class="collection-card">${badge(c,"collection-card-badge")}<b>${escapeHtml(c)}</b><span>${n} discovered · procedural finds can continue indefinitely</span></div>`;
     }).join("");
     const filters=["All",...collections];
     $("#collectionFilters").innerHTML=filters.map(f=>`<button type="button" class="filter-chip ${codexFilter===f?"active":""}" data-filter="${escapeHtml(f)}">${escapeHtml(f)}</button>`).join("");
