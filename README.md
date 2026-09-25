@@ -2,6 +2,11 @@
 
 A tiny installable Progressive Web App (PWA) for phone and desktop: part guessing game, part collection book, part mildly suspicious cryptid courtship archive.
 
+The local Tideglass edition adds the supplied SpriteCook silver-chain and
+sea-glass artwork, responsive ornamental frames, illustrated navigation and
+reduced-motion support. See [TIDEGLASS.md](TIDEGLASS.md) for the asset map,
+integration details and validation.
+
 ## Current features
 
 - A daily courtship offering that stays stable for that local calendar day.

@@ -100,6 +100,10 @@
   function setOffering(o,{daily=false}={}){
     current=o; answered=false; currentWasDaily=daily;
     $("#glyph").textContent=o.glyph;
+    // Only replace an offering's glyph when the export has matching artwork.
+    const hasArtwork = o.id.replace(/^daily-\d{4}-\d{2}-\d{2}-/, "") === "moonbloom";
+    $("#offeringArt").classList.toggle("hidden", !hasArtwork);
+    $("#glyph").classList.toggle("hidden", hasArtwork);
     $("#offeringName").textContent=o.name;
     $("#offeringDesc").textContent=o.desc;
     $("#collectionLabel").textContent=o.collection || "Uncatalogued";
@@ -135,7 +139,7 @@
     const key=localDateKey();
     const opened=!!state.dailyOpened[key];
     $("#dailyTitle").textContent = opened ? "Today's offering has been opened." : "Something is waiting for you.";
-    $("#dailySub").textContent = opened ? "You can revisit it whenever you like — tomorrow brings a new one." : "One deterministic offering is waiting for this calendar day.";
+    $("#dailySub").textContent = opened ? "You can revisit it whenever you like — tomorrow brings a new one." : "A little something chosen for you today.";
     $("#dailyBtn").textContent = opened ? "Revisit" : "Open it";
   }
 
@@ -211,6 +215,7 @@
 
   function renderStats(){
     $("#seenStat").textContent=state.seen||0;
+    $("#accuracyStat").textContent=state.seen ? `${Math.round(100*state.correct/state.seen)}%` : "0%";
     $("#correctStat").textContent=state.correct||0;
     $("#uniqueStat").textContent=Object.keys(state.discovered).length;
     $("#rareStat").textContent=state.rareFound||0;
@@ -272,7 +277,12 @@
   function showView(name){
     const views=["play","codex","lore","classified","settings"];
     for(const v of views) $(`#${v}View`).classList.toggle("hidden",v!==name);
-    $$(".tab").forEach(t=>t.classList.toggle("active",t.dataset.view===name));
+    $$(".tab").forEach(t=>{
+      const active=t.dataset.view===name;
+      t.classList.toggle("active",active);
+      if(active) t.setAttribute("aria-current","page");
+      else t.removeAttribute("aria-current");
+    });
   }
 
   function toast(msg){

@@ -1,0 +1,12 @@
+{
+  "chain_frame_upper": {
+    "asset_id": "846951ed-07bb-50db-abcc-e986e5e4e429",
+    "sha12": "79eff7cc721c",
+    "label": "High-to-frame chain"
+  },
+  "chain_frame_lower_star": {
+    "asset_id": "19dda177-eede-5c45-b067-e082c0ab4b53",
+    "sha12": "0e963ef03e41",
+    "label": "Medallion-to-frame chain"
+  }
+}
