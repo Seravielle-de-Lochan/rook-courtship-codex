@@ -1,10 +1,11 @@
 // Codex Studio service worker: precache the app shell, serve it cache-first,
 // and let the page decide when to activate an update.
-const VERSION = 'codex-studio-v2';
+const VERSION = 'codex-studio-v3';
 const SHELL = [
   './', './index.html', './css/studio.css', './manifest.webmanifest',
   './js/main.js', './js/engine.js', './js/db.js', './js/theme.js', './js/fx.js', './js/forge.js', './js/zip.js',
   './packs/rook-courtship.json', './packs/tideglass/theme.json', './packs/moth-lantern.json', './PACK_FORMAT.md',
+  './fonts/atkinson-hyperlegible-latin-400-normal.woff2', './fonts/atkinson-hyperlegible-latin-700-normal.woff2', './fonts/atkinson-hyperlegible-latin-400-italic.woff2',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/apple-touch-icon.png',
   // the built-in Tideglass look uses the classic edition's SpriteCook kit
   '../assets/tideglass/book_icon_button.png',

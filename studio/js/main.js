@@ -720,6 +720,11 @@ async function renderSettings() {
   $('#modeSelect').value = settings.mode;
   $('#companionToggle').checked = settings.companions;
   $('#motionSelect').value = settings.motion;
+  for (const r of $$('input[name="textSize"]')) r.checked = r.value === (settings.textSize || 'm');
+  $('#fontSelect').value = settings.font || 'look';
+  $('#spacingToggle').checked = !!settings.spacing;
+  $('#contrastToggle').checked = !!settings.contrast;
+  $('#blurbToggle').checked = !!settings.blurbs;
   $('#soundToggle').checked = settings.sound;
   $('#hapticToggle').checked = settings.haptics;
   $('#hapticToggle').closest('.switch').classList.toggle('hidden', !('vibrate' in navigator));
@@ -728,6 +733,17 @@ async function renderSettings() {
   $('#iosInstall').classList.toggle('hidden', !(/iphone|ipad|ipod/i.test(navigator.userAgent) && !standalone));
   const est = await storageEstimate();
   $('#storageInfo').textContent = est ? `Using ${(est.used / 1048576).toFixed(1)} MB of on-device storage for packs and progress.` : '';
+}
+
+/** Reading & accessibility preferences live on <html> as data attributes (also set before first paint in index.html). */
+function applyReading() {
+  const d = document.documentElement.dataset;
+  d.text = ['m', 'l', 'xl', 'xxl'].includes(settings.textSize) ? settings.textSize : 'm';
+  d.font = ['look', 'plain', 'legible'].includes(settings.font) ? settings.font : 'look';
+  d.spacing = settings.spacing ? 'wide' : 'normal';
+  d.contrast = settings.contrast ? 'high' : 'normal';
+  d.blurbsForce = settings.blurbs ? 'on' : 'off';
+  requestAnimationFrame(moveIndicator);
 }
 
 function saveSettings(msg) { settingsStore.save(settings); if (game) game.settings = settings; if (msg) toast(msg); }
@@ -830,6 +846,11 @@ function wire() {
   $('#modeSelect').addEventListener('change', (e) => { settings.mode = e.target.value; saveSettings('Free-play mode updated.'); });
   $('#companionToggle').addEventListener('change', (e) => { settings.companions = e.target.checked; saveSettings(e.target.checked ? 'Companions may now interfere.' : 'Companion offerings paused.'); });
   $('#motionSelect').addEventListener('change', (e) => { settings.motion = e.target.value; saveSettings(); configureFx({ motion: settings.motion }); });
+  for (const r of $$('input[name="textSize"]')) r.addEventListener('change', () => { settings.textSize = r.value; saveSettings(); applyReading(); });
+  $('#fontSelect').addEventListener('change', (e) => { settings.font = e.target.value; saveSettings(); applyReading(); });
+  $('#spacingToggle').addEventListener('change', (e) => { settings.spacing = e.target.checked; saveSettings(); applyReading(); });
+  $('#contrastToggle').addEventListener('change', (e) => { settings.contrast = e.target.checked; saveSettings(); applyReading(); });
+  $('#blurbToggle').addEventListener('change', (e) => { settings.blurbs = e.target.checked; saveSettings(); applyReading(); });
   $('#soundToggle').addEventListener('change', (e) => { settings.sound = e.target.checked; saveSettings(); tone('correct', settings.sound); });
   $('#hapticToggle').addEventListener('change', (e) => { settings.haptics = e.target.checked; saveSettings(); buzz(20, settings.haptics); });
   $('#resetBtn').addEventListener('click', () => {
@@ -841,7 +862,10 @@ function wire() {
   window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredInstall = e; $('#installBtn').classList.remove('hidden'); });
   $('#installBtn').addEventListener('click', async () => { if (!deferredInstall) return; deferredInstall.prompt(); await deferredInstall.userChoice.catch(() => {}); deferredInstall = null; $('#installBtn').classList.add('hidden'); });
   window.addEventListener('appinstalled', () => toast('Installed. Find it on your home screen.'));
-  $('#welcomeSheet').addEventListener('close', () => { settings.onboarded = true; settingsStore.save(settings); });
+  $('#welcomeSheet').addEventListener('close', () => {
+    settings.onboarded = true; settingsStore.save(settings);
+    if ($('#welcomeSheet').returnValue === 'reading') { go('studio', 'settings'); setTimeout(() => $('input[name="textSize"]:checked')?.focus(), 350); }
+  });
 }
 
 function registerSW() {
@@ -862,6 +886,7 @@ function registerSW() {
 
 async function boot() {
   initFx($('#fx'));
+  applyReading();
   wire();
   // The first Studio release defaulted to a colour-only preset; move anyone who never chose a look onto Tideglass.
   if (settings.visual === 'preset:tideglass' && !settings.lookChosen) settings.visual = 'builtin:tideglass';

@@ -59,6 +59,11 @@ export const defaultSettings = {
   sound: false,
   haptics: true,
   motion: 'full', // full | calm | off
+  textSize: 'm', // m | l | xl | xxl
+  font: 'look', // look | plain | legible
+  spacing: false,
+  contrast: false,
+  blurbs: false,
   onboarded: false,
 };
 export const settings = {

@@ -31,6 +31,7 @@ integration details and validation.
 - **Customise.** Live colour, font, corner, particle and pixel-art controls. Palette from any image. Save as a new look and share it as a zip.
 - **Lore Forge.** Describe your giver, recipient, world, tone, meanings and side characters, and Claude writes a complete story pack: offerings, rare finds, procedural banks, companions and secret lore. Use your own Anthropic API key in the browser, or copy the prompt into Claude and paste the JSON back. Packs are validated with readable errors before installing.
 - **Stories.** Several story packs installed side by side, each with its own progress. The original Rook story and a second demo story, *The Moth Lantern Society*, are built in.
+- **Reading & accessibility** (Studio → Settings, also offered from the welcome screen): four text sizes that build on the reader's own browser size, a choice of font including the bundled Atkinson Hyperlegible, extra letter, word and line spacing, a high-contrast mode, always-visible answer descriptions, and Full, Calm or Off animation. These settings apply before the first paint, so there's no flash.
 - Animated throughout: an ambient particle field, an unveil animation for each offering, celebration bursts, a lore-unlock seal, and a sliding nav indicator. Motion can be set to Full, Calm or Off, and reduced-motion settings are respected.
 - Installable PWA: offline after the first load, update prompt, maskable icon, and `.zip`/`.json` file handling once installed.
 

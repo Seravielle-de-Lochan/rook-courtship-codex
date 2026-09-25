@@ -16,6 +16,7 @@
   <title>Codex Studio</title>
   <script>
     // Paint the last-used colours before the app boots, so there is no flash of the default theme.
+    try { const s = JSON.parse(localStorage.getItem('codexStudio:settings') || '{}'), d = document.documentElement.dataset; d.text = s.textSize || 'm'; d.font = s.font || 'look'; d.spacing = s.spacing ? 'wide' : 'normal'; d.contrast = s.contrast ? 'high' : 'normal'; d.blurbsForce = s.blurbs ? 'on' : 'off'; } catch (e) {}
     try { const p = JSON.parse(localStorage.getItem('codexStudio:paint') || 'null'); if (p) { for (const [k, v] of Object.entries(p.vars)) document.documentElement.style.setProperty(k, v); document.documentElement.dataset.scheme = p.scheme; document.querySelector('meta[name="theme-color"]').content = p.vars['--c-bg']; } } catch (e) {}
   </script>
 </head>
@@ -275,13 +276,31 @@
 
       <!-- Settings -->
       <div class="pane hidden" data-pane="settings" role="tabpanel">
+        <div class="card section settings" id="a11yCard">
+          <h2>Reading &amp; accessibility</h2>
+          <fieldset class="field seg-field">
+            <legend class="field-label">Text size</legend>
+            <div class="size-seg" role="radiogroup" aria-label="Text size">
+              <label><input type="radio" name="textSize" value="m"><span style="font-size:.9rem">Aa</span><small>Default</small></label>
+              <label><input type="radio" name="textSize" value="l"><span style="font-size:1.05rem">Aa</span><small>Large</small></label>
+              <label><input type="radio" name="textSize" value="xl"><span style="font-size:1.2rem">Aa</span><small>Larger</small></label>
+              <label><input type="radio" name="textSize" value="xxl"><span style="font-size:1.38rem">Aa</span><small>Largest</small></label>
+            </div>
+          </fieldset>
+          <div class="field"><label class="field-label" for="fontSelect">Font</label>
+            <select id="fontSelect"><option value="look">The look's own font</option><option value="plain">Plain sans-serif</option><option value="legible">Atkinson Hyperlegible (easiest to read)</option></select></div>
+          <label class="switch"><input type="checkbox" id="spacingToggle"><span>Extra space between letters, words and lines</span></label>
+          <label class="switch"><input type="checkbox" id="contrastToggle"><span>High contrast: brighter text on solid backgrounds</span></label>
+          <label class="switch"><input type="checkbox" id="blurbToggle"><span>Always show what each answer means</span></label>
+          <div class="field"><label class="field-label" for="motionSelect">Animation</label>
+            <select id="motionSelect"><option value="full">Full</option><option value="calm">Calm (fewer particles)</option><option value="off">Off</option></select></div>
+          <p class="a11y-sample" id="a11ySample">Folded once over the arm of your chair, soft side up, exactly where your fingers will brush it.</p>
+        </div>
         <div class="card section settings">
           <h2>Play settings</h2>
           <div class="field"><label class="field-label" for="modeSelect">Free-play offerings: handcrafted, procedurally generated, or both</label>
             <select id="modeSelect"><option value="mixed">Mixed</option><option value="procedural">Procedural only (endless)</option><option value="handcrafted">Handcrafted only</option></select></div>
           <label class="switch"><input type="checkbox" id="companionToggle"><span id="companionLabel">Allow offerings from companions</span></label>
-          <div class="field"><label class="field-label" for="motionSelect">Animation</label>
-            <select id="motionSelect"><option value="full">Full</option><option value="calm">Calm (fewer particles)</option><option value="off">Off</option></select></div>
           <label class="switch"><input type="checkbox" id="soundToggle"><span>Soft chimes</span></label>
           <label class="switch"><input type="checkbox" id="hapticToggle"><span>Haptic taps (Android)</span></label>
         </div>
@@ -340,7 +359,7 @@
     <h2 id="welcomeTitle">Every offering means something.</h2>
     <p>Each day brings one small offering. Guess what it meant, fill your Codex, and unlock secret lore when the right finds come together.</p>
     <p>Then make it yours. In <b>Studio</b> you can change the whole look, design an art pack with SpriteCook, or have Claude write a new story with your own characters and lore.</p>
-    <form method="dialog"><button class="btn btn-primary">Open today's offering</button></form>
+    <form method="dialog" class="btn-row"><button class="btn btn-primary">Open today's offering</button><button class="btn btn-soft" value="reading">Reading options: text size, font, contrast</button></form>
   </div>
 </dialog>
 
