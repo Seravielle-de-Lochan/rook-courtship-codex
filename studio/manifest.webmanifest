@@ -1,0 +1,25 @@
+{
+  "id": "./",
+  "name": "Codex Studio",
+  "short_name": "Codex Studio",
+  "description": "A pocket courtship codex you can re-skin and re-write: import SpriteCook art packs and generate your own offerings and lore.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1016",
+  "theme_color": "#0b1016",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Today's offering", "url": "./", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Studio", "url": "./#studio/looks", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ],
+  "file_handlers": [
+    { "action": "./#studio/looks", "accept": { "application/zip": [".zip"], "application/json": [".json"] } }
+  ]
+}

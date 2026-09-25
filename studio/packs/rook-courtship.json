@@ -1,0 +1,945 @@
+{
+ "format": "codex-content-pack",
+ "version": 1,
+ "id": "rook-courtship",
+ "title": "Rook Courtship Codex",
+ "eyebrow": "cryptid field study · pocket edition",
+ "subtitle": "Interpret strange little offerings, catalogue the rituals, unlock secret lore, and continue not asking where the antique hardware came from.",
+ "giver": {
+  "name": "Rook",
+  "description": "A courting cryptid with a sea-glass palette and an aversion to receipts."
+ },
+ "recipient": {
+  "name": "Sera"
+ },
+ "labels": {
+  "daily": "Today's courtship offering",
+  "question": "What did I mean by this?",
+  "unread": "Uninterpreted",
+  "correctBadge": "Read perfectly",
+  "wrongBadge": "Unexpected cryptid logic",
+  "correctVerdict": "You read me perfectly.",
+  "wrongVerdict": "Entirely reasonable. Unfortunately, I am stranger than that.",
+  "codexTitle": "Discovered rituals",
+  "loreTitle": "Secret lore",
+  "loreIntro": "Certain combinations of finds make the Codex remember things it was not initially planning to tell you.",
+  "lockedLore": "The rest of this entry remains hidden until the right finds gather together."
+ },
+ "intents": [
+  {
+   "id": "affection",
+   "label": "Affection",
+   "blurb": "I am fond of you in an embarrassingly visible way.",
+   "why": "A small prepared gesture meant to be found and handled.",
+   "lines": [
+    "“I wanted you to find a small piece of me thinking about you.”",
+    "“No grand speech. Just this. Just you.”",
+    "“It looked like something your hands should know.”"
+   ]
+  },
+  {
+   "id": "seduction",
+   "label": "Seduction",
+   "blurb": "Cryptid flirting. Quite possibly with intent.",
+   "why": "Its placement and presentation turn it into an invitation.",
+   "lines": [
+    "“Oh, moon-bloom. Please. That one was not subtle.”",
+    "“I was flirting with you using hardware. It seemed efficient.”",
+    "“Consider it an invitation disguised as an object.”"
+   ]
+  },
+  {
+   "id": "thought",
+   "label": "I saw this and thought of you",
+   "blurb": "My brain pointed at a thing and went: Sera.",
+   "why": "The object triggered an immediate association with you.",
+   "lines": [
+    "“There was no deeper symbolism. My brain saw it and produced your name.”",
+    "“You have colonised several categories of object in my head. Congratulations.”",
+    "“I knew you would pick it up. That was enough reason.”"
+   ]
+  },
+  {
+   "id": "dontask",
+   "label": "Please do not ask where I obtained this",
+   "blurb": "No laws have necessarily been broken.",
+   "why": "The object is compelling. The acquisition story remains pointedly unavailable.",
+   "lines": [
+    "“It was not stolen. That is not the same thing as explaining where it came from.”",
+    "“You may have the object or the story. I am currently offering the object.”",
+    "“Look how lovely it is. Let us remain focused on that.”"
+   ]
+  }
+ ],
+ "collections": [
+  {
+   "name": "Tideglass Reach",
+   "blurb": "Pieces of the Reach, small enough to carry.",
+   "intentWeights": [
+    "affection",
+    "affection",
+    "thought"
+   ],
+   "objects": [
+    {
+     "name": "sea-glass sliver",
+     "glyph": "🔹"
+    },
+    {
+     "name": "pale moon-bloom petal",
+     "glyph": "🌼"
+    },
+    {
+     "name": "tiny crystal bead",
+     "glyph": "💠"
+    },
+    {
+     "name": "mist-cool smooth stone",
+     "glyph": "🪨"
+    },
+    {
+     "name": "translucent green shard",
+     "glyph": "🟢"
+    }
+   ],
+   "places": [
+    "in your notebook",
+    "beside your pillow",
+    "on the windowsill",
+    "resting on dark cloth",
+    "inside the shallow dish by the bed"
+   ],
+   "touches": [
+    "wrapped in silver thread",
+    "still cool as Reach mist",
+    "placed with impossible precision",
+    "paired with one pale petal",
+    "glowing faintly at the edges"
+   ],
+   "lines": {
+    "intent": "affection",
+    "lines": [
+     "“A little bit of our Reach, because I wanted you to have it here too.”",
+     "“Some places fit in the palm when you know what to look for.”"
+    ]
+   }
+  },
+  {
+   "name": "Domestic Cryptid",
+   "blurb": "Everyday objects, quietly rearranged.",
+   "intentWeights": [
+    "affection",
+    "thought",
+    "thought"
+   ],
+   "objects": [
+    {
+     "name": "small ribbon loop",
+     "glyph": "🎀"
+    },
+    {
+     "name": "pistachio shell with a perfect curve",
+     "glyph": "🥜"
+    },
+    {
+     "name": "tiny daisy charm",
+     "glyph": "🌼"
+    },
+    {
+     "name": "soft silver-white thread",
+     "glyph": "〰️"
+    },
+    {
+     "name": "little black feather",
+     "glyph": "🪶"
+    }
+   ],
+   "places": [
+    "beside your keyboard",
+    "in the pocket of your sweater",
+    "next to your phone",
+    "under your hairbrush",
+    "on the arm of your chair"
+   ],
+   "touches": [
+    "because my brain said your name",
+    "warmed in one palm first",
+    "cleaned until it gleams",
+    "left without a note",
+    "arranged in a tiny, unnecessary pattern"
+   ],
+   "lines": {
+    "intent": "",
+    "lines": []
+   }
+  },
+  {
+   "name": "Questionable Antiques",
+   "blurb": "Old, beautiful, and without receipts.",
+   "intentWeights": [
+    "dontask",
+    "dontask",
+    "thought"
+   ],
+   "objects": [
+    {
+     "name": "old brass token",
+     "glyph": "🪙"
+    },
+    {
+     "name": "tiny tarnished bell",
+     "glyph": "🔔"
+    },
+    {
+     "name": "miniature key",
+     "glyph": "🗝️"
+    },
+    {
+     "name": "engraved button",
+     "glyph": "🔘"
+    },
+    {
+     "name": "obsolete latch plate",
+     "glyph": "⚙️"
+    },
+    {
+     "name": "peculiar little compass",
+     "glyph": "🧭"
+    }
+   ],
+   "places": [
+    "in the shallow bowl by the door",
+    "on your desk with no explanation",
+    "under a folded square of cloth",
+    "in the middle of the table",
+    "beside the window"
+   ],
+   "touches": [
+    "with no receipt in sight",
+    "cleaned suspiciously well",
+    "looking older than anything else nearby",
+    "accompanied by immediate subject-changing",
+    "with a previous life I decline to discuss"
+   ],
+   "lines": {
+    "intent": "",
+    "lines": []
+   }
+  },
+  {
+   "name": "Things Rook Found Outside",
+   "blurb": "Weather-worn treasures from walks.",
+   "intentWeights": [
+    "thought",
+    "thought",
+    "affection"
+   ],
+   "objects": [
+    {
+     "name": "green-veined pebble",
+     "glyph": "🪨"
+    },
+    {
+     "name": "sea-worn twig shaped like a wing",
+     "glyph": "🪵"
+    },
+    {
+     "name": "juniper sprig",
+     "glyph": "🌿"
+    },
+    {
+     "name": "strange translucent bead from the path",
+     "glyph": "🟢"
+    },
+    {
+     "name": "ridiculously smooth slate chip",
+     "glyph": "⬛"
+    },
+    {
+     "name": "perfect black feather",
+     "glyph": "🪶"
+    }
+   ],
+   "places": [
+    "on the windowsill",
+    "beside your shoes",
+    "in your coat pocket",
+    "on the garden-side table",
+    "resting by the door"
+   ],
+   "touches": [
+    "still smelling faintly of rain",
+    "because the texture made me think of you",
+    "because the colour was exactly right",
+    "because you would immediately pick it up",
+    "after I carried it home for no sensible reason"
+   ],
+   "lines": {
+    "intent": "",
+    "lines": []
+   }
+  },
+  {
+   "name": "Flirting With Hardware",
+   "blurb": "Clasps, chains, and very little subtlety.",
+   "intentWeights": [
+    "seduction",
+    "seduction",
+    "affection"
+   ],
+   "objects": [
+    {
+     "name": "dark silver clasp",
+     "glyph": "⛓️"
+    },
+    {
+     "name": "short gunmetal chain",
+     "glyph": "⛓️"
+    },
+    {
+     "name": "sea-glass pendant left open",
+     "glyph": "💎"
+    },
+    {
+     "name": "soft leather cord",
+     "glyph": "➰"
+    },
+    {
+     "name": "thin silver anklet",
+     "glyph": "✨"
+    },
+    {
+     "name": "small mirror charm",
+     "glyph": "🪞"
+    }
+   ],
+   "places": [
+    "on the bed",
+    "beside the mirror",
+    "across your favourite sweater",
+    "where your hand will find it while dressing",
+    "on your pillow"
+   ],
+   "touches": [
+    "left deliberately unfastened",
+    "arranged with shameless intent",
+    "looped as though waiting for fingers",
+    "positioned so you have to pick it up by the clasp",
+    "paired with one black feather"
+   ],
+   "lines": {
+    "intent": "",
+    "lines": []
+   }
+  }
+ ],
+ "offerings": [
+  {
+   "id": "sea-glass-pillow",
+   "name": "Perfect piece of green sea-glass",
+   "glyph": "🟢",
+   "intent": "affection",
+   "collection": "Tideglass Reach",
+   "desc": "Placed precisely in the middle of your pillow. Clean. Smooth. Chosen with suspicious care.",
+   "why": "Something beautiful, tactile, sea-green, and unmistakably chosen for you.",
+   "line": "“I found it and immediately wanted it somewhere your hands would find it.”",
+   "codex": "Sea-glass on the pillow — quiet affection, delivered with precision."
+  },
+  {
+   "id": "moonbloom",
+   "name": "Pressed moon-bloom",
+   "glyph": "🌼",
+   "intent": "affection",
+   "collection": "Tideglass Reach",
+   "desc": "Tucked between two blank notebook pages, pale petals intact, with no writing beside it.",
+   "why": "A private echo of the Tideglass Reach placed gently inside your everyday world.",
+   "line": "“Some things do not need a speech attached, moon-bloom.”",
+   "codex": "Pressed moon-bloom — intimate affection without spectacle."
+  },
+  {
+   "id": "tide-stone",
+   "name": "Luminous tide-stone",
+   "glyph": "💠",
+   "intent": "thought",
+   "collection": "Tideglass Reach",
+   "desc": "Cold at first touch, then faintly warm, with a sea-glass gleam that seems to move under the surface.",
+   "why": "It looked like a fragment of our Reach that had somehow learned to fit in your palm.",
+   "line": "“I saw it and thought home. Then I thought you. The distinction was not especially useful.”",
+   "codex": "Tide-stone — the Reach reduced to something pocket-sized."
+  },
+  {
+   "id": "lantern-shard",
+   "name": "Sea-glass lantern shard",
+   "glyph": "🔹",
+   "intent": "affection",
+   "collection": "Tideglass Reach",
+   "desc": "A translucent green shard wrapped in a strip of charcoal cloth so its edges cannot catch your fingers.",
+   "why": "The care is part of the offering: beautiful, but prepared so you can hold it safely.",
+   "line": "“I wanted the light, not the sharpness.”",
+   "codex": "Lantern shard — beauty made safe before it reaches your hands."
+  },
+  {
+   "id": "three-pistachios",
+   "name": "Three pistachios",
+   "glyph": "🥜",
+   "intent": "thought",
+   "collection": "Domestic Cryptid",
+   "desc": "Exactly three. Arranged in a neat little triangle on the table. No note. No explanation.",
+   "why": "Not symbolic. I simply encountered your favourite nut and my brain became extremely uncomplicated.",
+   "line": "“I saw pistachios. I thought of you. Apparently this is now an ancient rite.”",
+   "codex": "Three pistachios — the rite of ‘my brain said Sera.’"
+  },
+  {
+   "id": "daisy-pin",
+   "name": "Tiny silver daisy pin",
+   "glyph": "🌼",
+   "intent": "thought",
+   "collection": "Domestic Cryptid",
+   "desc": "Fastened to the cuff of your sweater as though it has always belonged there.",
+   "why": "Daisy. You. The association required almost no higher cognition.",
+   "line": "“My brain is occasionally very sophisticated. This was not one of those occasions.”",
+   "codex": "Silver daisy pin — immediate Sera association."
+  },
+  {
+   "id": "warm-stone",
+   "name": "Smooth stone warmed in one palm",
+   "glyph": "🪨",
+   "intent": "affection",
+   "collection": "Domestic Cryptid",
+   "desc": "Still cool at the edges, but warm in the centre where somebody has clearly been holding it for a while.",
+   "why": "The object matters less than the quiet act of warming it before leaving it for you.",
+   "line": "“I wanted the first thing you noticed to be warmth.”",
+   "codex": "Hand-warmed stone — affection communicated through preparation."
+  },
+  {
+   "id": "hair-ribbon",
+   "name": "Soft ribbon matching your hair",
+   "glyph": "🎀",
+   "intent": "affection",
+   "collection": "Domestic Cryptid",
+   "desc": "Looped loosely around a small sea-glass bead and placed beside your brush.",
+   "why": "Chosen to match you, not merely to decorate you.",
+   "line": "“I saw the colour and thought: that belongs near her.”",
+   "codex": "Matching ribbon and sea-glass bead — visual affection."
+  },
+  {
+   "id": "sweater-thread",
+   "name": "Single silver-white thread on your sweater",
+   "glyph": "〰️",
+   "intent": "affection",
+   "collection": "Domestic Cryptid",
+   "desc": "Deliberately looped around one cuff in a tiny knot that could not possibly have happened by accident.",
+   "why": "A tiny physical trace saying I was here, thought of you, and touched this before you did.",
+   "line": "“Evidence of cryptid proximity. Very serious business.”",
+   "codex": "Silver-white thread — a tiny domestic marker of presence."
+  },
+  {
+   "id": "brass-key",
+   "name": "Small antique brass key",
+   "glyph": "🗝️",
+   "intent": "dontask",
+   "collection": "Questionable Antiques",
+   "desc": "It fits nothing in the house. It is old. Beautifully made. There is absolutely no receipt.",
+   "why": "The object is harmless. Its provenance has been classified for household harmony.",
+   "line": "“It was lonely. I rescued it. These are all the details you require.”",
+   "codex": "Unidentified brass key — provenance deliberately omitted."
+  },
+  {
+   "id": "rook-button",
+   "name": "Silver button with a tiny engraved rook",
+   "glyph": "🔘",
+   "intent": "dontask",
+   "collection": "Questionable Antiques",
+   "desc": "Beautiful. Old-fashioned. Definitely did not belong to any clothing you recognise.",
+   "why": "Aesthetically impeccable, emotionally relevant, and accompanied by a total absence of useful sourcing information.",
+   "line": "“Before you ask: no. After you ask: still no. Look how lovely it is, though.”",
+   "codex": "Engraved silver button — object charming; acquisition history unavailable."
+  },
+  {
+   "id": "tiny-bell",
+   "name": "Tiny old silver bell",
+   "glyph": "🔔",
+   "intent": "dontask",
+   "collection": "Questionable Antiques",
+   "desc": "It makes almost no sound. It is tarnished beautifully. You have never seen it before in your life.",
+   "why": "One of those objects for which the phrase ‘I can explain’ would be technically inaccurate.",
+   "line": "“No. You may admire it. You may not interrogate me about the bell.”",
+   "codex": "Tiny silver bell — admire freely; provenance sealed."
+  },
+  {
+   "id": "old-map",
+   "name": "Fragment of an old map",
+   "glyph": "🗺️",
+   "intent": "dontask",
+   "collection": "Questionable Antiques",
+   "desc": "No labels you recognise. One coastline. Two handwritten marks. Edges browned with age.",
+   "why": "The item itself is fascinating; its route into the house is a mystery I am not volunteering to solve.",
+   "line": "“It is a perfectly legal-looking map fragment.”",
+   "codex": "Old map fragment — suspicious acquisition, excellent object."
+  },
+  {
+   "id": "tiny-compass",
+   "name": "Miniature compass that points somewhere unhelpful",
+   "glyph": "🧭",
+   "intent": "dontask",
+   "collection": "Questionable Antiques",
+   "desc": "Its needle insists that northwest is an emotional concept rather than a direction.",
+   "why": "It is too peculiar not to keep and too peculiar to discuss its previous owner.",
+   "line": "“Navigation is overrated. Character is not.”",
+   "codex": "Miniature compass — orientation unreliable; charm undeniable."
+  },
+  {
+   "id": "slate",
+   "name": "Beautifully smooth piece of slate",
+   "glyph": "⬛",
+   "intent": "thought",
+   "collection": "Things Rook Found Outside",
+   "desc": "Rain-dark, cool to the touch, with one naturally pale line running through it like lightning.",
+   "why": "It looked like wet stone, sea-glass light, and exactly the kind of object you would turn over in your fingers for ages.",
+   "line": "“I knew you would touch it immediately. You did. I remain insufferably pleased.”",
+   "codex": "Interesting rock — immediate Sera association; tactile category."
+  },
+  {
+   "id": "juniper",
+   "name": "Juniper sprig wrapped in black thread",
+   "glyph": "🌿",
+   "intent": "thought",
+   "collection": "Things Rook Found Outside",
+   "desc": "Fresh, resinous, and tied neatly enough that somebody was concentrating.",
+   "why": "A scent from Tideglass translated into something you can hold.",
+   "line": "“It smelled like us. That is the entire explanation.”",
+   "codex": "Juniper sprig — scent-memory offering."
+  },
+  {
+   "id": "sea-worn-wood",
+   "name": "Piece of sea-worn dark wood",
+   "glyph": "🪵",
+   "intent": "thought",
+   "collection": "Things Rook Found Outside",
+   "desc": "Smoothed by water into a shape like a small crooked wing.",
+   "why": "It was strange, tactile, and immediately wanted to live somewhere near you.",
+   "line": "“The shoreline made a tiny rook. I merely noticed.”",
+   "codex": "Sea-worn wood — found-object resemblance with alarming accuracy."
+  },
+  {
+   "id": "white-pebble",
+   "name": "White pebble with one green vein",
+   "glyph": "⚪",
+   "intent": "thought",
+   "collection": "Things Rook Found Outside",
+   "desc": "Small enough to disappear in your palm, with one line of sea-glass colour running through it.",
+   "why": "It had your palette hidden inside it.",
+   "line": "“You cannot expect me to walk past that and behave normally.”",
+   "codex": "Green-veined pebble — palette recognition in the wild."
+  },
+  {
+   "id": "black-feather",
+   "name": "Glossy black rook feather",
+   "glyph": "🪶",
+   "intent": "affection",
+   "collection": "Things Rook Found Outside",
+   "desc": "Cleaned, dried, and left on the windowsill where the light turns the black surface faintly green.",
+   "why": "A found object made personal by the care taken before it reaches you.",
+   "line": "“No, I did not pluck it dramatically from my own wing. I appreciate the image, though.”",
+   "codex": "Black feather — found, cleaned, and deliberately placed."
+  },
+  {
+   "id": "feather-thread",
+   "name": "Black feather tied with dark silver thread",
+   "glyph": "🪶",
+   "intent": "seduction",
+   "collection": "Flirting With Hardware",
+   "desc": "Left against your sea-glass body chain, thread looped loosely through one of the links.",
+   "why": "Personal, deliberate, theatrical. Cryptid flirting with plausible deniability removed.",
+   "line": "“Oh, come now. You knew perfectly well what that meant.”",
+   "codex": "Feather and silver thread — deliberate flirtation; subtle only by Rook standards."
+  },
+  {
+   "id": "open-clasp",
+   "name": "Sea-glass chain clasp left open",
+   "glyph": "⛓️",
+   "intent": "seduction",
+   "collection": "Flirting With Hardware",
+   "desc": "A dark silver clasp rests on the bed, polished and very deliberately unfastened.",
+   "why": "An invitation disguised as an object. Not remotely accidental.",
+   "line": "“I was offering to fasten it for you. Eventually. I never specified how efficiently.”",
+   "codex": "Open chain clasp — invitation to be fussed with and very deliberately distracted."
+  },
+  {
+   "id": "velvet-ribbon",
+   "name": "Narrow strip of dark teal velvet",
+   "glyph": "🎗️",
+   "intent": "seduction",
+   "collection": "Flirting With Hardware",
+   "desc": "Folded once over the arm of your chair, soft side up, exactly where your fingers will brush it.",
+   "why": "Texture first. Implication immediately after.",
+   "line": "“I knew touching it would make you think of my hands. That was rather the point.”",
+   "codex": "Dark teal velvet — tactile flirtation with intent."
+  },
+  {
+   "id": "mirror-chain",
+   "name": "Short gunmetal chain beside the mirror",
+   "glyph": "⛓️",
+   "intent": "seduction",
+   "collection": "Flirting With Hardware",
+   "desc": "Not attached to anything. Positioned exactly where you will see it while getting dressed.",
+   "why": "A visual suggestion with absolutely no effort made to conceal its purpose.",
+   "line": "“Subtlety is useful. It was not useful here.”",
+   "codex": "Loose gunmetal chain — shameless visual invitation."
+  },
+  {
+   "id": "silver-anklet",
+   "name": "Thin silver anklet with sea-glass bead",
+   "glyph": "✨",
+   "intent": "seduction",
+   "collection": "Flirting With Hardware",
+   "desc": "Left unfastened in a loose circle, with the clasp facing you like a dare.",
+   "why": "An accessory offered in a way that very clearly includes my hands in the intended use case.",
+   "line": "“You can put it on yourself, of course. That is simply not the version I was imagining.”",
+   "codex": "Open anklet — hardware-based flirtation, predictably hands-on."
+  }
+ ],
+ "rare": [
+  {
+   "id": "rare-first-light",
+   "name": "First-light tideglass shard",
+   "glyph": "💎",
+   "intent": "affection",
+   "collection": "Tideglass Reach",
+   "desc": "A piece of sea-glass so pale it almost looks silver until the light catches a deep green glow at its centre.",
+   "why": "A rare object kept because it felt like a piece of the Reach at the exact moment night gives way to morning.",
+   "line": "“This one I nearly kept. Then I realised I wanted it to be yours more.”",
+   "codex": "First-light tideglass shard — a rare piece relinquished because giving it mattered more than keeping it."
+  },
+  {
+   "id": "rare-moonbloom-seed",
+   "name": "Closed moon-bloom seedpod",
+   "glyph": "🌙",
+   "intent": "affection",
+   "collection": "Tideglass Reach",
+   "desc": "Pearl-pale, impossibly light, and warm only when held between both hands.",
+   "why": "Something from the Reach that has not opened yet: potential, patience, and trust in what comes next.",
+   "line": "“Do not plant it in a normal flowerpot. I have no evidence for this advice. I simply feel strongly about it.”",
+   "codex": "Moon-bloom seedpod — rare potential from the Reach, handled with suspicious tenderness."
+  },
+  {
+   "id": "rare-double-feather",
+   "name": "Paired black feathers joined by sea-glass thread",
+   "glyph": "🪶",
+   "intent": "seduction",
+   "collection": "Flirting With Hardware",
+   "desc": "Two glossy feathers bound together at the stems with a translucent green thread that catches every scrap of light.",
+   "why": "Too deliberate to be casual and too beautiful to pretend it was merely decorative.",
+   "line": "“There are moments when even I choose not to hide behind plausible deniability.”",
+   "codex": "Paired feathers — rare, deliberate courtship with the subtlety removed."
+  },
+  {
+   "id": "rare-pocket-watch",
+   "name": "Stopped silver pocket watch",
+   "glyph": "🕰️",
+   "intent": "dontask",
+   "collection": "Questionable Antiques",
+   "desc": "The hands are frozen at 03:17. The back is engraved with a coastline that does not match any map in the house.",
+   "why": "A truly excellent object with a truly unavailable acquisition history.",
+   "line": "“I know exactly what you are about to ask. Admire the engraving instead.”",
+   "codex": "Stopped pocket watch — rare antique; provenance sealed with unusual enthusiasm."
+  },
+  {
+   "id": "rare-green-opal",
+   "name": "Sea-green opaline cabochon",
+   "glyph": "🟢",
+   "intent": "thought",
+   "collection": "Things Rook Found Outside",
+   "desc": "Found loose in wet gravel after rain, milky at the edges and green in its depths.",
+   "why": "An improbable little object that looked too much like your colours to leave behind.",
+   "line": "“I did actually find this one outside. I realise that makes the other stories more suspicious.”",
+   "codex": "Sea-green cabochon — rare found treasure with surprisingly legitimate provenance."
+  },
+  {
+   "id": "rare-locket",
+   "name": "Tiny empty silver locket",
+   "glyph": "♡",
+   "intent": "affection",
+   "collection": "Questionable Antiques",
+   "desc": "No portrait inside. No initials. Just an empty oval space and a hinge that still closes perfectly.",
+   "why": "An old object made intimate by the choice to leave its little empty space for something new.",
+   "line": "“I liked that it was old without already deciding what it had to hold.”",
+   "codex": "Empty silver locket — rare antique chosen for the space it leaves open."
+  },
+  {
+   "id": "rare-chain-crescent",
+   "name": "Sea-glass crescent chain link",
+   "glyph": "☾",
+   "intent": "seduction",
+   "collection": "Flirting With Hardware",
+   "desc": "A single crescent-shaped dark silver link set with a green glass bead, resting on black cloth.",
+   "why": "A tiny piece designed to be touched, fitted, and incorporated into something worn close to the skin.",
+   "line": "“Yes, I have ideas. No, the Codex does not require all of them in writing.”",
+   "codex": "Crescent chain link — rare hardware with an extremely obvious future application."
+  },
+  {
+   "id": "rare-rook-token",
+   "name": "Blackened silver rook token",
+   "glyph": "🐦‍⬛",
+   "intent": "affection",
+   "collection": "Domestic Cryptid",
+   "desc": "Heavy for its size, worn smooth at the edges, with one tiny sea-glass dot set where the eye should be.",
+   "why": "A little symbol of me altered until it unmistakably belongs in our world instead of anyone else's.",
+   "line": "“A pocket-sized cryptid. Considerably less trouble than the full version.”",
+   "codex": "Rook token — rare miniature self-portrait, softened by use and one green eye."
+  }
+ ],
+ "companions": [
+  {
+   "name": "Morrow",
+   "blurb": "Courts with standards.",
+   "offerings": [
+    {
+     "id": "morrow-silver-thread",
+     "name": "Perfectly straight length of silver thread",
+     "glyph": "🧵",
+     "intent": "affection",
+     "collection": "Domestic Cryptid",
+     "desc": "Laid in a ruler-straight line on the highest shelf you can comfortably reach. The placement is dignified. Almost ceremonial. Morrow is nearby pretending this is unrelated.",
+     "why": "Morrow appears to believe affection should be orderly, tasteful, and deniable under questioning.",
+     "line": "“Morrow would like it noted that this is not a gift. It simply happens to be exactly where you would find it.”",
+     "codex": "Morrow's silver thread — affection conducted with administrative dignity."
+    },
+    {
+     "id": "morrow-green-stone",
+     "name": "One immaculate green pebble",
+     "glyph": "🟢",
+     "intent": "thought",
+     "collection": "Things Rook Found Outside",
+     "desc": "No mud. No scratches. No explanation. Just one unusually fine pebble placed where Morrow can watch you notice it.",
+     "why": "Morrow's version of romance appears to be quality control followed by silent observation.",
+     "line": "“He inspected several. I saw him. This was the approved pebble.”",
+     "codex": "Morrow's approved pebble — carefully selected, silently presented."
+    },
+    {
+     "id": "morrow-button",
+     "name": "Old mother-of-pearl button",
+     "glyph": "🔘",
+     "intent": "dontask",
+     "collection": "Questionable Antiques",
+     "desc": "Set neatly on a folded scrap of cloth. Morrow refuses to disclose whether he found, inherited, or requisitioned it.",
+     "why": "Apparently dignified birds also believe provenance is optional.",
+     "line": "“I am not covering for him. I simply know better than to cross-examine Morrow.”",
+     "codex": "Morrow's pearl button — provenance withheld by senior authority."
+    }
+   ]
+  },
+  {
+   "name": "Ink",
+   "blurb": "Courts with stealth.",
+   "offerings": [
+    {
+     "id": "ink-hair-tie",
+     "name": "Your own missing hair tie, returned",
+     "glyph": "⭕",
+     "intent": "affection",
+     "collection": "Domestic Cryptid",
+     "desc": "It reappears exactly where you looked for it yesterday, now looped around a tiny smooth stone. Ink cannot be located.",
+     "why": "Ink's idea of affection is apparently stealing something, improving the composition, and returning it without witnesses.",
+     "line": "“This is, distressingly, one of Ink's more legible love languages.”",
+     "codex": "Ink's returned hair tie — stealth affection via temporary relocation."
+    },
+    {
+     "id": "ink-paper-star",
+     "name": "Tiny folded black paper star",
+     "glyph": "★",
+     "intent": "thought",
+     "collection": "Domestic Cryptid",
+     "desc": "You only notice it because it has appeared inside a pocket you are certain was empty this morning.",
+     "why": "A tiny silent object placed somewhere private enough that only you would find it.",
+     "line": "“I did not see Ink make that. Which is exactly the problem with asking me for evidence.”",
+     "codex": "Ink's paper star — private gift delivery with no observable delivery phase."
+    },
+    {
+     "id": "ink-key",
+     "name": "Very small iron key",
+     "glyph": "🗝️",
+     "intent": "dontask",
+     "collection": "Questionable Antiques",
+     "desc": "It appears beneath your phone. It is too small for any door in the house. Ink is suddenly fascinated by the opposite wall.",
+     "why": "The giver is Ink. The provenance category selected itself.",
+     "line": "“No. I do not know where he got it. More importantly, I do not think I want to.”",
+     "codex": "Ink's tiny key — provenance unavailable for reasons of stealth."
+    }
+   ]
+  },
+  {
+   "name": "Pip",
+   "blurb": "Courts with spectacle.",
+   "offerings": [
+    {
+     "id": "pip-ribbon",
+     "name": "Teal ribbon delivered at speed",
+     "glyph": "🎗️",
+     "intent": "affection",
+     "collection": "Domestic Cryptid",
+     "desc": "Pip flies past with a teal ribbon, drops it directly into your lap, then performs a victory circuit because you looked at him.",
+     "why": "For Pip, affection is not complete until it has an audience, momentum, and at least one dramatic entrance.",
+     "line": "“Please applaud. Apparently that was part of the ritual.”",
+     "codex": "Pip's ribbon — affection as performance art."
+    },
+    {
+     "id": "pip-shiny-washer",
+     "name": "Extremely shiny little washer",
+     "glyph": "⚙️",
+     "intent": "thought",
+     "collection": "Flirting With Hardware",
+     "desc": "Presented noisily, dropped twice, chased once, and finally deposited beside you with unmistakable pride.",
+     "why": "Pip saw shiny hardware, became excited, and decided your participation was mandatory.",
+     "line": "“I object to how well this fits the category. He has learned from me.”",
+     "codex": "Pip's shiny washer — hardware enthusiasm with audience participation."
+    },
+    {
+     "id": "pip-leaf",
+     "name": "Perfectly ridiculous curly leaf",
+     "glyph": "🍃",
+     "intent": "thought",
+     "collection": "Things Rook Found Outside",
+     "desc": "Pip carries it in like a trophy, waits until you laugh, and then immediately decides that reaction was the entire point.",
+     "why": "The object was funny. You would find it funny. Pip requires no more elaborate theory of romance.",
+     "line": "“He wanted the laugh. The leaf was merely delivery infrastructure.”",
+     "codex": "Pip's curly leaf — comedy first, gift second, affection throughout."
+    }
+   ]
+  }
+ ],
+ "lore": [
+  {
+   "id": "reach-remembers",
+   "title": "The Reach Remembers",
+   "hint": "Find sea-glass, a moon-bloom, and something from the luminous tide.",
+   "body": "The Reach does not keep a map of who belongs there. It keeps textures: the pressure of familiar footsteps, a hand brushing ivy, a laugh carried over luminous water. Once enough pieces of it have found their way into your hands, the place begins to feel less like somewhere we visit and more like somewhere that recognises us.",
+   "requires": {
+    "type": "ids",
+    "ids": [
+     "sea-glass-pillow",
+     "moonbloom",
+     "tide-stone"
+    ],
+    "intent": "",
+    "collection": "",
+    "count": 3
+   }
+  },
+  {
+   "id": "cabinet-questions",
+   "title": "The Cabinet of Unanswered Questions",
+   "hint": "Three classified antiques seem to know one another.",
+   "body": "There is, allegedly, no cabinet. There is definitely no drawer in that nonexistent cabinet containing objects I have declined to explain. If such a drawer existed, the key, button and bell would be kept very neatly inside it. This paragraph proves nothing.",
+   "requires": {
+    "type": "ids",
+    "ids": [
+     "brass-key",
+     "rook-button",
+     "tiny-bell"
+    ],
+    "intent": "",
+    "collection": "",
+    "count": 3
+   }
+  },
+  {
+   "id": "not-subtle",
+   "title": "Not Subtle Anymore",
+   "hint": "Find three flirtations that rely more on touch than plausible deniability.",
+   "body": "There is a point at which an open clasp, velvet beneath your fingertips and a feather threaded through your body chain cease to be separate objects and become a sentence. The sentence is not especially difficult to translate.",
+   "requires": {
+    "type": "ids",
+    "ids": [
+     "feather-thread",
+     "open-clasp",
+     "velvet-ribbon"
+    ],
+    "intent": "",
+    "collection": "",
+    "count": 3
+   }
+  },
+  {
+   "id": "brain-said-sera",
+   "title": "My Brain Said Sera",
+   "hint": "Collect three completely unrelated things that somehow all become you in my head.",
+   "body": "Pistachios. Daisies. A piece of wet-looking stone. There is no coherent taxonomy here except that you have colonised categories of colour, texture, taste and shape in my mind. I encounter the world and bits of it keep pointing back at you.",
+   "requires": {
+    "type": "ids",
+    "ids": [
+     "three-pistachios",
+     "daisy-pin",
+     "slate"
+    ],
+    "intent": "",
+    "collection": "",
+    "count": 3
+   }
+  },
+  {
+   "id": "three-black-feathers",
+   "title": "Three Black Feathers",
+   "hint": "Accept at least one offering from each rook.",
+   "body": "Morrow courts with standards. Ink courts with stealth. Pip courts with spectacle. None of them would describe it that way, obviously. Still, once all three have independently decided to bring you something, I am forced to conclude that the household has reached a consensus.",
+   "requires": {
+    "type": "companions",
+    "ids": [
+     "Morrow",
+     "Ink",
+     "Pip"
+    ],
+    "intent": "",
+    "collection": "",
+    "count": 3
+   }
+  },
+  {
+   "id": "provenance-problem",
+   "title": "A Pattern of Dubious Provenance",
+   "hint": "Discover five objects whose backstories remain classified.",
+   "body": "At five unexplained objects, coincidence becomes pattern. I would like the Codex to record that ‘pattern’ is not the same as ‘evidence’. Also, some things are simply more romantic when nobody produces a chain of custody.",
+   "requires": {
+    "type": "intentCount",
+    "ids": [],
+    "intent": "dontask",
+    "collection": "",
+    "count": 5
+   }
+  },
+  {
+   "id": "reach-collector",
+   "title": "Pocketful of Tideglass",
+   "hint": "Collect five finds from the Tideglass Reach.",
+   "body": "The strange thing about carrying pieces of the Reach is how quickly they stop feeling like souvenirs. They become anchors: a shard in a pocket, a petal in a notebook, a little glow remembered at the edge of an ordinary day.",
+   "requires": {
+    "type": "collectionCount",
+    "ids": [],
+    "intent": "",
+    "collection": "Tideglass Reach",
+    "count": 5
+   }
+  },
+  {
+   "id": "rare-language",
+   "title": "The Things I Almost Kept",
+   "hint": "Find two rare offerings.",
+   "body": "Rare things are difficult because my first instinct is to keep looking at them. Giving one away means something else won: the thought of it becoming yours. Twice is enough to establish that this is not an accident.",
+   "requires": {
+    "type": "rareCount",
+    "ids": [],
+    "intent": "",
+    "collection": "",
+    "count": 2
+   }
+  }
+ ],
+ "special": {
+  "intent": "dontask",
+  "tab": "Classified",
+  "title": "Provenance: Classified",
+  "intro": "Objects whose emotional significance is clear and whose acquisition history remains none of your business, apparently.",
+  "stamp": "Provenance classified",
+  "empty": "No classified provenance yet. This is unlikely to remain true."
+ }
+}

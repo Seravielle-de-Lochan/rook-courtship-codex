@@ -1,0 +1,103 @@
+{
+ "format": "codex-content-pack",
+ "version": 1,
+ "id": "moth-lantern",
+ "title": "The Moth Lantern Society",
+ "eyebrow": "lamplight correspondence · night edition",
+ "subtitle": "A moth of considerable dignity is courting the town's lamplighter, one small, scorched and extremely well-intentioned gift at a time.",
+ "giver": { "name": "Vesper", "description": "A large, velvety moth who believes every light is a love letter." },
+ "recipient": { "name": "the Lamplighter" },
+ "labels": {
+  "daily": "Tonight's lamplit offering",
+  "question": "What did Vesper mean by this?",
+  "unread": "Still fluttering",
+  "correctBadge": "Understood",
+  "wrongBadge": "Moth logic",
+  "correctVerdict": "You understood me completely. I may need to sit on a lampshade for a moment.",
+  "wrongVerdict": "A reasonable guess. Moths, regrettably, are not reasonable.",
+  "codexTitle": "Catalogued offerings",
+  "loreTitle": "Society minutes",
+  "loreIntro": "The Society keeps minutes. Some of them only turn up once enough evidence has been left on your windowsill.",
+  "lockedLore": "These minutes are sealed with candle wax until the right offerings gather."
+ },
+ "intents": [
+  { "id": "devotion", "label": "Devotion", "blurb": "You are the brightest thing I know.", "why": "An offering made purely out of adoration for your light.", "lines": ["“I would circle you forever. I am told that is not a normal thing to say.”", "“You glow. I merely reported the fact with an object.”", "“It is yours because everything bright should be.”"] },
+  { "id": "flirtation", "label": "Flirtation", "blurb": "Wing-fluttering with intent.", "why": "The placement is doing a great deal of suggestive work.", "lines": ["“I was fluttering at you. Surely you noticed the fluttering.”", "“Consider this a formal invitation to dim the lamps.”", "“Subtlety is for beetles.”"] },
+  { "id": "nightwatch", "label": "I kept watch for you", "blurb": "I stayed up. I always stay up.", "why": "A small proof that someone was keeping you company through the dark.", "lines": ["“You fell asleep at your desk. I guarded the candle.”", "“Nothing happened in the night. I made sure.”", "“The dark was very large. I was very near.”"] },
+  { "id": "borrowed", "label": "It was only borrowed", "blurb": "It will absolutely be returned. Eventually. Possibly.", "why": "A lovely object currently on an indefinite and unofficial loan.", "lines": ["“The lantern-maker will not miss it. He has several.”", "“Borrowed is a flexible word. I am flexing it.”", "“Do not ask the church about its candle count.”"] }
+ ],
+ "collections": [
+  {
+   "name": "Lamp Room",
+   "blurb": "Wicks, glass and the smell of warm brass.",
+   "intentWeights": ["devotion", "devotion", "nightwatch"],
+   "objects": [{ "name": "curl of trimmed wick", "glyph": "🕯️" }, { "name": "flake of lantern glass", "glyph": "🔸" }, { "name": "brass match-striker", "glyph": "🧷" }, { "name": "drop of cooled wax", "glyph": "💧" }, { "name": "singed paper spill", "glyph": "📜" }],
+   "places": ["beside your oil can", "on the ledger's open page", "balanced on the lamp hook", "in the pocket of your coat", "on the windowsill, facing the street"],
+   "touches": ["still faintly warm", "arranged in a perfect circle", "dusted with a little wing-powder", "placed exactly under the brightest lamp", "with a single scorched edge"],
+   "lines": { "intent": "devotion", "lines": ["“It was near your light for hours. It must be half yours already.”", "“I brought a piece of the lamp room to the lamplighter. Poetic, yes?”"] }
+  },
+  {
+   "name": "Night Garden",
+   "blurb": "Things that bloom only after the lamps are lit.",
+   "intentWeights": ["flirtation", "devotion", "nightwatch"],
+   "objects": [{ "name": "moonflower petal", "glyph": "🌸" }, { "name": "sprig of night jasmine", "glyph": "🌼" }, { "name": "dew-heavy clover", "glyph": "☘️" }, { "name": "pale evening primrose", "glyph": "🌻" }, { "name": "silvered leaf", "glyph": "🍃" }],
+   "places": ["tucked into your hatband", "on your pillow", "in your teacup, which was empty, thankfully", "inside your left glove", "on the step where you sit to rest"],
+   "touches": ["opened only for you", "smelling of midnight", "with the dew still on it", "arranged like a very small bouquet", "left with considerable wing-fluttering"],
+   "lines": { "intent": "", "lines": [] }
+  },
+  {
+   "name": "Unofficial Acquisitions",
+   "blurb": "Beautiful things with complicated paperwork.",
+   "intentWeights": ["borrowed", "borrowed", "devotion"],
+   "objects": [{ "name": "church candle stub", "glyph": "🕯️" }, { "name": "tiny brass lamp key", "glyph": "🗝️" }, { "name": "gilded lantern finial", "glyph": "🔱" }, { "name": "silver snuffer", "glyph": "🔔" }, { "name": "stained-glass chip", "glyph": "🔷" }],
+   "places": ["on the doormat, rather conspicuously", "under your ledger", "in the coal scuttle", "behind the clock", "in the middle of the table"],
+   "touches": ["with no explanation whatsoever", "polished with a wing", "clearly from somewhere with an organ", "which is almost certainly on loan", "wrapped in a scrap of hymn sheet"],
+   "lines": { "intent": "borrowed", "lines": ["“The bishop has a great many candles and I have one lamplighter.”", "“I will return it. Morally, it is already on its way back.”"] }
+  }
+ ],
+ "offerings": [
+  { "id": "first-wick", "name": "The first wick you ever trimmed here", "glyph": "🕯️", "intent": "devotion", "collection": "Lamp Room", "desc": "Recovered from the back of the drawer, curled like a question mark, and laid on your ledger with ceremony.", "why": "Vesper keeps every trace of the moment your light first appeared.", "line": "“You threw it away. I kept it. That is the difference between us and also the whole point.”", "codex": "First wick — devotion that predates the introduction." },
+  { "id": "clean-glass", "name": "Lantern glass polished spotless", "glyph": "🔆", "intent": "nightwatch", "collection": "Lamp Room", "desc": "The soot is gone from lamp nine. There are tiny, perfect, feathery smudges along the rim.", "why": "Vesper spent the night making sure your light would be at its brightest.", "line": "“Lamp nine was dim. I found this unacceptable.”", "codex": "Polished glass — an all-night vigil, cleaned with wings." },
+  { "id": "wax-heart", "name": "A drip of wax in a vaguely heart shape", "glyph": "💗", "intent": "flirtation", "collection": "Lamp Room", "desc": "Set on your oil can, still soft, and very clearly steered into shape by someone flying in careful loops.", "why": "A deliberately heart-shaped declaration, however lumpy.", "line": "“It is a heart. Please say you see the heart.”", "codex": "Wax heart — flirtation, sculpted mid-air." },
+  { "id": "match-row", "name": "Seven matches in a row", "glyph": "🔥", "intent": "nightwatch", "collection": "Lamp Room", "desc": "Unstruck, heads all facing you, lined up on the windowsill like a tiny honour guard.", "why": "Enough light for seven more nights, prepared in case you ever ran short.", "line": "“One for each night you walked home in the dark. You will not walk home in the dark.”", "codex": "Seven matches — a week of watchfulness, laid out." },
+  { "id": "moonflower", "name": "A moonflower opened on your pillow", "glyph": "🌸", "intent": "flirtation", "collection": "Night Garden", "desc": "It unfurled at midnight, exactly where your head goes. The room smells impossibly sweet.", "why": "An invitation timed to the minute, arranged where you would lie down.", "line": "“It blooms at night. So do I. Do with that information what you will.”", "codex": "Moonflower — flirtation with excellent timing." },
+  { "id": "jasmine-hat", "name": "Night jasmine tucked in your hatband", "glyph": "🌼", "intent": "devotion", "collection": "Night Garden", "desc": "You only noticed because three separate neighbours complimented you on your rounds.", "why": "A secret adornment so that everyone on the street could see how loved you are.", "line": "“I wanted the whole street to know. Politely. Through fragrance.”", "codex": "Jasmine hatband — devotion, publicly smelled." },
+  { "id": "dew-clover", "name": "Four-leaf clover, heavy with dew", "glyph": "🍀", "intent": "nightwatch", "collection": "Night Garden", "desc": "Placed on the step where you sit to rest, the dew arranged so that it catches the lamp behind you.", "why": "A charm for luck, found during a long patrol of the garden while you slept.", "line": "“I checked every clover in the garden. Every one. This was the lucky one.”", "codex": "Dewy clover — an entire night of searching, compressed." },
+  { "id": "petal-trail", "name": "A trail of pale petals to the door", "glyph": "🌺", "intent": "flirtation", "collection": "Night Garden", "desc": "It begins at your chair and ends at the bedroom door. Vesper is on the lintel, pretending to be decorative.", "why": "A path with a destination, and absolutely no plausible deniability.", "line": "“I have no idea how those got there. Follow them and find out.”", "codex": "Petal trail — flirtation with a clear itinerary." },
+  { "id": "bishop-candle", "name": "An extremely nice church candle", "glyph": "⛪", "intent": "borrowed", "collection": "Unofficial Acquisitions", "desc": "Beeswax, hand-dipped, and faintly stamped with a crest you last saw above the cathedral door.", "why": "A beautiful gift on a very long, very unofficial loan from the clergy.", "line": "“The bishop said ‘let there be light’. I am merely following instructions.”", "codex": "Cathedral candle — borrowed, theologically justified." },
+  { "id": "lamp-key", "name": "The master key to every lamp on the hill", "glyph": "🗝️", "intent": "borrowed", "collection": "Unofficial Acquisitions", "desc": "Tiny, brass and warm. The rival lamplighter on the hill has been looking for it all week.", "why": "A gift of total access, obtained by means best left unexamined.", "line": "“Now every light up there is yours as well. Do not tell Ambrose.”", "codex": "Master lamp key — borrowed from a rival, handed to a love." },
+  { "id": "finial", "name": "A gilded lantern finial", "glyph": "🔱", "intent": "borrowed", "collection": "Unofficial Acquisitions", "desc": "It used to top the lantern outside the opera house. The opera house has not noticed. Yet.", "why": "Magnificent, entirely unnecessary, and currently missing from a public building.", "line": "“It was wasted up there. Nobody looks up at the opera. You always look up.”", "codex": "Opera finial — admire it indoors, quietly." },
+  { "id": "stained-chip", "name": "A chip of blue stained glass", "glyph": "🔷", "intent": "devotion", "collection": "Unofficial Acquisitions", "desc": "It throws a small blue saint onto your wall whenever the lamp is lit.", "why": "Vesper wanted you to have a light that makes other lights more beautiful.", "line": "“It fell out of the window by itself. I simply caught it with great devotion.”", "codex": "Blue glass chip — devotion, projected nightly." }
+ ],
+ "rare": [
+  { "id": "rare-first-flame", "name": "A flame that will not go out", "glyph": "🔥", "intent": "devotion", "collection": "Lamp Room", "desc": "A tiny steady flame in a thimble of oil. It has burned for three days on nothing at all.", "why": "The rarest thing Vesper owns: a light of its own, given to the one it circles.", "line": "“I found my own light, finally. I did not want it. I wanted you to have it.”", "codex": "Undying flame — the moth gives up the flame." },
+  { "id": "rare-wing-scale", "name": "A single silver wing-scale in a locket", "glyph": "✨", "intent": "flirtation", "collection": "Night Garden", "desc": "Pressed behind glass, shimmering like frost. Moths do not give these away.", "why": "A piece of Vesper, offered for you to wear over your heart.", "line": "“Wear it close. I will know. Moths always know.”", "codex": "Wing-scale locket — a very forward piece of self." },
+  { "id": "rare-cathedral-rose", "name": "The cathedral's rose-window key", "glyph": "🌹", "intent": "borrowed", "collection": "Unofficial Acquisitions", "desc": "A great iron key, ornate as lace. Somewhere, a bell-ringer is having a very bad morning.", "why": "The most outrageous loan in Society history, made so you could see the rose window by night.", "line": "“Tonight, the whole window lights up for you. Tomorrow I return the key. Probably.”", "codex": "Rose-window key — the Society's most scandalous loan." }
+ ],
+ "companions": [
+  {
+   "name": "Fennick",
+   "blurb": "Courts with enthusiasm and very little aim.",
+   "offerings": [
+    { "id": "fennick-button", "name": "A button, delivered at speed", "glyph": "🔘", "intent": "devotion", "collection": "Lamp Room", "giver": "Fennick", "desc": "Fennick, a small and chaotic moth, flew into the lamp twice before depositing this on your nose.", "why": "Fennick loves you too, frankly, and also loves the lamp.", "line": "“Fennick asks me to say this is a proposal. I have told him it is a button.”", "codex": "Fennick's button — devotion, delivered by collision." },
+    { "id": "fennick-crumb", "name": "One heroic biscuit crumb", "glyph": "🍪", "intent": "borrowed", "collection": "Unofficial Acquisitions", "giver": "Fennick", "desc": "From the baker's window. Fennick has clearly been through an ordeal.", "why": "A stolen morsel, presented with enormous pride.", "line": "“He wants you to know the baker saw nothing. The baker saw everything.”", "codex": "Fennick's crumb — borrowed with maximum drama." }
+   ]
+  },
+  {
+   "name": "Old Lune",
+   "blurb": "Courts with ancient, dusty ceremony.",
+   "offerings": [
+    { "id": "lune-map", "name": "A map of every lamp in the old town", "glyph": "🗺️", "intent": "nightwatch", "collection": "Lamp Room", "giver": "Old Lune", "desc": "Drawn in soot on the back of a moth-eaten tract. Old Lune has marked the ones you missed.", "why": "Old Lune has watched the old town's lights for decades and approves of you.", "line": "“Old Lune says you are the best lamplighter since 1840. From Lune, that is a marriage blessing.”", "codex": "Lune's lamp map — generations of night-watch, handed down." },
+    { "id": "lune-feather", "name": "A grey owl feather", "glyph": "🪶", "intent": "flirtation", "collection": "Night Garden", "giver": "Old Lune", "desc": "Old Lune claims it was 'won in single combat'. Everyone else doubts it.", "why": "A trophy offered with ancient gallantry.", "line": "“Lune says to tell you he is widowed and very wise. I say to tell you he is ninety.”", "codex": "Lune's owl feather — gallantry of a vintage kind." }
+   ]
+  }
+ ],
+ "lore": [
+  { "id": "lamp-room-vows", "title": "Vows of the Lamp Room", "hint": "The first wick, a polished glass and a row of matches share a secret.", "body": "Before the Society had a name, there was one moth and one lamp room. Vesper did not mean to stay. But you trimmed the wick with such care, and hummed while you polished the glass, and left the window open a crack on cold nights. Moths have a word for a light that leaves the window open. We do not say it lightly.", "requires": { "type": "ids", "ids": ["first-wick", "clean-glass", "match-row"], "intent": "", "collection": "", "count": 3 } },
+  { "id": "garden-after-dark", "title": "The Garden After Dark", "hint": "Three blooms that only open for someone.", "body": "The night garden is not wild. Every flower in it was coaxed open by a moth humming to it at midnight. It took a whole summer. Vesper would like it recorded in the minutes that it was worth it, and would like the minutes to stop blushing.", "requires": { "type": "ids", "ids": ["moonflower", "jasmine-hat", "petal-trail"], "intent": "", "collection": "", "count": 3 } },
+  { "id": "society-assembled", "title": "The Society Assembled", "hint": "Accept an offering from every member.", "body": "The Moth Lantern Society has three members and one purpose. Fennick thinks the purpose is lamps. Old Lune thinks it is tradition. Vesper wrote the charter, and the charter says, in its entirety: ‘Keep the Lamplighter's light burning. By any means. Return the keys eventually.’", "requires": { "type": "companions", "ids": ["Fennick", "Old Lune"], "intent": "", "collection": "", "count": 2 } },
+  { "id": "outstanding-loans", "title": "Register of Outstanding Loans", "hint": "Collect five things that are only ‘borrowed’.", "body": "The Society's loan register runs to eleven pages. The cathedral appears on four of them. Vesper maintains that every item will be returned the moment it stops being the right gift for you, which, so far, is never. The bishop has started leaving the vestry window open. Nobody knows what that means.", "requires": { "type": "intentCount", "ids": [], "intent": "borrowed", "collection": "", "count": 5 } },
+  { "id": "two-rare-lights", "title": "What Moths Do Not Give", "hint": "Find two rare offerings.", "body": "A moth's whole life points at the light. Giving away a flame, or a scale from its own wing, is like giving away its compass. Vesper has done both. The Society considers this either reckless or the most romantic thing in its history, and has voted, three to nothing, for both.", "requires": { "type": "rareCount", "ids": [], "intent": "", "collection": "", "count": 2 } }
+ ],
+ "special": { "intent": "borrowed", "tab": "Loans", "title": "Register of Unofficial Loans", "intro": "Every object here is on loan. From whom, and whether they know, is a matter for the Society's discretion.", "stamp": "On indefinite loan", "empty": "Nothing borrowed yet. The cathedral breathes a sigh of relief." }
+}
