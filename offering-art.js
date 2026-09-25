@@ -44,3 +44,15 @@ globalThis.TIDEGLASS_OFFERING_ART = {
   "pip-shiny-washer": "assets/tideglass/offerings/pip-shiny-washer.webp",
   "pip-leaf": "assets/tideglass/offerings/pip-leaf.webp"
 };
+
+// Illustrations for the secret lore, keyed by lore id (shown once that secret is unlocked).
+globalThis.TIDEGLASS_LORE_ART = {
+  "reach-remembers": "assets/tideglass/lore/reach-remembers.webp",
+  "cabinet-questions": "assets/tideglass/lore/cabinet-questions.webp",
+  "not-subtle": "assets/tideglass/lore/not-subtle.webp",
+  "brain-said-sera": "assets/tideglass/lore/brain-said-sera.webp",
+  "three-black-feathers": "assets/tideglass/lore/three-black-feathers.webp",
+  "provenance-problem": "assets/tideglass/lore/provenance-problem.webp",
+  "reach-collector": "assets/tideglass/lore/reach-collector.webp",
+  "rare-language": "assets/tideglass/lore/rare-language.webp"
+};

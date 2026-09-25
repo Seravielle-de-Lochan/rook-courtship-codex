@@ -325,6 +325,11 @@ dialog.sheet[open] { animation: sheetUp .45s var(--ease-out) both; }
   background: radial-gradient(circle at 35% 30%, #fff8, transparent 40%), radial-gradient(circle, var(--c-rare), color-mix(in srgb, var(--c-rare) 60%, #000)); box-shadow: 0 0 0 6px rgba(var(--rare-rgb), .18), 0 0 40px rgba(var(--rare-rgb), .45);
   animation: sealIn .9s var(--ease-spring) both; }
 [data-has-lore-seal] .seal { background: var(--img-lore-seal) center / contain no-repeat; box-shadow: none; color: transparent; }
+/* A secret with its own illustration shows that instead of the look's generic seal. */
+.seal.has-art, [data-has-lore-seal] .seal.has-art { width: 132px; height: 132px; border-radius: 0; background: none; box-shadow: none; }
+.seal.has-art img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 14px rgba(var(--accent-rgb), .35)); }
+.lore-entry .entry-glyph.has-art, [data-has-lore-seal] .lore-entry.unlocked .entry-glyph.has-art { background: var(--c-surface2); padding: 2px; }
+.entry-glyph.has-art img { width: 100%; height: 100%; object-fit: contain; }
 @keyframes sealIn { from { transform: scale(0) rotate(-90deg); } }
 
 /* ---------- art-pack layout options (canopy, pendants, pills, ring stage) ---------- */

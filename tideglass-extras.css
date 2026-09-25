@@ -67,3 +67,9 @@
 /* Codex thumbnails for illustrated offerings */
 .codex-entry:has(.codex-art) { display: flow-root; }
 .codex-art { float: right; width: 48px; height: 48px; object-fit: contain; margin: 0 0 4px 12px; filter: drop-shadow(0 0 8px #83c7c233); }
+
+/* Secret lore illustrations */
+.lore-entry:has(.lore-art) { display: flow-root; }
+.lore-art { float: right; width: 64px; height: 64px; object-fit: contain; margin: 0 0 6px 12px; filter: drop-shadow(0 0 10px #83c7c23d); }
+.unlock-art-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 8px; }
+.unlock-art { width: 96px; height: 96px; object-fit: contain; filter: drop-shadow(0 0 12px #83c7c24d); }

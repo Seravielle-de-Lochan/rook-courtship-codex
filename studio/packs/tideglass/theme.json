@@ -214,5 +214,20 @@
     "unlock": "sounds/lore-unlock.mp3",
     "tap": "sounds/ui-tap.wav",
     "toggle": "sounds/ui-toggle.wav"
+  },
+  "loreArt": {
+    "three-black-feathers": "lore/three-black-feathers.webp",
+    "reach-remembers": "lore/reach-remembers.webp",
+    "cabinet-questions": "lore/cabinet-questions.webp",
+    "not-subtle": "lore/not-subtle.webp",
+    "brain-said-sera": "lore/brain-said-sera.webp",
+    "provenance-problem": "lore/provenance-problem.webp",
+    "reach-collector": "lore/reach-collector.webp",
+    "rare-language": "lore/rare-language.webp",
+    "lamp-room-vows": "lore/moth-lantern/lamp-room-vows.webp",
+    "garden-after-dark": "lore/moth-lantern/garden-after-dark.webp",
+    "society-assembled": "lore/moth-lantern/society-assembled.webp",
+    "outstanding-loans": "lore/moth-lantern/outstanding-loans.webp",
+    "two-rare-lights": "lore/moth-lantern/two-rare-lights.webp"
   }
 }

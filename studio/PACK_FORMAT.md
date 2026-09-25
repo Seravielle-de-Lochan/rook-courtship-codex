@@ -71,6 +71,7 @@ If the zip contains a **SpriteCook UI-kit manifest** (or any JSON listing compon
   - `"swagAt"` (0–1, default `0.43`): how far down the `side-drop` image the `side-swag` hangs from. Point it at the top of whatever the swag should hang from, such as a gem.
   - `"swagLift"` (0–1, default `0.15`): how far down the `side-swag` image its strands start. The swag is raised by this much, so the strands meet the `swagAt` point.
 - Text colours are automatically nudged, if needed, so they stay readable against the card colour.
+- `loreArt` (optional): `{ "<lore id>": "lore/three-black-feathers.webp" }`. It gives each secret its own picture, which shows on the unlock sheet and beside the entry in the Lore list. Secrets without one use the `lore-seal` image.
 - `sounds` (optional), for example `{ "appear": "sounds/offering-appear.mp3", "reveal": "sounds/answer-reveal.mp3" }`.
   - `appear` plays when an offering appears, `reveal` when its meaning is revealed, and `unlock` when secret lore unlocks.
   - `tap` plays on the navigation tabs and `toggle` on switches and menus. Players can turn these two off with "Tap sounds" and keep the rest.

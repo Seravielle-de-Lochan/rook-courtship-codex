@@ -227,6 +227,7 @@ export function normalizeTheme(t = {}, base = PRESETS[0]) {
     },
     images: t.images && typeof t.images === 'object' ? t.images : {},
     art: t.art && typeof t.art === 'object' ? t.art : {},
+    loreArt: t.loreArt && typeof t.loreArt === 'object' ? t.loreArt : {}, // lore id -> picture shown when that secret unlocks
     spritecook: t.spritecook || null,
   };
 }
@@ -339,6 +340,7 @@ export async function importVisualZip(file, contentPack) {
     if (f) { mapping[slot] = f; if (typeof v === 'object' && v?.slice != null) slices[slot] = v.slice; } else warnings.push(`theme.json maps "${slot}" to a file that isn't in the zip.`);
   }
   for (const [id, f0] of Object.entries(theme.art)) { const f = fileByLoose(f0); if (f) mapping[`offering-${id}`] = f; }
+  theme.loreArt = Object.fromEntries(Object.entries(theme.loreArt).map(([id, f0]) => [id, fileByLoose(f0)]).filter(([, f]) => f));
   for (const json of otherJson) {
     for (const comp of manifestComponents(json)) {
       const f = fileByLoose(comp.file) || fileByLoose(comp.file.replace(/\.png$/i, '.webp'));
@@ -382,7 +384,7 @@ export function buildVisualRecord({ theme, files, mapping, slices }) {
     if (slot.startsWith('offering-')) art[slot.slice(9)] = f;
     else images[slot] = slices[slot] != null ? { file: f, slice: slices[slot] } : f;
   }
-  const keep = new Set([...Object.values(mapping), theme.fonts.display, theme.fonts.body, ...Object.values(theme.sounds || {})].filter(Boolean));
+  const keep = new Set([...Object.values(mapping), theme.fonts.display, theme.fonts.body, ...Object.values(theme.sounds || {}), ...Object.values(theme.loreArt || {})].filter(Boolean));
   const kept = Object.fromEntries(Object.entries(files).filter(([k]) => keep.has(k)));
   return { id: theme.id, kind: 'visual', installedAt: Date.now(), theme: { ...theme, images, art }, files: kept };
 }
@@ -479,9 +481,11 @@ export async function applyVisual(record, root = document.documentElement) {
   }
   const art = {};
   for (const [id, f] of Object.entries(theme.art || {})) { const u = url(f); if (u) art[id] = u; }
+  const loreArt = {};
+  for (const [id, f] of Object.entries(theme.loreArt || {})) { const u = url(f); if (u) loreArt[id] = u; }
   const sounds = {};
   for (const [k, f] of Object.entries(theme.sounds || {})) { const u = url(f); if (u) sounds[k] = u; }
-  return { images: imgMap, art, sounds, motion: theme.motion, style: theme.style };
+  return { images: imgMap, art, loreArt, sounds, motion: theme.motion, style: theme.style };
 }
 
 export function presetRecord(preset) { return { id: preset.id, kind: 'visual', builtin: true, theme: normalizeTheme(preset, preset), files: {} }; }

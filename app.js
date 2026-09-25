@@ -32,6 +32,7 @@
 
   // Illustrated offerings (SpriteCook art, mapped in offering-art.js). Others keep their glyph.
   const OFFERING_ART = globalThis.TIDEGLASS_OFFERING_ART || {};
+  const LORE_ART = globalThis.TIDEGLASS_LORE_ART || {};
 
   function canonicalId(id){ return String(id).replace(/^daily-\d{4}-\d{2}-\d{2}-/,""); }
   function save(){ localStorage.setItem("rookCodexState", JSON.stringify(state)); }
@@ -241,7 +242,8 @@
       const bits=[];
       if(current.rare) bits.push("✦ Rare find added to the Codex.");
       unlocked.forEach(l=>bits.push(`Secret lore unlocked: ${l.title}`));
-      $("#unlockBox").innerHTML=bits.map(escapeHtml).join("<br>");
+      const pics=unlocked.filter(l=>LORE_ART[l.id]).map(l=>`<img class="unlock-art" src="${LORE_ART[l.id]}" alt="">`).join("");
+      $("#unlockBox").innerHTML=(pics?`<div class="unlock-art-row">${pics}</div>`:"")+bits.map(escapeHtml).join("<br>");
       $("#unlockBox").classList.remove("hidden");
     }
     if(unlocked.length) setTimeout(()=>sfx("unlock"),450); // after the reveal sparkle
@@ -291,6 +293,7 @@
     $("#loreList").innerHTML=loreRules.map(rule=>{
       const unlocked=loreUnlocked(rule);
       return `<div class="lore-entry ${unlocked?"unlocked":"lore-lock"}">
+        ${unlocked&&LORE_ART[rule.id]?`<img class="lore-art" src="${LORE_ART[rule.id]}" alt="" loading="lazy" width="64" height="64">`:""}
         <div class="lore-title">${unlocked?"✦ ":"◇ "}${escapeHtml(unlocked?rule.title:"Locked entry")}</div>
         <div class="lore-condition">${escapeHtml(rule.hint)}</div>
         <div class="lore-body">${unlocked?escapeHtml(rule.body):"The rest of this entry remains hidden until the right finds gather together."}</div>

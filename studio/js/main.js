@@ -40,6 +40,7 @@ let visual = null;        // active visual record
 let applied = { images: {}, art: {}, sounds: {} };
 let sfxReady = false; // no sound until the first offering is on screen
 let storyArt = {};    // the built-in stories' own illustrations, shown whatever the look (a look's art wins)
+let storyLoreArt = {}; // the same for their secret lore
 let current = null;       // offering on screen
 let answered = false;
 let codexFilter = 'All';
@@ -78,7 +79,7 @@ async function setStory(id, { silent = false } = {}) {
   settings.content = pack.id; settingsStore.save(settings);
   game = new Game(pack, progressStore.load(pack.id), settings);
   codexFilter = 'All';
-  storyArt = await builtinStoryArt(pack.id);
+  ({ art: storyArt, lore: storyLoreArt } = await builtinStoryArt(pack.id));
   renderChrome();
   renderAll();
   const today = localDateKey();
@@ -89,12 +90,13 @@ async function setStory(id, { silent = false } = {}) {
 // The built-in stories were illustrated for the Tideglass kit; those pictures belong to the
 // story, so they show in every look unless the look has its own art for that offering.
 async function builtinStoryArt(id) {
-  if (!BUILTIN_STORIES.some((s) => s.id === id)) return {};
+  if (!BUILTIN_STORIES.some((s) => s.id === id)) return { art: {}, lore: {} };
   try {
     const rec = await builtinLook(BUILTIN_LOOKS[0]);
     const base = new URL(rec.baseUrl, location.href);
-    return Object.fromEntries(Object.entries(rec.theme.art).map(([k, f]) => [k, new URL(f, base).href]));
-  } catch { return {}; }
+    const resolve = (map) => Object.fromEntries(Object.entries(map || {}).map(([k, f]) => [k, new URL(f, base).href]));
+    return { art: resolve(rec.theme.art), lore: resolve(rec.theme.loreArt) };
+  } catch { return { art: {}, lore: {} }; }
 }
 
 const builtinCache = new Map();
@@ -385,6 +387,9 @@ function showNextLore() {
   $('#loreSheetTitle').textContent = l.title;
   $('#loreSheetBody').textContent = l.body;
   const seal = $('#loreSeal'); seal.style.animation = 'none'; void seal.offsetWidth; seal.style.animation = '';
+  const art = loreArtFor(l.id);
+  seal.classList.toggle('has-art', !!art);
+  seal.replaceChildren(art ? h('img', { src: art, alt: '' }) : '✦');
   dlg.showModal();
   playSfx('unlock', 'lore'); buzz([20, 60, 20, 60, 40], settings.haptics);
   setTimeout(() => burst(seal, { kind: 'lore' }), 250);
@@ -454,6 +459,8 @@ function renderCodex() {
   $('#codexList').replaceChildren(...(entries.length ? entries.slice(0, 200).map((e) => entryRow(e)) : [h('div', { class: 'empty', text: q ? 'Nothing matches that search.' : 'Nothing catalogued here yet.' })]));
 }
 
+function loreArtFor(id) { return applied.loreArt?.[id] || storyLoreArt[id] || null; }
+
 function renderLore() {
   const unlocked = pack.lore.filter((l) => game.p.unlockedLore[l.id]);
   $('#loreCount').textContent = `${unlocked.length} / ${pack.lore.length} unlocked`;
@@ -461,7 +468,8 @@ function renderLore() {
     const open = !!game.p.unlockedLore[l.id];
     const [have, need] = game.loreProgress(l);
     return h('div', { class: `entry lore-entry ${open ? 'unlocked' : 'locked'}` },
-      h('div', { class: 'entry-glyph', 'aria-hidden': 'true', text: open ? '✦' : '◇' }),
+      open && loreArtFor(l.id) ? h('div', { class: 'entry-glyph has-art', 'aria-hidden': 'true' }, h('img', { src: loreArtFor(l.id), alt: '' }))
+        : h('div', { class: 'entry-glyph', 'aria-hidden': 'true', text: open ? '✦' : '◇' }),
       h('div', { class: 'entry-body' },
         h('div', { class: 'entry-title', text: open ? l.title : 'Locked entry' }),
         h('div', { class: 'lore-hint', text: l.hint }),
@@ -530,7 +538,7 @@ async function shareOrDownload(blob, filename) {
 
 async function withFiles(rec) {
   if (!rec.baseUrl) return rec;
-  const names = new Set([...Object.values(rec.theme.images).map((v) => (typeof v === 'string' ? v : v.file)), ...Object.values(rec.theme.art), rec.theme.fonts.display, rec.theme.fonts.body, ...Object.values(rec.theme.sounds || {})].filter(Boolean));
+  const names = new Set([...Object.values(rec.theme.images).map((v) => (typeof v === 'string' ? v : v.file)), ...Object.values(rec.theme.art), rec.theme.fonts.display, rec.theme.fonts.body, ...Object.values(rec.theme.sounds || {}), ...Object.values(rec.theme.loreArt || {})].filter(Boolean));
   const files = {};
   for (const n of names) { const r = await fetch(new URL(n, new URL(rec.baseUrl, location.href))); if (r.ok) files[n] = await r.blob(); }
   return { ...rec, files };

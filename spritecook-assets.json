@@ -328,5 +328,70 @@
     "asset_id": "eb9479f9-975f-4ccd-9713-53fa1794d014",
     "sha12": "6bda29fb7314",
     "label": "App icon: rook with sea-glass (icon-*.png, studio/icons/*, cropped to the head)"
+  },
+  "lore/three-black-feathers": {
+    "asset_id": "7cde42da-2630-48b6-abd8-81d682121e90",
+    "sha12": "af428aa0179f",
+    "label": "Secret lore: Three Black Feathers"
+  },
+  "lore/reach-remembers": {
+    "asset_id": "30499d18-02e0-40fe-a9a8-026650e48197",
+    "sha12": "e4561afa4615",
+    "label": "Secret lore: The Reach Remembers"
+  },
+  "lore/cabinet-questions": {
+    "asset_id": "48bc9759-5921-45ef-b69f-eec71253c2b8",
+    "sha12": "2fa9762f7ebb",
+    "label": "Secret lore: The Cabinet of Unanswered Questions"
+  },
+  "lore/not-subtle": {
+    "asset_id": "044cee03-a102-4241-ab4b-f2cbae402388",
+    "sha12": "a3ce17db5a53",
+    "label": "Secret lore: Not Subtle Anymore"
+  },
+  "lore/brain-said-sera": {
+    "asset_id": "5ade0bf2-d193-46a2-a86a-93e4a411ab98",
+    "sha12": "8fc8871137cb",
+    "label": "Secret lore: My Brain Said Sera"
+  },
+  "lore/provenance-problem": {
+    "asset_id": "bfddbea3-415e-4132-87a3-9c8b90cd70da",
+    "sha12": "b247dda0ffa1",
+    "label": "Secret lore: A Pattern of Dubious Provenance"
+  },
+  "lore/reach-collector": {
+    "asset_id": "bd5b6fda-13f5-4fe9-8751-186cb5b41542",
+    "sha12": "6223896cd52d",
+    "label": "Secret lore: Pocketful of Tideglass"
+  },
+  "lore/rare-language": {
+    "asset_id": "19243b67-e340-400c-8278-c3cec09dab51",
+    "sha12": "d4cecb887ef2",
+    "label": "Secret lore: The Things I Almost Kept"
+  },
+  "lore/moth-lantern/lamp-room-vows": {
+    "asset_id": "8635889b-60bb-4ee6-a386-33d1b49e5230",
+    "sha12": "d4424ec8a86c",
+    "label": "Secret lore: Vows of the Lamp Room"
+  },
+  "lore/moth-lantern/garden-after-dark": {
+    "asset_id": "f54aebfd-f603-4962-8224-642f8ead0973",
+    "sha12": "8a569650329a",
+    "label": "Secret lore: The Garden After Dark"
+  },
+  "lore/moth-lantern/society-assembled": {
+    "asset_id": "79db4247-d7af-4345-82bb-b308c3bd1cd0",
+    "sha12": "4fc80ba92cdd",
+    "label": "Secret lore: The Society Assembled"
+  },
+  "lore/moth-lantern/outstanding-loans": {
+    "asset_id": "f3c98819-cedd-45d0-b9c3-94e87328bfd7",
+    "sha12": "928c511b6c1f",
+    "label": "Secret lore: Register of Outstanding Loans"
+  },
+  "lore/moth-lantern/two-rare-lights": {
+    "asset_id": "f75a90db-cede-4702-92f2-789c7930d6ff",
+    "sha12": "e732bb72c0b8",
+    "label": "Secret lore: What Moths Do Not Give"
   }
 }

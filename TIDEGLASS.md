@@ -307,3 +307,26 @@ mark.
 - **Maskable version:** a slightly wider crop keeps the gem inside Android's
   circular safe zone.
 
+## Secret lore illustrations — 25 September 2026
+
+Every secret in both built-in stories now has its own picture: 8 for Rook and
+5 for the Moth Lantern Society. They are painted in the same still-life style as
+the offerings (pistachio style reference), and each one gathers the finds that
+unlock it. *Three Black Feathers*, for example, is three feathers, one for each
+of Morrow, Ink and Pip.
+
+- **Files:** `assets/tideglass/lore/<lore-id>.webp`, with the moth secrets in
+  `lore/moth-lantern/` (about 1 MB in total). Asset IDs are in
+  `spritecook-assets.json` under `lore/…`.
+- **The game:** `offering-art.js` also defines `TIDEGLASS_LORE_ART`.
+  - Unlocked entries in the Lore tab show their picture.
+  - The "Secret lore unlocked" note shows it too.
+  - Everything is precached (cache `v17-lore-art`).
+- **Studio:** looks have a new `loreArt` map. The picture replaces the generic
+  seal on the unlock sheet and in the Lore list. The built-in stories supply
+  their own lore art, so it shows in every look. Studio's cache is
+  `codex-studio-v10`.
+- **Still without art of their own:** companion portraits (Morrow, Ink, Pip,
+  Fennick, Old Lune) and collection badges (5 Rook, 3 moth). Procedural finds
+  keep their glyph by design.
+
